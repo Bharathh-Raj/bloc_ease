@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_complex_list/complex_list/complex_list.dart';
-import 'package:flutter_complex_list/repository.dart';
+
+import '../../repository.dart';
+import '../cubit/complex_list_cubit.dart';
+import '../models/item.dart';
 
 class ComplexListPage extends StatelessWidget {
   const ComplexListPage({super.key});

@@ -1,4 +1,4 @@
-package com.example.flutter_complex_list
+package com.example.complex_list
 
 import io.flutter.embedding.android.FlutterActivity
 
