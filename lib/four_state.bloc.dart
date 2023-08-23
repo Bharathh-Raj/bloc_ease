@@ -1,45 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'four_state.bloc.freezed.dart';
 
 abstract class FourStateBloc<T> extends Cubit<FourStates<T>> {
   FourStateBloc([FourStates<T>? initialState])
-      : super(initialState ?? InitialState<T>());
+      : super(initialState ?? _initial<T>());
 }
 
-sealed class FourStates<T> {
-  factory FourStates.initial() => InitialState<T>();
-  factory FourStates.loading([double? progress]) => LoadingState<T>(progress);
-  factory FourStates.succeed(T succeedObject) => SucceedState<T>(succeedObject);
-  factory FourStates.failed(
-          [dynamic exceptionObject, String? failureMessage]) =>
-      FailedState<T>(exceptionObject, failureMessage);
-}
-
-class InitialState<T> implements FourStates<T> {}
-
-class LoadingState<T> implements FourStates<T> {
-  LoadingState([this.progress]);
-
-  final double? progress;
-}
-
-class SucceedState<T> implements FourStates<T> {
-  SucceedState(this.successObject);
-  final T successObject;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SucceedState &&
-          runtimeType == other.runtimeType &&
-          successObject == other.successObject;
-
-  @override
-  int get hashCode => successObject.hashCode;
-}
-
-class FailedState<T> implements FourStates<T> {
-  final dynamic exceptionObject;
-  final String? failureMessage;
-
-  FailedState([this.exceptionObject, this.failureMessage]);
+@freezed
+class FourStates<T> with _$FourStates<T> {
+  const factory FourStates.initial() = _initial<T>;
+  const factory FourStates.loading([double? progress]) = _loading<T>;
+  const factory FourStates.succeed(T succeedObject) = _succeed<T>;
+  const factory FourStates.failed(
+      [dynamic exceptionObject, String? failureMessage]) = _failed<T>;
 }
