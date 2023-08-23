@@ -21,7 +21,7 @@ class StateWidgetsProvider extends InheritedWidget {
 
   static StateWidgetsProvider of(BuildContext context) {
     final StateWidgetsProvider? result = maybeOf(context);
-    assert(result != null, 'No GlobalStateWidgets found in context');
+    assert(result != null, 'No StateWidgetsProvider found in context');
     return result!;
   }
 
