@@ -1,3 +1,4 @@
+import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,15 +28,9 @@ class ComplexListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.watch<ComplexListCubit>().state;
-    switch (state.status) {
-      case ListStatus.failure:
-        return const Center(child: Text('Oops something went wrong!'));
-      case ListStatus.success:
-        return ItemView(items: state.items);
-      case ListStatus.loading:
-        return const Center(child: CircularProgressIndicator());
-    }
+    return FourStateBuilder<ComplexListCubit, List<Item>>(
+      succeedBuilder: (items) => ItemView(items: items),
+    );
   }
 }
 

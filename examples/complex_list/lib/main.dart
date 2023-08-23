@@ -1,3 +1,4 @@
+import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,5 +8,11 @@ import 'simple_bloc_observer.dart';
 
 void main() {
   Bloc.observer = const SimpleBlocObserver();
-  runApp(App(repository: Repository()));
+  runApp(StateWidgetsProvider(
+      initialStateBuilder: () => const Placeholder(),
+      loadingStateBuilder: ([progress]) =>
+          const Center(child: CircularProgressIndicator()),
+      failureStateBuilder: ([exceptionObject, failureMessage]) =>
+          Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
+      child: App(repository: Repository())));
 }
