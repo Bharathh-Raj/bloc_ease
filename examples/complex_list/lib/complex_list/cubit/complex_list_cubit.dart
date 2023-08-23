@@ -6,18 +6,21 @@ import 'package:bloc_ease/four_state.bloc.dart';
 import '../../repository.dart';
 import '../models/item.dart';
 
+typedef ComplexListState = FourStates<List<Item>>;
+
 class ComplexListCubit extends FourStateBloc<List<Item>> {
-  ComplexListCubit({required this.repository});
+  ComplexListCubit({required this.repository})
+      : super(const ComplexListState.loading());
 
   final Repository repository;
 
   Future<void> fetchList() async {
     try {
-      emit(const FourStates.loading());
+      // emit(const ComplexListState.loading());
       final items = await repository.fetchItems();
-      emit(FourStates.succeed(items));
+      emit(ComplexListState.succeed(items));
     } on Exception {
-      emit(const FourStates.failed());
+      emit(const ComplexListState.failed());
     }
   }
 
@@ -29,13 +32,13 @@ class ComplexListCubit extends FourStateBloc<List<Item>> {
           return item.id == id ? item.copyWith(isDeleting: true) : item;
         }).toList();
 
-        emit(FourStates.succeed(deleteInProgress));
+        emit(ComplexListState.succeed(deleteInProgress));
 
         unawaited(
           repository.deleteItem(id).then((_) {
             final deleteSuccess = List.of(items)
               ..removeWhere((element) => element.id == id);
-            emit(FourStates.succeed(deleteSuccess));
+            emit(ComplexListState.succeed(deleteSuccess));
           }),
         );
       },

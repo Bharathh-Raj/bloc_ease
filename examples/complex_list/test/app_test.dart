@@ -1,7 +1,7 @@
+import 'package:complex_list/app.dart';
+import 'package:complex_list/complex_list/view/complex_list_page.dart';
+import 'package:complex_list/repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_complex_list/app.dart';
-import 'package:flutter_complex_list/complex_list/complex_list.dart';
-import 'package:flutter_complex_list/repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 

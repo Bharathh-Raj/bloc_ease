@@ -1,8 +1,11 @@
+import 'package:bloc_ease/bloc_ease.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:complex_list/complex_list/cubit/complex_list_cubit.dart';
+import 'package:complex_list/complex_list/models/item.dart';
+import 'package:complex_list/complex_list/view/complex_list_page.dart';
+import 'package:complex_list/repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_complex_list/complex_list/complex_list.dart';
-import 'package:flutter_complex_list/repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -14,10 +17,17 @@ class MockComplexListCubit extends MockCubit<ComplexListState>
 extension on WidgetTester {
   Future<void> pumpListPage(Repository repository) {
     return pumpWidget(
-      MaterialApp(
-        home: RepositoryProvider.value(
-          value: repository,
-          child: const ComplexListPage(),
+      StateWidgetsProvider(
+        initialStateBuilder: () => const Placeholder(),
+        loadingStateBuilder: ([progress]) =>
+            const Center(child: CircularProgressIndicator()),
+        failureStateBuilder: ([exceptionObject, failureMessage]) =>
+            Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
+        child: MaterialApp(
+          home: RepositoryProvider.value(
+            value: repository,
+            child: const ComplexListPage(),
+          ),
         ),
       ),
     );
@@ -25,10 +35,17 @@ extension on WidgetTester {
 
   Future<void> pumpListView(ComplexListCubit listCubit) {
     return pumpWidget(
-      MaterialApp(
-        home: BlocProvider.value(
-          value: listCubit,
-          child: const ComplexListView(),
+      StateWidgetsProvider(
+        initialStateBuilder: () => const Placeholder(),
+        loadingStateBuilder: ([progress]) =>
+            const Center(child: CircularProgressIndicator()),
+        failureStateBuilder: ([exceptionObject, failureMessage]) =>
+            Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
+        child: MaterialApp(
+          home: BlocProvider.value(
+            value: listCubit,
+            child: const ComplexListView(),
+          ),
         ),
       ),
     );
@@ -70,7 +87,7 @@ void main() {
     testWidgets(
         'renders error text '
         'when items fail to load', (tester) async {
-      when(() => listCubit.state).thenReturn(const ComplexListState.failure());
+      when(() => listCubit.state).thenReturn(const ComplexListState.failed());
       await tester.pumpListView(listCubit);
       expect(find.text('Oops something went wrong!'), findsOneWidget);
     });
@@ -79,7 +96,7 @@ void main() {
         'renders ComplexListView after items '
         'are finished loading', (tester) async {
       when(() => listCubit.state).thenReturn(
-        const ComplexListState.success(mockItems),
+        const ComplexListState.succeed(mockItems),
       );
       await tester.pumpListView(listCubit);
       expect(find.byType(ComplexListView), findsOneWidget);
@@ -88,7 +105,7 @@ void main() {
         'renders no content text when '
         'no items are present', (tester) async {
       when(() => listCubit.state).thenReturn(
-        const ComplexListState.success([]),
+        const ComplexListState.succeed([]),
       );
       await tester.pumpListView(listCubit);
       expect(find.text('no content'), findsOneWidget);
@@ -96,7 +113,7 @@ void main() {
 
     testWidgets('renders three ItemTiles', (tester) async {
       when(() => listCubit.state).thenReturn(
-        const ComplexListState.success(mockItems),
+        const ComplexListState.succeed(mockItems),
       );
       await tester.pumpListView(listCubit);
       expect(find.byType(ItemTile), findsNWidgets(3));
@@ -104,7 +121,7 @@ void main() {
 
     testWidgets('deletes first item', (tester) async {
       when(() => listCubit.state).thenReturn(
-        const ComplexListState.success(mockItems),
+        const ComplexListState.succeed(mockItems),
       );
       when(() => listCubit.deleteItem('1')).thenAnswer((_) async {});
       await tester.pumpListView(listCubit);
@@ -117,7 +134,7 @@ void main() {
     testWidgets('renders id and value text', (tester) async {
       const mockItem = Item(id: '1', value: 'Item 1');
       when(() => listCubit.state).thenReturn(
-        const ComplexListState.success([mockItem]),
+        const ComplexListState.succeed([mockItem]),
       );
       await tester.pumpListView(listCubit);
       expect(find.text('#1'), findsOneWidget);
@@ -129,7 +146,7 @@ void main() {
         'when item is not being deleted', (tester) async {
       const mockItem = Item(id: '1', value: 'Item 1');
       when(() => listCubit.state).thenReturn(
-        const ComplexListState.success([mockItem]),
+        const ComplexListState.succeed([mockItem]),
       );
       await tester.pumpListView(listCubit);
       expect(find.byIcon(Icons.delete), findsOneWidget);
@@ -140,7 +157,7 @@ void main() {
         'when item is being deleting', (tester) async {
       const mockItem = Item(id: '1', value: 'Item 1', isDeleting: true);
       when(() => listCubit.state).thenReturn(
-        const ComplexListState.success([mockItem]),
+        const ComplexListState.succeed([mockItem]),
       );
       await tester.pumpListView(listCubit);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);

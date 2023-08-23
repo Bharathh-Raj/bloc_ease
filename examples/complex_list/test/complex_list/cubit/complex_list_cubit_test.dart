@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:flutter_complex_list/complex_list/complex_list.dart';
-import 'package:flutter_complex_list/repository.dart';
+import 'package:complex_list/complex_list/cubit/complex_list_cubit.dart';
+import 'package:complex_list/complex_list/models/item.dart';
+import 'package:complex_list/repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -36,7 +37,7 @@ void main() {
         build: () => ComplexListCubit(repository: repository),
         act: (cubit) => cubit.fetchList(),
         expect: () => [
-          const ComplexListState.success(mockItems),
+          const ComplexListState.succeed(mockItems),
         ],
         verify: (_) => verify(repository.fetchItems).called(1),
       );
@@ -49,7 +50,7 @@ void main() {
         build: () => ComplexListCubit(repository: repository),
         act: (cubit) => cubit.fetchList(),
         expect: () => [
-          const ComplexListState.failure(),
+          const ComplexListState.failed(),
         ],
         verify: (_) => verify(repository.fetchItems).called(1),
       );
@@ -62,15 +63,15 @@ void main() {
           when(() => repository.deleteItem('2')).thenAnswer((_) async {});
         },
         build: () => ComplexListCubit(repository: repository),
-        seed: () => const ComplexListState.success(mockItems),
+        seed: () => const ComplexListState.succeed(mockItems),
         act: (cubit) => cubit.deleteItem('2'),
         expect: () => [
-          const ComplexListState.success([
+          const ComplexListState.succeed([
             Item(id: '1', value: '1'),
             Item(id: '2', value: '2', isDeleting: true),
             Item(id: '3', value: '3'),
           ]),
-          const ComplexListState.success([
+          const ComplexListState.succeed([
             Item(id: '1', value: '1'),
             Item(id: '3', value: '3'),
           ]),
