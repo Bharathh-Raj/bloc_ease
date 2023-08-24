@@ -1,3 +1,4 @@
+import 'package:bloc_ease/bloc_ease.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,19 +18,27 @@ extension PumpApp on WidgetTester {
     CatalogBloc? catalogBloc,
   }) {
     return pumpWidget(
-      MaterialApp(
-        home: MultiBlocProvider(
-          providers: [
-            if (cartBloc != null)
-              BlocProvider.value(value: cartBloc)
-            else
-              BlocProvider(create: (_) => MockCartBloc()),
-            if (catalogBloc != null)
-              BlocProvider.value(value: catalogBloc)
-            else
-              BlocProvider(create: (_) => MockCatalogBloc()),
-          ],
-          child: child,
+      StateWidgetsProvider(
+        initialStateBuilder: () => const SizedBox(),
+        loadingStateBuilder: ([progress]) =>
+            const Center(child: CircularProgressIndicator()),
+        failureStateBuilder: ([failureMessage, exception]) => Center(
+          child: Text(failureMessage ?? 'Something went wrong!'),
+        ),
+        child: MaterialApp(
+          home: MultiBlocProvider(
+            providers: [
+              if (cartBloc != null)
+                BlocProvider.value(value: cartBloc)
+              else
+                BlocProvider(create: (_) => MockCartBloc()),
+              if (catalogBloc != null)
+                BlocProvider.value(value: catalogBloc)
+              else
+                BlocProvider(create: (_) => MockCatalogBloc()),
+            ],
+            child: child,
+          ),
         ),
       ),
     );

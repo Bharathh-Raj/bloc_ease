@@ -21,7 +21,7 @@ void main() {
     test('initial state is CatalogLoading', () {
       expect(
         CatalogBloc(shoppingRepository: shoppingRepository).state,
-        CatalogLoading(),
+        CatalogLoadingState(),
       );
     });
 
@@ -36,8 +36,8 @@ void main() {
       build: () => CatalogBloc(shoppingRepository: shoppingRepository),
       act: (bloc) => bloc.add(CatalogStarted()),
       expect: () => <CatalogState>[
-        CatalogLoading(),
-        CatalogLoaded(Catalog(itemNames: mockItemNames)),
+        CatalogLoadingState(),
+        CatalogSucceedState(Catalog(itemNames: mockItemNames)),
       ],
       verify: (_) => verify(shoppingRepository.loadCatalog).called(1),
     );
@@ -51,8 +51,8 @@ void main() {
       build: () => CatalogBloc(shoppingRepository: shoppingRepository),
       act: (bloc) => bloc.add(CatalogStarted()),
       expect: () => <CatalogState>[
-        CatalogLoading(),
-        CatalogError(),
+        CatalogLoadingState(),
+        CatalogFailedState(),
       ],
       verify: (_) => verify(shoppingRepository.loadCatalog).called(1),
     );

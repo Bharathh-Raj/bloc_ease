@@ -27,7 +27,7 @@ void main() {
     test('initial state is CartLoading', () {
       expect(
         CartBloc(shoppingRepository: shoppingRepository).state,
-        CartLoading(),
+        CartLoadingState(),
       );
     });
 
@@ -38,7 +38,7 @@ void main() {
       },
       build: () => CartBloc(shoppingRepository: shoppingRepository),
       act: (bloc) => bloc.add(CartStarted()),
-      expect: () => <CartState>[CartLoading(), const CartLoaded()],
+      expect: () => <CartState>[CartLoadingState(), CartSucceedState(Cart())],
       verify: (_) => verify(shoppingRepository.loadCartItems).called(1),
     );
 
@@ -49,7 +49,7 @@ void main() {
       },
       build: () => CartBloc(shoppingRepository: shoppingRepository),
       act: (bloc) => bloc..add(CartStarted()),
-      expect: () => <CartState>[CartLoading(), CartError()],
+      expect: () => <CartState>[CartLoadingState(), CartFailedState()],
       verify: (_) => verify(shoppingRepository.loadCartItems).called(1),
     );
 
@@ -73,10 +73,10 @@ void main() {
         ).thenAnswer((_) async {});
       },
       build: () => CartBloc(shoppingRepository: shoppingRepository),
-      seed: () => CartLoaded(cart: Cart(items: mockItems)),
+      seed: () => CartSucceedState(Cart(items: mockItems)),
       act: (bloc) => bloc.add(CartItemAdded(mockItemToAdd)),
       expect: () => <CartState>[
-        CartLoaded(cart: Cart(items: [...mockItems, mockItemToAdd]))
+        CartSucceedState(Cart(items: [...mockItems, mockItemToAdd]))
       ],
       verify: (_) {
         verify(() => shoppingRepository.addItemToCart(mockItemToAdd)).called(1);
@@ -91,9 +91,9 @@ void main() {
         ).thenThrow(Exception('Error'));
       },
       build: () => CartBloc(shoppingRepository: shoppingRepository),
-      seed: () => CartLoaded(cart: Cart(items: mockItems)),
+      seed: () => CartSucceedState(Cart(items: mockItems)),
       act: (bloc) => bloc.add(CartItemAdded(mockItemToAdd)),
-      expect: () => <CartState>[CartError()],
+      expect: () => <CartState>[CartFailedState()],
       verify: (_) {
         verify(
           () => shoppingRepository.addItemToCart(mockItemToAdd),
@@ -109,10 +109,10 @@ void main() {
         ).thenAnswer((_) async {});
       },
       build: () => CartBloc(shoppingRepository: shoppingRepository),
-      seed: () => CartLoaded(cart: Cart(items: mockItems)),
+      seed: () => CartSucceedState(Cart(items: mockItems)),
       act: (bloc) => bloc.add(CartItemRemoved(mockItemToRemove)),
       expect: () => <CartState>[
-        CartLoaded(cart: Cart(items: [...mockItems]..remove(mockItemToRemove)))
+        CartSucceedState(Cart(items: [...mockItems]..remove(mockItemToRemove)))
       ],
       verify: (_) {
         verify(
@@ -129,9 +129,9 @@ void main() {
         ).thenThrow(Exception('Error'));
       },
       build: () => CartBloc(shoppingRepository: shoppingRepository),
-      seed: () => CartLoaded(cart: Cart(items: mockItems)),
+      seed: () => CartSucceedState(Cart(items: mockItems)),
       act: (bloc) => bloc.add(CartItemRemoved(mockItemToRemove)),
-      expect: () => <CartState>[CartError()],
+      expect: () => <CartState>[CartFailedState()],
       verify: (_) {
         verify(
           () => shoppingRepository.removeItemFromCart(mockItemToRemove),

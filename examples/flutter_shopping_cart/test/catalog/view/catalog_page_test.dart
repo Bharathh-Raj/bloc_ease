@@ -21,7 +21,7 @@ void main() {
     testWidgets(
         'renders SliverFillRemaining with loading indicator '
         'when catalog is loading', (tester) async {
-      when(() => catalogBloc.state).thenReturn(CatalogLoading());
+      when(() => catalogBloc.state).thenReturn(CatalogLoadingState());
       await tester.pumpApp(
         catalogBloc: catalogBloc,
         child: CatalogPage(),
@@ -39,8 +39,8 @@ void main() {
         'renders SliverList with two items '
         'when catalog is loaded', (tester) async {
       final catalog = Catalog(itemNames: const ['item #1', 'item #2']);
-      when(() => catalogBloc.state).thenReturn(CatalogLoaded(catalog));
-      when(() => cartBloc.state).thenReturn(CartLoading());
+      when(() => catalogBloc.state).thenReturn(CatalogSucceedState(catalog));
+      when(() => cartBloc.state).thenReturn(CartLoadingState());
       await tester.pumpApp(
         cartBloc: cartBloc,
         catalogBloc: catalogBloc,
@@ -54,7 +54,7 @@ void main() {
     testWidgets(
         'renders error text '
         'when catalog fails to load', (tester) async {
-      when(() => catalogBloc.state).thenReturn(CatalogError());
+      when(() => catalogBloc.state).thenReturn(CatalogFailedState());
       await tester.pumpApp(
         catalogBloc: catalogBloc,
         child: CatalogPage(),
@@ -69,7 +69,7 @@ void main() {
     testWidgets(
         'renders CircularProgressIndicator when '
         'cart is loading', (tester) async {
-      when(() => cartBloc.state).thenReturn(CartLoading());
+      when(() => cartBloc.state).thenReturn(CartLoadingState());
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: AddButton(item: mockItem),
@@ -80,7 +80,7 @@ void main() {
     testWidgets(
         "renders 'Add' text button "
         'when item is not in the cart', (tester) async {
-      when(() => cartBloc.state).thenReturn(const CartLoaded());
+      when(() => cartBloc.state).thenReturn(CartSucceedState(Cart()));
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: AddButton(item: mockItem),
@@ -93,7 +93,7 @@ void main() {
         'renders check icon '
         'when item is already added to cart', (tester) async {
       when(() => cartBloc.state).thenReturn(
-        CartLoaded(cart: Cart(items: [mockItem])),
+        CartSucceedState(Cart(items: [mockItem])),
       );
       await tester.pumpApp(
         cartBloc: cartBloc,
@@ -105,7 +105,7 @@ void main() {
     });
 
     testWidgets('adds item to the cart', (tester) async {
-      when(() => cartBloc.state).thenReturn(const CartLoaded());
+      when(() => cartBloc.state).thenReturn(CartSucceedState(Cart()));
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: AddButton(item: mockItem),

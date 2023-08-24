@@ -23,7 +23,7 @@ void main() {
 
   group('CartPage', () {
     testWidgets('renders CartList and CartTotal', (tester) async {
-      when(() => cartBloc.state).thenReturn(CartLoading());
+      when(() => cartBloc.state).thenReturn(CartLoadingState());
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: CartPage(),
@@ -37,7 +37,7 @@ void main() {
     testWidgets(
         'renders CircularProgressIndicator '
         'when cart is loading', (tester) async {
-      when(() => cartBloc.state).thenReturn(CartLoading());
+      when(() => cartBloc.state).thenReturn(CartLoadingState());
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: CartList(),
@@ -49,7 +49,7 @@ void main() {
         'renders 3 ListTile '
         'when cart is loaded with three items', (tester) async {
       when(() => cartBloc.state)
-          .thenReturn(CartLoaded(cart: Cart(items: mockItems)));
+          .thenReturn(CartSucceedState(Cart(items: mockItems)));
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: CartList(),
@@ -60,7 +60,7 @@ void main() {
     testWidgets(
         'renders error text '
         'when cart fails to load', (tester) async {
-      when(() => cartBloc.state).thenReturn(CartError());
+      when(() => cartBloc.state).thenReturn(CartFailedState());
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: CartList(),
@@ -73,7 +73,7 @@ void main() {
     testWidgets(
         'renders CircularProgressIndicator '
         'when cart is loading', (tester) async {
-      when(() => cartBloc.state).thenReturn(CartLoading());
+      when(() => cartBloc.state).thenReturn(CartLoadingState());
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: CartTotal(),
@@ -85,7 +85,7 @@ void main() {
         'renders total price '
         'when cart is loaded with three items', (tester) async {
       when(() => cartBloc.state)
-          .thenReturn(CartLoaded(cart: Cart(items: mockItems)));
+          .thenReturn(CartSucceedState(Cart(items: mockItems)));
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: CartTotal(),
@@ -96,7 +96,7 @@ void main() {
     testWidgets(
         'renders error text '
         'when cart fails to load', (tester) async {
-      when(() => cartBloc.state).thenReturn(CartError());
+      when(() => cartBloc.state).thenReturn(CartFailedState());
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: CartTotal(),
@@ -108,7 +108,7 @@ void main() {
         'renders SnackBar after '
         "tapping the 'BUY' button", (tester) async {
       when(() => cartBloc.state)
-          .thenReturn(CartLoaded(cart: Cart(items: mockItems)));
+          .thenReturn(CartSucceedState(Cart(items: mockItems)));
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: Scaffold(body: CartTotal()),
@@ -121,7 +121,7 @@ void main() {
 
     testWidgets('adds CartItemRemoved on long press', (tester) async {
       when(() => cartBloc.state).thenReturn(
-        CartLoaded(cart: Cart(items: mockItems)),
+        CartSucceedState(Cart(items: mockItems)),
       );
       final mockItemToRemove = mockItems.last;
       await tester.pumpApp(

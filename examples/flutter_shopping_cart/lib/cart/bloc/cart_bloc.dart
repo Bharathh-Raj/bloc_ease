@@ -19,7 +19,7 @@ typedef CartFailedState = FailedState<Cart>;
 typedef CartBuilder = FourStateBuilder<CartBloc, Cart>;
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  CartBloc({required this.shoppingRepository}) : super(CartState.initial()) {
+  CartBloc({required this.shoppingRepository}) : super(CartState.loading()) {
     on<CartStarted>(_onStarted);
     on<CartItemAdded>(_onItemAdded);
     on<CartItemRemoved>(_onItemRemoved);

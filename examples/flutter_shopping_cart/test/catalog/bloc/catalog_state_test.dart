@@ -7,14 +7,14 @@ void main() {
   group('CatalogState', () {
     group('CatalogLoading', () {
       test('supports value comparison', () {
-        expect(CatalogLoading(), CatalogLoading());
+        expect(CatalogLoadingState(), CatalogLoadingState());
       });
     });
 
     group('CatalogLoaded', () {
       test('supports value comparison', () {
         final catalog = Catalog(itemNames: const ['item #1', 'item #2']);
-        expect(CatalogLoaded(catalog), CatalogLoaded(catalog));
+        expect(CatalogSucceedState(catalog), CatalogSucceedState(catalog));
       });
     });
   });
