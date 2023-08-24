@@ -1,3 +1,4 @@
+import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shopping_cart/cart/cart.dart';
@@ -24,13 +25,22 @@ class App extends StatelessWidget {
           )..add(CartStarted()),
         )
       ],
-      child: MaterialApp(
-        title: 'Flutter Bloc Shopping Cart',
-        initialRoute: '/',
-        routes: {
-          '/': (_) => const CatalogPage(),
-          '/cart': (_) => const CartPage(),
-        },
+      child: StateWidgetsProvider(
+        initialStateBuilder: () => const SizedBox(),
+        loadingStateBuilder: ([progress]) => Center(
+          child: CircularProgressIndicator(value: progress),
+        ),
+        failureStateBuilder: ([failureMessage, exception]) => Center(
+          child: Text(failureMessage ?? 'Something went wrong!'),
+        ),
+        child: MaterialApp(
+          title: 'Flutter Bloc Shopping Cart',
+          initialRoute: '/',
+          routes: {
+            '/': (_) => const CatalogPage(),
+            '/cart': (_) => const CartPage(),
+          },
+        ),
       ),
     );
   }

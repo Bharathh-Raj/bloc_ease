@@ -18,7 +18,7 @@ typedef CatalogBuilder = FourStateBuilder<CatalogBloc, Catalog>;
 
 class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
   CatalogBloc({required this.shoppingRepository})
-      : super(CatalogState.initial()) {
+      : super(CatalogState.loading()) {
     on<CatalogStarted>(_onStarted);
   }
 
