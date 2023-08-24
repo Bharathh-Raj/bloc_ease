@@ -31,3 +31,12 @@ class StateWidgetsProvider extends InheritedWidget {
       oldWidget.loadingStateBuilder != loadingStateBuilder &&
       oldWidget.failureStateBuilder != failureStateBuilder;
 }
+
+extension ContextX on BuildContext {
+  InitialBuilder get initialStateWidget =>
+      StateWidgetsProvider.of(this).initialStateBuilder;
+  LoadingBuilder get loadingStateWidget =>
+      StateWidgetsProvider.of(this).loadingStateBuilder;
+  FailureBuilder get failedStateWidget =>
+      StateWidgetsProvider.of(this).failureStateBuilder;
+}
