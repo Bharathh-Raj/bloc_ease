@@ -1,15 +1,25 @@
-import 'package:bloc/bloc.dart';
+import 'package:bloc_ease/bloc_ease.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_shopping_cart/cart/cart.dart';
-import 'package:flutter_shopping_cart/catalog/catalog.dart';
-import 'package:flutter_shopping_cart/shopping_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../catalog/models/item.dart';
+import '../../shopping_repository.dart';
+import '../models/cart.dart';
+
 part 'cart_event.dart';
-part 'cart_state.dart';
+
+typedef CartState = FourStates<Cart>;
+
+typedef CartInitialState = InitialState<Cart>;
+typedef CartLoadingState = LoadingState<Cart>;
+typedef CartSucceedState = SucceedState<Cart>;
+typedef CartFailedState = FailedState<Cart>;
+
+typedef CartBuilder = FourStateBuilder<CartBloc, Cart>;
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  CartBloc({required this.shoppingRepository}) : super(CartLoading()) {
+  CartBloc({required this.shoppingRepository}) : super(CartState.initial()) {
     on<CartStarted>(_onStarted);
     on<CartItemAdded>(_onItemAdded);
     on<CartItemRemoved>(_onItemRemoved);
@@ -18,12 +28,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final ShoppingRepository shoppingRepository;
 
   Future<void> _onStarted(CartStarted event, Emitter<CartState> emit) async {
-    emit(CartLoading());
+    emit(CartState.loading());
     try {
       final items = await shoppingRepository.loadCartItems();
-      emit(CartLoaded(cart: Cart(items: [...items])));
+      emit(CartState.succeed(Cart(items: [...items])));
     } catch (_) {
-      emit(CartError());
+      emit(CartState.failed());
     }
   }
 
@@ -32,30 +42,33 @@ class CartBloc extends Bloc<CartEvent, CartState> {
     Emitter<CartState> emit,
   ) async {
     final state = this.state;
-    if (state is CartLoaded) {
+    if (state is CartSucceedState) {
+      final cart = state.successObject;
       try {
         shoppingRepository.addItemToCart(event.item);
-        emit(CartLoaded(cart: Cart(items: [...state.cart.items, event.item])));
+        emit(CartState.succeed(Cart(items: [...cart.items, event.item])));
       } catch (_) {
-        emit(CartError());
+        emit(CartState.failed());
       }
     }
   }
 
   void _onItemRemoved(CartItemRemoved event, Emitter<CartState> emit) {
     final state = this.state;
-    if (state is CartLoaded) {
+    if (state is CartSucceedState) {
+      final cart = state.successObject;
+
       try {
         shoppingRepository.removeItemFromCart(event.item);
         emit(
-          CartLoaded(
-            cart: Cart(
-              items: [...state.cart.items]..remove(event.item),
+          CartState.succeed(
+            Cart(
+              items: [...cart.items]..remove(event.item),
             ),
           ),
         );
       } catch (_) {
-        emit(CartError());
+        emit(CartState.failed());
       }
     }
   }

@@ -1,3 +1,4 @@
+import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shopping_cart/cart/cart.dart';
@@ -13,25 +14,22 @@ class CatalogPage extends StatelessWidget {
         slivers: [
           const CatalogAppBar(),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
-          BlocBuilder<CatalogBloc, CatalogState>(
-            builder: (context, state) {
-              return switch (state) {
-                CatalogLoading() => const SliverFillRemaining(
-                    child: Center(child: CircularProgressIndicator()),
-                  ),
-                CatalogError() => const SliverFillRemaining(
-                    child: Text('Something went wrong!'),
-                  ),
-                CatalogLoaded() => SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) => CatalogListItem(
-                        state.catalog.getByPosition(index),
-                      ),
-                      childCount: state.catalog.itemNames.length,
-                    ),
-                  )
-              };
-            },
+          CatalogBuilder(
+            loadingBuilder: ([progress]) => SliverFillRemaining(
+              child: context.loadingStateWidget(progress),
+            ),
+            failureBuilder: ([failureMessage, exception]) =>
+                SliverFillRemaining(
+              child: context.failedStateWidget(failureMessage, exception),
+            ),
+            succeedBuilder: (catalog) => SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (context, index) => CatalogListItem(
+                  catalog.getByPosition(index),
+                ),
+                childCount: catalog.itemNames.length,
+              ),
+            ),
           ),
         ],
       ),
@@ -47,29 +45,23 @@ class AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocBuilder<CartBloc, CartState>(
-      builder: (context, state) {
-        return switch (state) {
-          CartLoading() => const CircularProgressIndicator(),
-          CartError() => const Text('Something went wrong!'),
-          CartLoaded() => Builder(
-              builder: (context) {
-                final isInCart = state.cart.items.contains(item);
-                return TextButton(
-                  style: TextButton.styleFrom(
-                    disabledForegroundColor: theme.primaryColor,
-                  ),
-                  onPressed: isInCart
-                      ? null
-                      : () => context.read<CartBloc>().add(CartItemAdded(item)),
-                  child: isInCart
-                      ? const Icon(Icons.check, semanticLabel: 'ADDED')
-                      : const Text('ADD'),
-                );
-              },
-            )
-        };
-      },
+    return CartBuilder(
+      succeedBuilder: (cart) => Builder(
+        builder: (context) {
+          final isInCart = cart.items.contains(item);
+          return TextButton(
+            style: TextButton.styleFrom(
+              disabledForegroundColor: theme.primaryColor,
+            ),
+            onPressed: isInCart
+                ? null
+                : () => context.read<CartBloc>().add(CartItemAdded(item)),
+            child: isInCart
+                ? const Icon(Icons.check, semanticLabel: 'ADDED')
+                : const Text('ADD'),
+          );
+        },
+      ),
     );
   }
 }

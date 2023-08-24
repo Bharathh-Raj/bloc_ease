@@ -35,33 +35,27 @@ class CartList extends StatelessWidget {
   Widget build(BuildContext context) {
     final itemNameStyle = Theme.of(context).textTheme.titleLarge;
 
-    return BlocBuilder<CartBloc, CartState>(
-      builder: (context, state) {
-        return switch (state) {
-          CartLoading() => const CircularProgressIndicator(),
-          CartError() => const Text('Something went wrong!'),
-          CartLoaded() => ListView.separated(
-              itemCount: state.cart.items.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 4),
-              itemBuilder: (context, index) {
-                final item = state.cart.items[index];
-                return Material(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  clipBehavior: Clip.hardEdge,
-                  child: ListTile(
-                    leading: const Icon(Icons.done),
-                    title: Text(item.name, style: itemNameStyle),
-                    onLongPress: () {
-                      context.read<CartBloc>().add(CartItemRemoved(item));
-                    },
-                  ),
-                );
+    return CartBuilder(
+      succeedBuilder: (cart) => ListView.separated(
+        itemCount: cart.items.length,
+        separatorBuilder: (_, __) => const SizedBox(height: 4),
+        itemBuilder: (context, index) {
+          final item = cart.items[index];
+          return Material(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            clipBehavior: Clip.hardEdge,
+            child: ListTile(
+              leading: const Icon(Icons.done),
+              title: Text(item.name, style: itemNameStyle),
+              onLongPress: () {
+                context.read<CartBloc>().add(CartItemRemoved(item));
               },
             ),
-        };
-      },
+          );
+        },
+      ),
     );
   }
 }
@@ -80,15 +74,9 @@ class CartTotal extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BlocBuilder<CartBloc, CartState>(
-              builder: (context, state) {
-                return switch (state) {
-                  CartLoading() => const CircularProgressIndicator(),
-                  CartError() => const Text('Something went wrong!'),
-                  CartLoaded() =>
-                    Text('\$${state.cart.totalPrice}', style: hugeStyle),
-                };
-              },
+            CartBuilder(
+              succeedBuilder: (cart) =>
+                  Text('\$${cart.totalPrice}', style: hugeStyle),
             ),
             const SizedBox(width: 24),
             ElevatedButton(

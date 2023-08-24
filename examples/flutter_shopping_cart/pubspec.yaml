@@ -13,6 +13,8 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.1
   meta: ^1.8.0
+  bloc_ease:
+    path: ../../../bloc_ease
 
 dev_dependencies:
   bloc_test: ^9.0.0
