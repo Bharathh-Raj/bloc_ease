@@ -24,7 +24,7 @@ void main() {
     test('initial state is ComplexListState.loading', () {
       expect(
         ComplexListCubit(repository: repository).state,
-        const ComplexListState.loading(),
+        ComplexListState.loading(),
       );
     });
 
@@ -37,7 +37,7 @@ void main() {
         build: () => ComplexListCubit(repository: repository),
         act: (cubit) => cubit.fetchList(),
         expect: () => [
-          const ComplexListState.succeed(mockItems),
+          ComplexListState.succeed(mockItems),
         ],
         verify: (_) => verify(repository.fetchItems).called(1),
       );
@@ -50,7 +50,7 @@ void main() {
         build: () => ComplexListCubit(repository: repository),
         act: (cubit) => cubit.fetchList(),
         expect: () => [
-          const ComplexListState.failed(),
+          ComplexListState.failed(),
         ],
         verify: (_) => verify(repository.fetchItems).called(1),
       );
@@ -63,17 +63,17 @@ void main() {
           when(() => repository.deleteItem('2')).thenAnswer((_) async {});
         },
         build: () => ComplexListCubit(repository: repository),
-        seed: () => const ComplexListState.succeed(mockItems),
+        seed: () => ComplexListState.succeed(mockItems),
         act: (cubit) => cubit.deleteItem('2'),
         expect: () => [
-          const ComplexListState.succeed([
-            Item(id: '1', value: '1'),
-            Item(id: '2', value: '2', isDeleting: true),
-            Item(id: '3', value: '3'),
+          ComplexListState.succeed([
+            const Item(id: '1', value: '1'),
+            const Item(id: '2', value: '2', isDeleting: true),
+            const Item(id: '3', value: '3'),
           ]),
-          const ComplexListState.succeed([
-            Item(id: '1', value: '1'),
-            Item(id: '3', value: '3'),
+          ComplexListState.succeed([
+            const Item(id: '1', value: '1'),
+            const Item(id: '3', value: '3'),
           ]),
         ],
         verify: (_) => verify(() => repository.deleteItem('2')).called(1),
