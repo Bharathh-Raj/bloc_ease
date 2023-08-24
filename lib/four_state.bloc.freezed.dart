@@ -21,7 +21,7 @@ mixin _$FourStates<T> {
     required TResult Function() initial,
     required TResult Function(double? progress) loading,
     required TResult Function(T succeedObject) succeed,
-    required TResult Function(dynamic exceptionObject, String? failureMessage)
+    required TResult Function(String? failureMessage, dynamic exceptionObject)
         failed,
   }) =>
       throw _privateConstructorUsedError;
@@ -30,7 +30,7 @@ mixin _$FourStates<T> {
     TResult? Function()? initial,
     TResult? Function(double? progress)? loading,
     TResult? Function(T succeedObject)? succeed,
-    TResult? Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult? Function(String? failureMessage, dynamic exceptionObject)? failed,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -38,7 +38,7 @@ mixin _$FourStates<T> {
     TResult Function()? initial,
     TResult Function(double? progress)? loading,
     TResult Function(T succeedObject)? succeed,
-    TResult Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult Function(String? failureMessage, dynamic exceptionObject)? failed,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -128,7 +128,7 @@ class _$_initial<T> implements _initial<T> {
     required TResult Function() initial,
     required TResult Function(double? progress) loading,
     required TResult Function(T succeedObject) succeed,
-    required TResult Function(dynamic exceptionObject, String? failureMessage)
+    required TResult Function(String? failureMessage, dynamic exceptionObject)
         failed,
   }) {
     return initial();
@@ -140,7 +140,7 @@ class _$_initial<T> implements _initial<T> {
     TResult? Function()? initial,
     TResult? Function(double? progress)? loading,
     TResult? Function(T succeedObject)? succeed,
-    TResult? Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult? Function(String? failureMessage, dynamic exceptionObject)? failed,
   }) {
     return initial?.call();
   }
@@ -151,7 +151,7 @@ class _$_initial<T> implements _initial<T> {
     TResult Function()? initial,
     TResult Function(double? progress)? loading,
     TResult Function(T succeedObject)? succeed,
-    TResult Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult Function(String? failureMessage, dynamic exceptionObject)? failed,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -270,7 +270,7 @@ class _$_loading<T> implements _loading<T> {
     required TResult Function() initial,
     required TResult Function(double? progress) loading,
     required TResult Function(T succeedObject) succeed,
-    required TResult Function(dynamic exceptionObject, String? failureMessage)
+    required TResult Function(String? failureMessage, dynamic exceptionObject)
         failed,
   }) {
     return loading(progress);
@@ -282,7 +282,7 @@ class _$_loading<T> implements _loading<T> {
     TResult? Function()? initial,
     TResult? Function(double? progress)? loading,
     TResult? Function(T succeedObject)? succeed,
-    TResult? Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult? Function(String? failureMessage, dynamic exceptionObject)? failed,
   }) {
     return loading?.call(progress);
   }
@@ -293,7 +293,7 @@ class _$_loading<T> implements _loading<T> {
     TResult Function()? initial,
     TResult Function(double? progress)? loading,
     TResult Function(T succeedObject)? succeed,
-    TResult Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult Function(String? failureMessage, dynamic exceptionObject)? failed,
     required TResult orElse(),
   }) {
     if (loading != null) {
@@ -418,7 +418,7 @@ class _$_succeed<T> implements _succeed<T> {
     required TResult Function() initial,
     required TResult Function(double? progress) loading,
     required TResult Function(T succeedObject) succeed,
-    required TResult Function(dynamic exceptionObject, String? failureMessage)
+    required TResult Function(String? failureMessage, dynamic exceptionObject)
         failed,
   }) {
     return succeed(succeedObject);
@@ -430,7 +430,7 @@ class _$_succeed<T> implements _succeed<T> {
     TResult? Function()? initial,
     TResult? Function(double? progress)? loading,
     TResult? Function(T succeedObject)? succeed,
-    TResult? Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult? Function(String? failureMessage, dynamic exceptionObject)? failed,
   }) {
     return succeed?.call(succeedObject);
   }
@@ -441,7 +441,7 @@ class _$_succeed<T> implements _succeed<T> {
     TResult Function()? initial,
     TResult Function(double? progress)? loading,
     TResult Function(T succeedObject)? succeed,
-    TResult Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult Function(String? failureMessage, dynamic exceptionObject)? failed,
     required TResult orElse(),
   }) {
     if (succeed != null) {
@@ -503,7 +503,7 @@ abstract class _$$_failedCopyWith<T, $Res> {
           _$_failed<T> value, $Res Function(_$_failed<T>) then) =
       __$$_failedCopyWithImpl<T, $Res>;
   @useResult
-  $Res call({dynamic exceptionObject, String? failureMessage});
+  $Res call({String? failureMessage, dynamic exceptionObject});
 }
 
 /// @nodoc
@@ -517,18 +517,18 @@ class __$$_failedCopyWithImpl<T, $Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? exceptionObject = freezed,
     Object? failureMessage = freezed,
+    Object? exceptionObject = freezed,
   }) {
     return _then(_$_failed<T>(
-      freezed == exceptionObject
-          ? _value.exceptionObject
-          : exceptionObject // ignore: cast_nullable_to_non_nullable
-              as dynamic,
       freezed == failureMessage
           ? _value.failureMessage
           : failureMessage // ignore: cast_nullable_to_non_nullable
               as String?,
+      freezed == exceptionObject
+          ? _value.exceptionObject
+          : exceptionObject // ignore: cast_nullable_to_non_nullable
+              as dynamic,
     ));
   }
 }
@@ -536,16 +536,16 @@ class __$$_failedCopyWithImpl<T, $Res>
 /// @nodoc
 
 class _$_failed<T> implements _failed<T> {
-  const _$_failed([this.exceptionObject, this.failureMessage]);
+  const _$_failed([this.failureMessage, this.exceptionObject]);
 
   @override
-  final dynamic exceptionObject;
-  @override
   final String? failureMessage;
+  @override
+  final dynamic exceptionObject;
 
   @override
   String toString() {
-    return 'FourStates<$T>.failed(exceptionObject: $exceptionObject, failureMessage: $failureMessage)';
+    return 'FourStates<$T>.failed(failureMessage: $failureMessage, exceptionObject: $exceptionObject)';
   }
 
   @override
@@ -553,15 +553,15 @@ class _$_failed<T> implements _failed<T> {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_failed<T> &&
-            const DeepCollectionEquality()
-                .equals(other.exceptionObject, exceptionObject) &&
             (identical(other.failureMessage, failureMessage) ||
-                other.failureMessage == failureMessage));
+                other.failureMessage == failureMessage) &&
+            const DeepCollectionEquality()
+                .equals(other.exceptionObject, exceptionObject));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType,
-      const DeepCollectionEquality().hash(exceptionObject), failureMessage);
+  int get hashCode => Object.hash(runtimeType, failureMessage,
+      const DeepCollectionEquality().hash(exceptionObject));
 
   @JsonKey(ignore: true)
   @override
@@ -575,10 +575,10 @@ class _$_failed<T> implements _failed<T> {
     required TResult Function() initial,
     required TResult Function(double? progress) loading,
     required TResult Function(T succeedObject) succeed,
-    required TResult Function(dynamic exceptionObject, String? failureMessage)
+    required TResult Function(String? failureMessage, dynamic exceptionObject)
         failed,
   }) {
-    return failed(exceptionObject, failureMessage);
+    return failed(failureMessage, exceptionObject);
   }
 
   @override
@@ -587,9 +587,9 @@ class _$_failed<T> implements _failed<T> {
     TResult? Function()? initial,
     TResult? Function(double? progress)? loading,
     TResult? Function(T succeedObject)? succeed,
-    TResult? Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult? Function(String? failureMessage, dynamic exceptionObject)? failed,
   }) {
-    return failed?.call(exceptionObject, failureMessage);
+    return failed?.call(failureMessage, exceptionObject);
   }
 
   @override
@@ -598,11 +598,11 @@ class _$_failed<T> implements _failed<T> {
     TResult Function()? initial,
     TResult Function(double? progress)? loading,
     TResult Function(T succeedObject)? succeed,
-    TResult Function(dynamic exceptionObject, String? failureMessage)? failed,
+    TResult Function(String? failureMessage, dynamic exceptionObject)? failed,
     required TResult orElse(),
   }) {
     if (failed != null) {
-      return failed(exceptionObject, failureMessage);
+      return failed(failureMessage, exceptionObject);
     }
     return orElse();
   }
@@ -647,11 +647,11 @@ class _$_failed<T> implements _failed<T> {
 
 abstract class _failed<T> implements FourStates<T> {
   const factory _failed(
-      [final dynamic exceptionObject,
-      final String? failureMessage]) = _$_failed<T>;
+      [final String? failureMessage,
+      final dynamic exceptionObject]) = _$_failed<T>;
 
-  dynamic get exceptionObject;
   String? get failureMessage;
+  dynamic get exceptionObject;
   @JsonKey(ignore: true)
   _$$_failedCopyWith<T, _$_failed<T>> get copyWith =>
       throw _privateConstructorUsedError;
