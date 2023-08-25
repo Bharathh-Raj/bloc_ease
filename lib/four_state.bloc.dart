@@ -7,7 +7,9 @@ sealed class FourStates<T> {
       FailedState<T>(exceptionObject, failureMessage);
 }
 
-class InitialState<T> implements FourStates<T> {}
+class InitialState<T> implements FourStates<T> {
+  const InitialState();
+}
 
 class LoadingState<T> implements FourStates<T> {
   const LoadingState([this.progress]);
