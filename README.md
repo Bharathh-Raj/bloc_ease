@@ -3,6 +3,7 @@ A dart library to solve boilerplate issues with flutter_bloc
 
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/6ac54895-949a-487a-b252-a68453f729e3)
 
+![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/115729d6-4e51-4b42-9c4c-80ef683cb294)
 
 ## Problems this library addresses
 1. Writing same type of states for every blocs / cubits (Initial, Loading, Success, Failure).
