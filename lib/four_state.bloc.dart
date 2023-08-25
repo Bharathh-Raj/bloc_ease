@@ -1,11 +1,4 @@
-sealed class FourStates<T> {
-  factory FourStates.initial() => InitialState<T>();
-  factory FourStates.loading([double? progress]) => LoadingState<T>(progress);
-  factory FourStates.succeed(T succeedObject) => SucceedState<T>(succeedObject);
-  factory FourStates.failed(
-          [dynamic exceptionObject, String? failureMessage]) =>
-      FailedState<T>(exceptionObject, failureMessage);
-}
+sealed class FourStates<T> {}
 
 class InitialState<T> implements FourStates<T> {
   const InitialState();

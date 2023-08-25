@@ -25,7 +25,7 @@ class App extends StatelessWidget {
           )..add(CartStarted()),
         )
       ],
-      child: StateWidgetsProvider(
+      child: BlocEaseStateWidgetsProvider(
         initialStateBuilder: () => const SizedBox(),
         loadingStateBuilder: ([progress]) => Center(
           child: CircularProgressIndicator(value: progress),

@@ -24,7 +24,7 @@ void main() {
     test('initial state is ComplexListState.loading', () {
       expect(
         ComplexListCubit(repository: repository).state,
-        ComplexListState.loading(),
+        const ComplexListLoadingState(),
       );
     });
 
@@ -37,7 +37,7 @@ void main() {
         build: () => ComplexListCubit(repository: repository),
         act: (cubit) => cubit.fetchList(),
         expect: () => [
-          ComplexListState.succeed(mockItems),
+          const ComplexListSucceedState(mockItems),
         ],
         verify: (_) => verify(repository.fetchItems).called(1),
       );
@@ -49,9 +49,7 @@ void main() {
         },
         build: () => ComplexListCubit(repository: repository),
         act: (cubit) => cubit.fetchList(),
-        expect: () => [
-          ComplexListState.failed(),
-        ],
+        expect: () => [ComplexListFailedState()],
         verify: (_) => verify(repository.fetchItems).called(1),
       );
     });
@@ -63,17 +61,17 @@ void main() {
           when(() => repository.deleteItem('2')).thenAnswer((_) async {});
         },
         build: () => ComplexListCubit(repository: repository),
-        seed: () => ComplexListState.succeed(mockItems),
+        seed: () => const ComplexListSucceedState(mockItems),
         act: (cubit) => cubit.deleteItem('2'),
         expect: () => [
-          ComplexListState.succeed([
-            const Item(id: '1', value: '1'),
-            const Item(id: '2', value: '2', isDeleting: true),
-            const Item(id: '3', value: '3'),
+          const ComplexListSucceedState([
+            Item(id: '1', value: '1'),
+            Item(id: '2', value: '2', isDeleting: true),
+            Item(id: '3', value: '3'),
           ]),
-          ComplexListState.succeed([
-            const Item(id: '1', value: '1'),
-            const Item(id: '3', value: '3'),
+          const ComplexListSucceedState([
+            Item(id: '1', value: '1'),
+            Item(id: '3', value: '3'),
           ]),
         ],
         verify: (_) => verify(() => repository.deleteItem('2')).called(1),

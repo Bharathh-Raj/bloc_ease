@@ -19,7 +19,7 @@ typedef CartFailedState = FailedState<Cart>;
 typedef CartBuilder = FourStateBuilder<CartBloc, Cart>;
 
 class CartBloc extends Bloc<CartEvent, CartState> {
-  CartBloc({required this.shoppingRepository}) : super(CartState.loading()) {
+  CartBloc({required this.shoppingRepository}) : super(CartLoadingState()) {
     on<CartStarted>(_onStarted);
     on<CartItemAdded>(_onItemAdded);
     on<CartItemRemoved>(_onItemRemoved);
@@ -28,12 +28,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final ShoppingRepository shoppingRepository;
 
   Future<void> _onStarted(CartStarted event, Emitter<CartState> emit) async {
-    emit(CartState.loading());
+    emit(CartLoadingState());
     try {
       final items = await shoppingRepository.loadCartItems();
-      emit(CartState.succeed(Cart(items: [...items])));
+      emit(CartSucceedState(Cart(items: [...items])));
     } catch (_) {
-      emit(CartState.failed());
+      emit(CartFailedState());
     }
   }
 
@@ -46,9 +46,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       final cart = state.successObject;
       try {
         shoppingRepository.addItemToCart(event.item);
-        emit(CartState.succeed(Cart(items: [...cart.items, event.item])));
+        emit(CartSucceedState(Cart(items: [...cart.items, event.item])));
       } catch (_) {
-        emit(CartState.failed());
+        emit(CartFailedState());
       }
     }
   }
@@ -61,14 +61,14 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       try {
         shoppingRepository.removeItemFromCart(event.item);
         emit(
-          CartState.succeed(
+          CartSucceedState(
             Cart(
               items: [...cart.items]..remove(event.item),
             ),
           ),
         );
       } catch (_) {
-        emit(CartState.failed());
+        emit(CartFailedState());
       }
     }
   }

@@ -18,7 +18,7 @@ typedef CatalogBuilder = FourStateBuilder<CatalogBloc, Catalog>;
 
 class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
   CatalogBloc({required this.shoppingRepository})
-      : super(CatalogState.loading()) {
+      : super(CatalogLoadingState()) {
     on<CatalogStarted>(_onStarted);
   }
 
@@ -28,12 +28,12 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
     CatalogStarted event,
     Emitter<CatalogState> emit,
   ) async {
-    emit(CatalogState.loading());
+    emit(CatalogLoadingState());
     try {
       final catalog = await shoppingRepository.loadCatalog();
-      emit(CatalogState.succeed(Catalog(itemNames: catalog)));
+      emit(CatalogSucceedState(Catalog(itemNames: catalog)));
     } catch (_) {
-      emit(CatalogState.failed());
+      emit(CatalogFailedState());
     }
   }
 }

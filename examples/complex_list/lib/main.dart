@@ -8,7 +8,7 @@ import 'simple_bloc_observer.dart';
 
 void main() {
   Bloc.observer = const SimpleBlocObserver();
-  runApp(StateWidgetsProvider(
+  runApp(BlocEaseStateWidgetsProvider(
       initialStateBuilder: () => const Placeholder(),
       loadingStateBuilder: ([progress]) =>
           const Center(child: CircularProgressIndicator()),

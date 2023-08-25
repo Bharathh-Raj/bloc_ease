@@ -18,14 +18,14 @@ class FourStateBuilder<B extends BlocBase<FourStates<T>>, T>
           buildWhen: buildWhen,
           builder: (context, state) => switch (state) {
             InitialState<T>() => initialBuilder == null
-                ? StateWidgetsProvider.of(context).initialStateBuilder()
+                ? BlocEaseStateWidgetsProvider.of(context).initialStateBuilder()
                 : initialBuilder(),
             LoadingState<T>() => loadingBuilder == null
-                ? StateWidgetsProvider.of(context)
+                ? BlocEaseStateWidgetsProvider.of(context)
                     .loadingStateBuilder(state.progress)
                 : loadingBuilder(state.progress),
             FailedState<T>() => failureBuilder == null
-                ? StateWidgetsProvider.of(context).failureStateBuilder(
+                ? BlocEaseStateWidgetsProvider.of(context).failureStateBuilder(
                     state.exceptionObject, state.failureMessage)
                 : failureBuilder(state.exceptionObject, state.failureMessage),
             SucceedState<T>() => succeedBuilder(state.successObject),

@@ -18,7 +18,7 @@ extension PumpApp on WidgetTester {
     CatalogBloc? catalogBloc,
   }) {
     return pumpWidget(
-      StateWidgetsProvider(
+      BlocEaseStateWidgetsProvider(
         initialStateBuilder: () => const SizedBox(),
         loadingStateBuilder: ([progress]) =>
             const Center(child: CircularProgressIndicator()),

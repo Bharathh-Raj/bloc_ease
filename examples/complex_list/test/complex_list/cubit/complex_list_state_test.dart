@@ -7,11 +7,11 @@ void main() {
   group('ComplexListState', () {
     const mockItems = [Item(id: '1', value: '1')];
     test('support value comparisons', () {
-      expect(ComplexListState.loading(), ComplexListState.loading());
-      expect(ComplexListState.failed(), ComplexListState.failed());
+      expect(ComplexListLoadingState(), ComplexListLoadingState());
+      expect(ComplexListFailedState(), ComplexListFailedState());
       expect(
-        ComplexListState.succeed(mockItems),
-        ComplexListState.succeed(mockItems),
+        ComplexListSucceedState(mockItems),
+        ComplexListSucceedState(mockItems),
       );
     });
   });

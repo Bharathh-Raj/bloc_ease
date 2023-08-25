@@ -15,16 +15,16 @@ typedef ComplexListFailedState = FailedState<List<Item>>;
 
 class ComplexListCubit extends Cubit<ComplexListState> {
   ComplexListCubit({required this.repository})
-      : super(ComplexListState.loading());
+      : super(const ComplexListLoadingState());
 
   final Repository repository;
 
   Future<void> fetchList() async {
     try {
       final items = await repository.fetchItems();
-      emit(ComplexListState.succeed(items));
+      emit(ComplexListSucceedState(items));
     } on Exception {
-      emit(ComplexListState.failed());
+      emit(ComplexListFailedState());
     }
   }
 
@@ -36,13 +36,13 @@ class ComplexListCubit extends Cubit<ComplexListState> {
         return item.id == id ? item.copyWith(isDeleting: true) : item;
       }).toList();
 
-      emit(ComplexListState.succeed(deleteInProgress));
+      emit(ComplexListSucceedState(deleteInProgress));
 
       unawaited(
         repository.deleteItem(id).then((_) {
           final deleteSuccess = List.of(items)
             ..removeWhere((element) => element.id == id);
-          emit(ComplexListState.succeed(deleteSuccess));
+          emit(ComplexListSucceedState(deleteSuccess));
         }),
       );
     }
