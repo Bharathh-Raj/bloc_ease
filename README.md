@@ -141,6 +141,7 @@ Since we need to fetch the item on opening the page, this usually holds 3 states
 - Succeed state - when item fetched successfully
 - Failed state - When failed to fetch item
 
+![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/0b4020be-020f-4d0a-8190-90f995a629fd)
 
 TODO: Tell users more about the package: where to find more information, how to
 contribute to the package, how to file issues, what response they can expect
