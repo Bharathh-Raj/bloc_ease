@@ -16,8 +16,8 @@ A dart library to solve boilerplate issues with flutter_bloc
 
 We are going to solve these using
   - Generics (Inherited states)
-  - Inherited Widget (Global state widgets)
-  - Builders (Snippet attached)
+  - InheritedWidget (Global state widgets)
+  - Builders
   - typedefs (Snippet attached)
 Don't worry about any of these. This package will take care of everything.
 
@@ -141,8 +141,91 @@ Since we need to fetch the item on opening the page, this usually holds 3 states
 - Succeed state - when item fetched successfully
 - Failed state - When failed to fetch item
 
+Notice that, `ItemInitialState` not used even though it can be accessed.
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/0b4020be-020f-4d0a-8190-90f995a629fd)
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+## Templates
+### Intellij and Android Studio 
+
+Copy both templates at once -> Intellij/Android studio Settings -> Live Templates -> Create new template group as BlocEase -> Paste
+
+```dtd
+<template name="bloceasebloc" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;part '$EventsFileName$';&#10;&#10;typedef $BlocName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$Builder = BlocBuilder&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocEaseBuilder = FourStateBuilder&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;&#10;class $BlocName$Bloc extends Bloc&lt;$BlocName$Event,$BlocName$State&gt; {&#10;  $BlocName$Bloc()&#10;      : super($BlocName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state bloc template" toReformat="false" toShortenFQNames="true">
+  <variable name="EventsFileName" expression="" defaultValue="" alwaysStopAt="true" />
+  <variable name="BlocName" expression="" defaultValue="" alwaysStopAt="true" />
+  <variable name="SuccessType" expression="" defaultValue="" alwaysStopAt="true" />
+  <variable name="ImplementationStart" expression="" defaultValue="" alwaysStopAt="true" />
+  <context>
+    <option name="DART" value="true" />
+    <option name="FLUTTER" value="true" />
+  </context>
+</template>
+<template name="bloceasecubit" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;typedef $CubitName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$Builder = BlocBuilder&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocEaseBuilder = FourStateBuilder&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;&#10;class $CubitName$Cubit extends Cubit&lt;$CubitName$State&gt; {&#10;  $CubitName$Cubit()&#10;      : super($CubitName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state cubit template" toReformat="false" toShortenFQNames="true">
+  <variable name="CubitName" expression="" defaultValue="" alwaysStopAt="true" />
+  <variable name="SuccessType" expression="" defaultValue="SuccessType" alwaysStopAt="true" />
+  <variable name="ImplementationStart" expression="" defaultValue="" alwaysStopAt="true" />
+  <context>
+    <option name="DART" value="true" />
+    <option name="FLUTTER" value="true" />
+  </context>
+</template>
+```
+
+### VSCode
+
+Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -> dart.json -> Paste
+
+```json
+{
+	"BlocEase Bloc": {
+		"prefix": ["bloceasebloc"],
+		"description": "BlocEase Four state bloc template",
+		"body": [
+			"import 'package:bloc_ease/bloc_ease.dart';",
+			"import 'package:flutter_bloc/flutter_bloc.dart';",
+			"",
+			"part '${1:eventsFileName}';",
+			"",
+			"typedef ${2:BlocName}State = FourStates<${3:SuccessType}>;",
+			"",
+			"typedef ${2}InitialState = InitialState<${3}>;",
+			"typedef ${2}LoadingState = LoadingState<${3}>;",
+			"typedef ${2}SucceedState = SucceedState<${3}>;",
+			"typedef ${2}FailedState = FailedState<${3}>;",
+			"",
+			"typedef ${2}Builder = BlocBuilder<${2}Bloc, ${2}State>;",
+			"typedef ${2}BlocEaseBuilder = FourStateBuilder<${2}Bloc, ${3}>;",
+			"",
+			"class ${2}Bloc extends Bloc<${2}Event,${2}State> {",
+			"\t${2}Bloc() : super(${2}InitialState());",
+			"",
+			"\t${4}",
+			"}"
+		]
+	},
+	"BlocEase Cubit": {
+		"prefix": ["bloceasecubit"],
+		"description": "BlocEase Four state cubit template",
+		"body": [
+			"import 'package:bloc_ease/bloc_ease.dart';",
+			"import 'package:flutter_bloc/flutter_bloc.dart';",
+			"",
+			"typedef ${1:CubitName}State = FourStates<${2:SuccessType}>;",
+			"",
+			"typedef ${1}InitialState = InitialState<${2}>;",
+			"typedef ${1}LoadingState = LoadingState<${2}>;",
+			"typedef ${1}SucceedState = SucceedState<${2}>;",
+			"typedef ${1}FailedState = FailedState<${2}>;",
+			"",
+			"typedef ${1}Builder = BlocBuilder<${1}Cubit, ${1}State>;",
+			"typedef ${1}BlocEaseBuilder = FourStateBuilder<${1}Cubit, ${2}>;",
+			"",
+			"class ${1}Cubit extends Cubit<${1}State> {",
+			"  ${1}Cubit() : super(${1}InitialState());",
+			"",	  
+			"  $3",
+			"}"
+		]
+	}
+}
+```
