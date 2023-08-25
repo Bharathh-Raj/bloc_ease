@@ -125,7 +125,22 @@ class UserCubit extends Cubit<UserState> {
 }
 ```
 
-## Additional information
+## Example Snippets
+### Fetching current user
+Fetching user usually needs 4 states.
+- Initial state - When not logged in
+- Loading state - When fetching in progress
+- Succeed state - When successfully fetched
+- Failed state - User not available / Failed to fetch
+
+![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/80d77660-059e-4828-a94f-a5129ecd58bb)
+
+### Fetching item details on opening item page
+Since we need to fetch the item on opening the page, this usually holds 3 states.
+- Loading state - When fetching in progress
+- Succeed state - when item fetched successfully
+- Failed state - When failed to fetch item
+
 
 TODO: Tell users more about the package: where to find more information, how to
 contribute to the package, how to file issues, what response they can expect
