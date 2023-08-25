@@ -1,7 +1,7 @@
 # bloc_ease
 A dart library to solve boilerplate issues with flutter_bloc
 
-![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/80d77660-059e-4828-a94f-a5129ecd58bb)
+![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/f9a24509-a816-48fd-bd14-5b5163a97d00)
 
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/115729d6-4e51-4b42-9c4c-80ef683cb294)
 
