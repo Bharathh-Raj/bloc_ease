@@ -1,25 +1,24 @@
 # bloc_ease
 A dart library to solve boilerplate issues with flutter_bloc
 
-![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/80d77660-059e-4828-a94f-a5129ecd58bb)
+![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/f9a24509-a816-48fd-bd14-5b5163a97d00)
 
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/115729d6-4e51-4b42-9c4c-80ef683cb294)
 
 ## Problems this library addresses
-1. Writing same type of state classes for every blocs / cubits (Initial, Loading, Success, Failure).
+1. Writing same type of states for every blocs / cubits (Initial, Loading, Success, Failure).
 2. Overriding == and hashcode, or using Equatable package for all states.
-3. Separate files for cubits / blocs and its states.
-4. Need to handle every states in the UI even-though we just need success state.
-5. Return same widget for same kind of state across all blocs / cubits (ProgressIndicator for Loading state).
-6. Need to handle buildWhen so that we don't need to handle every states.
-7. Choosing bad practice of using Single-state class instead of Inheritance so that its easy for us to handle in UI.
-8. Choosing bad practice of managing multiple states together because of boilerplate.
+3. Need to handle every states in the UI even-though we just need success state.
+4. Return same widget for same kind of state across all blocs / cubits (ProgressIndicator for Loading state).
+5. Need to handle buildWhen so that we don't need to handle every states.
+6. Choosing bad practice of using Single-state class instead of Inheritance so that its easy for us to handle in UI.
+7. Choosing bad practice of managing multiple states together because of boilerplate.
 
 We are going to solve these using
-- Generics (Inherited states)
-- InheritedWidget (Global state widgets)
-- Builders (Snippet attached)
-- typedefs (Snippet attached)
+  - Generics (Inherited states)
+  - Inherited Widget (Global state widgets)
+  - Builders (Snippet attached)
+  - typedefs (Snippet attached)
 Don't worry about any of these. This package will take care of everything.
 
 ## Solutions this library provides
@@ -40,52 +39,24 @@ Don't worry about any of these. This package will take care of everything.
   - Filtering a list with some condition
 - Some synchronous operation can hold just `SucceedState` or `FailedState`.
   - Calculation (`SucceedState<double>(10)` vs `FailedState<double>(DivideByZeroException())`)
-- Some state can only be depicted as `SucceedState`.
+- Some state can only be depicted as `SucceedState`. 
   - Flutter's Default counter app state `SucceedState<Int>(0)`
   - Selecting app currency `SucceedState<Currency>(USD())` or unit of temperature `SucceedState<TemperatureUnit>(Celsius())`
 
-## Steps to implement
-### Step 1 - Provide widgets for common states.
-We need to wrap the widget BlocEaseStateWidgetsProvider over MaterialApp by configuring default widget for `InitialState`, `LoadingState` and `FailedState`.
-```dart
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    // 1. Wrap this BlocEaseStateWidgetsProvider widget over MaterialApp.
-    return BlocEaseStateWidgetsProvider(
-      initialStateBuilder: () => const Placeholder(),
-      loadingStateBuilder: ([progress]) => const Center(child: CircularProgressIndicator()),
-      failureStateBuilder: ([exception, message]) => Center(child: Text(message ?? 'Something went wrong!')),
-      child: MaterialApp(
-        //..
-      ),
-    );
-  }
-}
-```
-
-### Step 2 - Write Cubit or Bloc with template
-Use the template `bloceasecubit` which will write the typedefs for you with Cubit name. Remember none of these typedefs need to be written by us. The template will takes care of it all.
+## Example Snippets
+### Fetching current user
+Fetching user usually needs 4 states. 
+  - Initial state - When not logged in
+  - Loading state - When fetching in progress
+  - Succeed state - When successfully fetched
+  - Failed state - User not available / Failed to fetch
+#### Usual implementation
 ```dart
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bloc_ease/bloc_ease.dart';
-
-// Template code start
-typedef UserState = FourStates<User>;           //<--  Similar to `sealed class UserState{}`
-
-typedef UserInitialState = InitialState<User>;  //<--  Similar to `class UserInitialState implements UserState{}`
-typedef UserLoadingState = LoadingState<User>;  //<--  Similar to `class UserLoadingState implements UserState{...}`
-typedef UserSucceedState = SucceedState<User>;  //<--  Similar to `class UserSucceedState implements UserState{...}`
-typedef UserFailedState = FailedState<User>;    //<--  Similar to `class UserFailedState implements UserState{...}`
-
-typedef UserBuilder = BlocBuilder<UserCubit, UserState>;  //<-- UserBuilder can be used instead of BlocBuilder<UserCubit, UserState>
-typedef UserBlocEaseBuilder = FourStateBuilder<UserCubit, User>;  //<-- UserBlocEaseBuilder automatically handles Initial, Loading, Failed state
-// Template code end
 
 class UserCubit extends Cubit<UserState> {
   UserCubit(this.userRepo) : super(const UserInitialState());
+
   final UserRepo userRepo;
 
   void fetchUser() async {
@@ -99,47 +70,63 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 }
+
+sealed class UserState {}
+
+class UserInitialState implements UserState {
+  const UserInitialState();
+}
+
+class UserLoadingState implements UserState {
+  const UserLoadingState();
+}
+
+class UserSucceedState implements UserState {
+  final User user;
+
+  UserSucceedState(this.user);
+}
+
+class UserFailedState implements UserState {
+  final String message;
+  final dynamic exception;
+
+  UserFailedState(this.message, this.exception);
+}
 ```
 
-### Step 3 - Accessing `SucceedState` using builders
-Usually we need to use `BlocBuilder` or `BlocConsumer` to access user states. But we need to manage all the states when-ever we are using these builders.
-By using `UserBlocEaseBuilder` created in the cubit file, we can just directly access `SucceedState`. For all the other states `InitialState`, `LoadingState` and `FailedState`, this `UserBlocEaseBuilder` uses widgets provided in `BlocEaseStateWidgetsProvider` at the first step.
-To remember: Don't forget to provide the UserCubit with BlocProvider before using this widget. Or use `bloc` field in this builder widget to provide cubit/bloc. 
+#### bloc_ease implementation
 ```dart
-class SomeWidget extends StatelessWidget {
-  const SomeWidget({super.key});
+import 'package:bloc_ease/bloc_ease.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    // 3. Access user object with `UserBlocEaseBuilder`. 
-    return UserBlocEaseBuilder(
-      succeedBuilder: (user) => SomeOtherWidget(user.name),
-    );
+// We just need to define these typedefs instead of writing state classes ourselves.
+// Don't worry, code template I added will automatically write this for you.
+typedef UserState = FourStates<User>;
+typedef UserInitialState = InitialState<User>;
+typedef UserLoadingState = LoadingState<User>;
+typedef UserSucceedState = SucceedState<User>;
+typedef UserFailedState = FailedState<User>;
+
+class UserCubit extends Cubit<UserState> {
+  UserCubit() : super(const UserInitialState());
+
+  // Essentially we just need to write this part of code.
+  void fetchUser() async {
+    emit(const UserLoadingState());
+
+    try {
+      final user = userRepo.fetchUser();
+      emit(UserSucceedState(user));
+    } catch (e) {
+      emit(UserFailedState('Failed to fetch user', e));
+    }
   }
 }
 ```
 
+## Additional information
 
-
-
-## Example Snippets
-### Fetching current user
-Fetching user usually needs 4 states.
-- Initial state - When not logged in
-- Loading state - When fetching in progress
-- Succeed state - When successfully fetched
-- Failed state - User not available / Failed to fetch
-
-![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/80d77660-059e-4828-a94f-a5129ecd58bb)
-
-### Fetching item details on opening item page
-Since we need to fetch the item on opening the page, this usually holds 3 states.
-- Loading state - When fetching in progress
-- Succeed state - when item fetched successfully
-- Failed state - When failed to fetch item
-
-
-
-
-
-
+TODO: Tell users more about the package: where to find more information, how to
+contribute to the package, how to file issues, what response they can expect
+from the package authors, and more.
