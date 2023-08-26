@@ -1,5 +1,5 @@
 # bloc_ease
-A dart library to solve boilerplate issues with flutter_bloc
+A dart library to solve boilerplate issues with flutter_bloc by not defining state classes ourselves.
 
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/f9a24509-a816-48fd-bd14-5b5163a97d00)
 
@@ -28,7 +28,7 @@ Don't worry about any of these. This package will take care of everything.
 4. Using typedefs to easily differentiate between states (typedef AuthSucceedState = SucceedState<Auth>). (Snippet included for Intellij and VSCode)
 
 ## Details
-`InitialState` `LoadingState` `SucceedState` `FailedState`. Trust me, we could hold any state with one of these states. If we could not hold our state within these states, we are probably handling multiple states together.
+`InitialState` `LoadingState` `SucceedState` `FailedState`. Trust me, we could hold any state with one of these states. If we could not hold our state within these states, we are most probably handling multiple states together.
 - Asynchronous CRUD Operation state can usually be either of these 4 states.
   - Backend fetching
   - Device IO Job
@@ -39,23 +39,58 @@ Don't worry about any of these. This package will take care of everything.
   - Filtering a list with some condition
 - Some synchronous operation can hold just `SucceedState` or `FailedState`.
   - Calculation (`SucceedState<double>(10)` vs `FailedState<double>(DivideByZeroException())`)
-- Some state can only be depicted as `SucceedState`. 
+- Some state can only be depicted as `SucceedState`.
   - Flutter's Default counter app state `SucceedState<Int>(0)`
   - Selecting app currency `SucceedState<Currency>(USD())` or unit of temperature `SucceedState<TemperatureUnit>(Celsius())`
 
-## Example Snippets
-### Fetching current user
-Fetching user usually needs 4 states. 
-  - Initial state - When not logged in
-  - Loading state - When fetching in progress
-  - Succeed state - When successfully fetched
-  - Failed state - User not available / Failed to fetch
-#### Usual implementation
+## How to use? (Just 3 steps)
+### Step 1 - Configuring `BlocEaseStateWidgetsProvider`
+`BlocEaseStateWidgetsProvider` is used to configure the default widgets for `InitialState`, `LoadingState` and `FailedState`. 
+Remember, make sure this widget is wrapped over the `MaterialApp` so that it is accessible from everywhere.
 ```dart
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocEaseStateWidgetsProvider( // <--
+      initialStateBuilder: () => const Placeholder(),
+      loadingStateBuilder: ([progress]) =>
+          const Center(child: CircularProgressIndicator()),
+      failureStateBuilder: ([exceptionObject, failureMessage]) =>
+          Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
+      child: MaterialApp(
+          //..
+          ),
+    );
+  }
+}
+```
+### Step 2 - Create Bloc/Cubit with the snippet/template provided below.
+Use the shortcut `bloceasebloc` or `bloceasecubit` to create bloc or cubit based on the need. That creates this template and you just need to edit 2 names.
+1. Cubit name -> UserCubit
+2. Success Object -> User (This is the object we expect from the success state of the bloc/cubit)
+
+```dart
+import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UserCubit extends Cubit<UserState> {
-  UserCubit(this.userRepo) : super(const UserInitialState());
+typedef UserState = FourStates<User>; // <-- Success Object
+
+typedef UserInitialState = InitialState<User>;
+typedef UserLoadingState = LoadingState<User>;
+typedef UserSucceedState = SucceedState<User>;
+typedef UserFailedState = FailedState<User>;
+
+typedef UserBlocBuilder = BlocBuilder<UserCubit, UserState>;
+typedef UserBlocListener = BlocListener<UserCubit, UserState>;
+typedef UserBlocConsumer = BlocConsumer<UserCubit, UserState>;
+
+typedef UserBlocEaseBuilder = FourStateBuilder<UserCubit, User>;
+
+class UserCubit extends Cubit<UserState> { //<--Cubit name
+  UserCubit(this.userRepo)
+          : super(const UserInitialState());
 
   final UserRepo userRepo;
 
@@ -70,63 +105,28 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 }
-
-sealed class UserState {}
-
-class UserInitialState implements UserState {
-  const UserInitialState();
-}
-
-class UserLoadingState implements UserState {
-  const UserLoadingState();
-}
-
-class UserSucceedState implements UserState {
-  final User user;
-
-  UserSucceedState(this.user);
-}
-
-class UserFailedState implements UserState {
-  final String message;
-  final dynamic exception;
-
-  UserFailedState(this.message, this.exception);
-}
 ```
 
-#### bloc_ease implementation
+### Step 3 - Use `<CubitName>BlocEaseBuilder` instead of BlocBuilder in the UI
+`<CubitName>BlocEaseBuilder (UserBlocEaseBuilder)` is the builder we can use to access the Success Object we configured in Step 2 with `succeedBuilder` required field.
+All the other states `InitialState`, `LoadingState` and `FailedState` uses the default widgets we configured in Step 1.
+
 ```dart
-import 'package:bloc_ease/bloc_ease.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+class SomeWidget extends StatelessWidget {
+  const SomeWidget({super.key});
 
-// We just need to define these typedefs instead of writing state classes ourselves.
-// Don't worry, code template I added will automatically write this for you.
-typedef UserState = FourStates<User>;
-typedef UserInitialState = InitialState<User>;
-typedef UserLoadingState = LoadingState<User>;
-typedef UserSucceedState = SucceedState<User>;
-typedef UserFailedState = FailedState<User>;
-
-class UserCubit extends Cubit<UserState> {
-  UserCubit() : super(const UserInitialState());
-
-  // Essentially we just need to write this part of code.
-  void fetchUser() async {
-    emit(const UserLoadingState());
-
-    try {
-      final user = userRepo.fetchUser();
-      emit(UserSucceedState(user));
-    } catch (e) {
-      emit(UserFailedState('Failed to fetch user', e));
-    }
+  @override
+  Widget build(BuildContext context) {
+    return UserBlocEaseBuilder( //<-- <CubitName>BlocEaseBuilder
+      succeedBuilder: (user)    //<-- This provides the Success Object we configured in the Step 2.
+        => SomeOtherWidget(user),
+    );
   }
 }
 ```
 
 ## Example Snippets
-### Fetching current user
+### Fetching user details
 Fetching user usually needs 4 states.
 - Initial state - When not logged in
 - Loading state - When fetching in progress
@@ -150,7 +150,7 @@ Notice that, `ItemInitialState` not used even though it can be accessed.
 Copy both templates at once -> Intellij/Android studio Settings -> Live Templates -> Create new template group as BlocEase -> Paste
 
 ```dtd
-<template name="bloceasebloc" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;part '$EventsFileName$';&#10;&#10;typedef $BlocName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$Builder = BlocBuilder&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocEaseBuilder = FourStateBuilder&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;&#10;class $BlocName$Bloc extends Bloc&lt;$BlocName$Event,$BlocName$State&gt; {&#10;  $BlocName$Bloc()&#10;      : super($BlocName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state bloc template" toReformat="false" toShortenFQNames="true">
+<template name="bloceasebloc" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;part '$EventsFileName$';&#10;&#10;typedef $BlocName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$BlocBuilder = BlocBuilder&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocListener = BlocListener&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocConsumer = BlocConsumer&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;&#10;typedef $BlocName$BlocEaseBuilder = FourStateBuilder&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;&#10;class $BlocName$Bloc extends Bloc&lt;$BlocName$Event,$BlocName$State&gt; {&#10;  $BlocName$Bloc()&#10;      : super(const $BlocName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state bloc template" toReformat="false" toShortenFQNames="true">
   <variable name="EventsFileName" expression="" defaultValue="" alwaysStopAt="true" />
   <variable name="BlocName" expression="" defaultValue="" alwaysStopAt="true" />
   <variable name="SuccessType" expression="" defaultValue="" alwaysStopAt="true" />
@@ -160,7 +160,7 @@ Copy both templates at once -> Intellij/Android studio Settings -> Live Template
     <option name="FLUTTER" value="true" />
   </context>
 </template>
-<template name="bloceasecubit" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;typedef $CubitName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$Builder = BlocBuilder&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocEaseBuilder = FourStateBuilder&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;&#10;class $CubitName$Cubit extends Cubit&lt;$CubitName$State&gt; {&#10;  $CubitName$Cubit()&#10;      : super($CubitName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state cubit template" toReformat="false" toShortenFQNames="true">
+<template name="bloceasecubit" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;typedef $CubitName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$BlocBuilder = BlocBuilder&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocListener = BlocListener&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocConsumer = BlocConsumer&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;&#10;typedef $CubitName$BlocEaseBuilder = FourStateBuilder&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;&#10;class $CubitName$Cubit extends Cubit&lt;$CubitName$State&gt; {&#10;  $CubitName$Cubit()&#10;      : super(const $CubitName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state cubit template" toReformat="false" toShortenFQNames="true">
   <variable name="CubitName" expression="" defaultValue="" alwaysStopAt="true" />
   <variable name="SuccessType" expression="" defaultValue="SuccessType" alwaysStopAt="true" />
   <variable name="ImplementationStart" expression="" defaultValue="" alwaysStopAt="true" />
@@ -171,7 +171,7 @@ Copy both templates at once -> Intellij/Android studio Settings -> Live Template
 </template>
 ```
 
-### VSCode
+### VSCode (TODO: Change and test)
 
 Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -> dart.json -> Paste
 
@@ -227,5 +227,54 @@ Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -
 			"}"
 		]
 	}
+}
+```
+
+## Tips and Tricks
+### Accessing default widget using context.
+Sometimes, we need to access the default loading widget without using builder or we need to wrap the default loading widget with some other widget.
+We can access the default widgets with the help of context extensions.
+`context.initialStateWidget` -> Default initial state widget.
+`context.loadingStateWidget` -> Default loading state widget.
+`context.failedStateWidget` -> Default failed state widget.
+```dart
+class SomeWidget extends StatelessWidget {
+  const SomeWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return UserBlocEaseBuilder(
+      loadingBuilder: ([progress]) => ColoredBox(
+        color: Colors.yellow,
+        child: context.loadingStateWidget(progress), //<--Accessing default loading widget with 'context.loadingStateWidget'
+      ),
+      succeedBuilder: (user) => SomeOtherWidget(user),
+    );
+  }
+}
+```
+
+### Take advantage of all typedefs generated by this template.
+One of the painful work with using BlocBuilder is that we need to write the entire boilerplate everytime. Take advantage of the typedefs generated by the template provided.
+- `UserBlocBuilder` instead of `BlocBuilder<UserCubit, UserState>`
+- `UserBlocListener` instead of `BlocListener<UserCubit, UserState>`
+- `UserBlocConsumer` instead of `BlocConsumer<UserCubit, UserState>`
+
+### Overriding the default state widgets for a certain page or widget tree
+If we wrap the same `BlocEaseStateWidgetsProvider` over some widget tree, all the default widgets gets overridden with this new implementation.
+So all the BlocEaseBuilders use this overridden widgets as default case.
+```dart
+class SomePage extends StatelessWidget {
+  const SomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocEaseStateWidgetsProvider(
+      initialStateBuilder: () => const SizedBox(),
+      loadingStateBuilder: ([progress]) => const CustomLoader(),
+      failureStateBuilder: ([exception, message]) => Text(message ?? 'Oops something went wrong!'),
+      child: //..//,
+    );
+  }
 }
 ```
