@@ -148,6 +148,8 @@ Notice that, `ItemInitialState` not used even though it can be accessed.
 ### Intellij and Android Studio 
 
 Copy both templates at once -> Intellij/Android studio Settings -> Live Templates -> Create new template group as BlocEase -> Paste
+![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/08135f7d-0daf-4d30-b06d-5b0c012b72d1)
+
 
 ```dtd
 <template name="bloceasebloc" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;part '$EventsFileName$';&#10;&#10;typedef $BlocName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$BlocBuilder = BlocBuilder&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocListener = BlocListener&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocConsumer = BlocConsumer&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;&#10;typedef $BlocName$BlocEaseBuilder = FourStateBuilder&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;&#10;class $BlocName$Bloc extends Bloc&lt;$BlocName$Event,$BlocName$State&gt; {&#10;  $BlocName$Bloc()&#10;      : super(const $BlocName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state bloc template" toReformat="false" toShortenFQNames="true">
