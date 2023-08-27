@@ -5,6 +5,16 @@ A dart library to solve boilerplate issues with [flutter_bloc](https://pub.dev/p
 
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/115729d6-4e51-4b42-9c4c-80ef683cb294)
 
+# Index
+- [Problems this library addresses](#problems-this-library-addresses)
+- [Solutions this library provides](#solutions-this-library-provides)
+- [Readme](#readme)
+- [How to use?](#how-to-use)
+- [Example Snippets](#example-snippets)
+- [Templates](#templates)
+- [Tips and Tricks](#tips-and-tricks)
+- [Example projects](#example-projects)
+
 ## Problems this library addresses
 1. Writing same type of states for every blocs / cubits (Initial, Loading, Success, Failure).
 2. Overriding == and hashcode, or using Equatable package for all states.
@@ -27,7 +37,7 @@ Don't worry about any of these. This package will take care of everything.
 3. Comes with a builder that provides the success object in typesafe manner and it could handle other states by itself.
 4. Using typedefs to easily differentiate between states (`typedef AuthSucceedState = SucceedState<Auth>`). (Snippet included for Intellij and VSCode)
 
-## Details
+## Readme
 `InitialState` `LoadingState` `SucceedState` `FailedState`. Trust me, we could hold any state with one of these states. If we could not hold our state within these states, we are most probably managing multiple states together.
 - Asynchronous CRUD Operation state can usually be either of these 4 states.
   - Backend fetching
@@ -43,7 +53,7 @@ Don't worry about any of these. This package will take care of everything.
   - Flutter's Default counter app state `SucceedState<Int>(0)`
   - Selecting app currency `SucceedState<Currency>(USD())` or unit of temperature `SucceedState<TemperatureUnit>(Celsius())`
 
-## How to use? (Just 3 steps)
+## How to use?
 ### Step 1 - Configuring `BlocEaseStateWidgetsProvider`
 `BlocEaseStateWidgetsProvider` is used to configure the default widgets for `InitialState`, `LoadingState` and `FailedState`. 
 Remember, make sure this widget is wrapped over the `MaterialApp` so that it is accessible from everywhere.
@@ -325,3 +335,13 @@ class SomePage extends StatelessWidget {
   }
 }
 ```
+
+## Example projects
+These example projects are taken from the official flutter_bloc package examples. So that its easy to compare the implementation. Also it passes all the test cases.
+1. [complex_list](https://github.com/Bharathh-Raj/bloc_ease/tree/main/examples/complex_list)
+2. [flutter_shopping_cart](https://github.com/Bharathh-Raj/bloc_ease/tree/main/examples/flutter_shopping_cart)
+
+## Features and bugs
+Please file feature requests and bugs at the [issue tracker][tracker].
+
+[tracker]: https://github.com/Bharathh-Raj/bloc_ease/issues
