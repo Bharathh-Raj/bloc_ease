@@ -18,7 +18,7 @@ We are going to solve these using
   - Generics (Inherited states)
   - InheritedWidget (Global state widgets)
   - Builders
-  - typedefs (Snippet attached)
+  - typedefs (Use [templates](#templates))
 Don't worry about any of these. This package will take care of everything.
 
 ## Solutions this library provides
