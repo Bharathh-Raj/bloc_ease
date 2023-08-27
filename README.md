@@ -1,5 +1,5 @@
 # bloc_ease
-A dart library to solve boilerplate issues with flutter_bloc by not defining state classes ourselves.
+A dart library to solve boilerplate issues with flutter_bloc by just using typedefs instead of defining state classes.
 
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/f9a24509-a816-48fd-bd14-5b5163a97d00)
 
@@ -22,13 +22,13 @@ We are going to solve these using
 Don't worry about any of these. This package will take care of everything.
 
 ## Solutions this library provides
-1. Don't need to write state classes for any Bloc / Cubit. Instead using the state comes with this package with generics (SucceedState<Auth> vs SucceedState<User>).
+1. Don't need to write state classes for any Bloc / Cubit. Instead using the state comes with this package with generics (`SucceedState<Auth>` vs `SucceedState<User>`).
 2. Globally handling common states like Initial, Loading, Failure states in UI. Don't need to worry about these state where-ever we are using Bloc / Cubit.
 3. Comes with a builder that provides the success object in typesafe manner and it could handle other states by itself.
-4. Using typedefs to easily differentiate between states (typedef AuthSucceedState = SucceedState<Auth>). (Snippet included for Intellij and VSCode)
+4. Using typedefs to easily differentiate between states (`typedef AuthSucceedState = SucceedState<Auth>`). (Snippet included for Intellij and VSCode)
 
 ## Details
-`InitialState` `LoadingState` `SucceedState` `FailedState`. Trust me, we could hold any state with one of these states. If we could not hold our state within these states, we are most probably handling multiple states together.
+`InitialState` `LoadingState` `SucceedState` `FailedState`. Trust me, we could hold any state with one of these states. If we could not hold our state within these states, we are most probably managing multiple states together.
 - Asynchronous CRUD Operation state can usually be either of these 4 states.
   - Backend fetching
   - Device IO Job
