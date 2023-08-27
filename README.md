@@ -1,5 +1,5 @@
 # bloc_ease
-A dart library to solve boilerplate issues with flutter_bloc by just using typedefs instead of defining state classes.
+A dart library to solve boilerplate issues with [flutter_bloc](https://pub.dev/packages/flutter_bloc) by just using typedefs instead of defining state classes.
 
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/f9a24509-a816-48fd-bd14-5b5163a97d00)
 
@@ -309,7 +309,7 @@ One of the painful work with using BlocBuilder is that we need to write the enti
 
 ### Overriding the default state widgets for a certain page or widget tree
 If we wrap the same `BlocEaseStateWidgetsProvider` over some widget tree, all the default widgets gets overridden with this new implementation.
-So all the BlocEaseBuilders use this overridden widgets as default case.
+So all the BlocEaseBuilders comes under this widget use this overridden widgets as default case.
 ```dart
 class SomePage extends StatelessWidget {
   const SomePage({super.key});
