@@ -13,6 +13,20 @@ typedef ComplexListLoadingState = LoadingState<List<Item>>;
 typedef ComplexListSucceedState = SucceedState<List<Item>>;
 typedef ComplexListFailedState = FailedState<List<Item>>;
 
+typedef ComplexListBlocBuilder
+    = BlocBuilder<ComplexListCubit, ComplexListState>;
+typedef ComplexListBlocListener
+    = BlocListener<ComplexListCubit, ComplexListState>;
+typedef ComplexListBlocConsumer
+    = BlocConsumer<ComplexListCubit, ComplexListState>;
+
+typedef ComplexListBlocEaseBuilder
+    = FourStateBuilder<ComplexListCubit, List<Item>>;
+typedef ComplexListBlocEaseListener
+    = FourStateListener<ComplexListCubit, List<Item>>;
+typedef ComplexListBlocEaseConsumer
+    = FourStateConsumer<ComplexListCubit, List<Item>>;
+
 class ComplexListCubit extends Cubit<ComplexListState> {
   ComplexListCubit({required this.repository})
       : super(const ComplexListLoadingState());

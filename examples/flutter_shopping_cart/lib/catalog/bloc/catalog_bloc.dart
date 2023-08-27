@@ -14,7 +14,7 @@ typedef CatalogLoadingState = LoadingState<Catalog>;
 typedef CatalogSucceedState = SucceedState<Catalog>;
 typedef CatalogFailedState = FailedState<Catalog>;
 
-typedef CatalogBuilder = FourStateBuilder<CatalogBloc, Catalog>;
+typedef CatalogBuilder = FourStateConsumer<CatalogBloc, Catalog>;
 
 class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
   CatalogBloc({required this.shoppingRepository})

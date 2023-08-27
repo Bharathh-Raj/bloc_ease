@@ -16,7 +16,7 @@ typedef CartLoadingState = LoadingState<Cart>;
 typedef CartSucceedState = SucceedState<Cart>;
 typedef CartFailedState = FailedState<Cart>;
 
-typedef CartBuilder = FourStateBuilder<CartBloc, Cart>;
+typedef CartBuilder = FourStateConsumer<CartBloc, Cart>;
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc({required this.shoppingRepository}) : super(CartLoadingState()) {

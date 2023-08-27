@@ -1,4 +1,3 @@
-import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,7 +27,7 @@ class ComplexListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FourStateBuilder<ComplexListCubit, List<Item>>(
+    return ComplexListBlocEaseBuilder(
       succeedBuilder: (items) => ItemView(items: items),
     );
   }
