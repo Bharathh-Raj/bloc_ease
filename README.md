@@ -296,7 +296,7 @@ blocTest<UserCubit, UserState>(
         },
         build: () => UserCubit(repository: repo),
         act: (cubit) => cubit.fetchUser(),
-        expect: () => UserSucceedState(mockUser),
+        expect: () => UserSucceedState(mockUser), //<--
         verify: (_) => verify(repository.fetchUser).called(1),
       );
 ```
