@@ -240,9 +240,9 @@ Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -
 ### Accessing default widget using context.
 Sometimes, we need to access the default loading widget without using builder or we need to wrap the default loading widget with some other widget.
 We can access the default widgets with the help of context extensions.
-`context.initialStateWidget` -> Default initial state widget.
-`context.loadingStateWidget` -> Default loading state widget.
-`context.failedStateWidget` -> Default failed state widget.
+- `context.initialStateWidget` -> Default initial state widget.
+- `context.loadingStateWidget` -> Default loading state widget.
+- `context.failedStateWidget` -> Default failed state widget.
 ```dart
 class SomeWidget extends StatelessWidget {
   const SomeWidget({super.key});
