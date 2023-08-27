@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
 }
 ```
 ### Step 2 - Create Bloc/Cubit with the snippet/template provided below.
-Use the shortcut `bloceasebloc` or `bloceasecubit` to create bloc or cubit based on the need. That creates this template and you just need to edit 2 names.
+Use the shortcut `bloceasebloc` or `bloceasecubit` from the [template](#templates) to create bloc or cubit based on the need. That creates this template and you just need to edit 2 names.
 1. Cubit name -> UserCubit
 2. Success Object -> User (This is the object we expect from the success state of the bloc/cubit)
 
@@ -95,6 +95,8 @@ typedef UserBlocListener = BlocListener<UserCubit, UserState>;
 typedef UserBlocConsumer = BlocConsumer<UserCubit, UserState>;
 
 typedef UserBlocEaseBuilder = FourStateBuilder<UserCubit, User>;
+typedef UserBlocEaseListener = FourStateListener<UserCubit, User>;
+typedef UserBlocEaseConsumer = FourStateConsumer<UserCubit, User>;
 
 class UserCubit extends Cubit<UserState> { //<--Cubit name
   UserCubit(this.userRepo)
@@ -158,7 +160,7 @@ Notice that, `ItemInitialState` not used even though it can be accessed.
 Copy both templates at once -> Intellij/Android studio Settings -> Live Templates -> Create new template group as BlocEase -> Paste
 
 ```dtd
-<template name="bloceasebloc" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;part '$EventsFileName$';&#10;&#10;typedef $BlocName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$BlocBuilder = BlocBuilder&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocListener = BlocListener&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocConsumer = BlocConsumer&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;&#10;typedef $BlocName$BlocEaseBuilder = FourStateBuilder&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;&#10;class $BlocName$Bloc extends Bloc&lt;$BlocName$Event,$BlocName$State&gt; {&#10;  $BlocName$Bloc()&#10;      : super(const $BlocName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state bloc template" toReformat="false" toShortenFQNames="true">
+<template name="bloceasebloc" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;part '$EventsFileName$';&#10;&#10;typedef $BlocName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$BlocBuilder = BlocBuilder&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocListener = BlocListener&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocConsumer = BlocConsumer&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;&#10;typedef $BlocName$BlocEaseBuilder = FourStateBuilder&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;typedef $BlocName$BlocEaseListener = FourStateListener&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;typedef $BlocName$BlocEaseConsumer = FourStateConsumer&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;&#10;class $BlocName$Bloc extends Bloc&lt;$BlocName$Event,$BlocName$State&gt; {&#10;  $BlocName$Bloc()&#10;      : super(const $BlocName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state bloc template" toReformat="false" toShortenFQNames="true">
   <variable name="EventsFileName" expression="" defaultValue="" alwaysStopAt="true" />
   <variable name="BlocName" expression="" defaultValue="" alwaysStopAt="true" />
   <variable name="SuccessType" expression="" defaultValue="" alwaysStopAt="true" />
@@ -168,7 +170,7 @@ Copy both templates at once -> Intellij/Android studio Settings -> Live Template
     <option name="FLUTTER" value="true" />
   </context>
 </template>
-<template name="bloceasecubit" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;typedef $CubitName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$BlocBuilder = BlocBuilder&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocListener = BlocListener&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocConsumer = BlocConsumer&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;&#10;typedef $CubitName$BlocEaseBuilder = FourStateBuilder&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;&#10;class $CubitName$Cubit extends Cubit&lt;$CubitName$State&gt; {&#10;  $CubitName$Cubit()&#10;      : super(const $CubitName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state cubit template" toReformat="false" toShortenFQNames="true">
+<template name="bloceasecubit" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;typedef $CubitName$State = FourStates&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$BlocBuilder = BlocBuilder&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocListener = BlocListener&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocConsumer = BlocConsumer&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;&#10;typedef $CubitName$BlocEaseBuilder = FourStateBuilder&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;typedef $CubitName$BlocEaseListener = FourStateListener&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;typedef $CubitName$BlocEaseConsumer = FourStateConsumer&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;&#10;class $CubitName$Cubit extends Cubit&lt;$CubitName$State&gt; {&#10;  $CubitName$Cubit()&#10;      : super(const $CubitName$InitialState());&#10;      &#10;  $ImplementationStart$&#10;}" description="BlocEase Four state cubit template" toReformat="false" toShortenFQNames="true">
   <variable name="CubitName" expression="" defaultValue="" alwaysStopAt="true" />
   <variable name="SuccessType" expression="" defaultValue="SuccessType" alwaysStopAt="true" />
   <variable name="ImplementationStart" expression="" defaultValue="" alwaysStopAt="true" />
@@ -247,6 +249,77 @@ Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -
 ```
 
 ## Tips and Tricks
+### Using `BlocEaseListener` and `BlocEaseConsumer`
+The template also generates `<CubitName>BlocEaseListener` and `<CubitName>BlocEaseConsumer` which can be used instead of BlocListener and BlocConsumer.
+```dart
+class BlocEaseListenerExampleWidget extends StatelessWidget {
+  const BlocEaseListenerExampleWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // All fields are optional
+    return UserBlocEaseListener( //<-- <CubitName>BlocEaseListener
+      initialListener: () {},
+      loadingListener: ([progress]) {},
+      failureListener: ([failureMessage, exception]) {},
+      succeedListener: (user) {},
+      child: //..//,
+    );
+  }
+}
+
+class BlocEaseConsumerExampleWidget extends StatelessWidget {
+  const BlocEaseConsumerExampleWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Other than succeedBuilder, all fields are optional.
+    return UserBlocEaseConsumer( //<-- <CubitName>BlocEaseConsumer
+      initialListener: () {},
+      loadingListener: ([progress]) {},
+      failureListener: ([failureMessage, exception]) {},
+      succeedListener: (user) {},
+
+      initialBuilder: () {},
+      loadingBuilder: ([progress]) {},
+      failureBuilder: ([failureMessage, exception]) ={},
+      succeedBuilder: (user) => SomeWidget(user),
+    );
+  }
+}
+```
+
+### Work with Bloc
+Use the shortcut `bloceasebloc` from the [template](#templates) to create a bloc based on your need with all the typedefs defined for you.
+```dart
+import 'package:bloc_ease/bloc_ease.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+part 'user_event.dart';
+
+typedef UserState = FourStates<User>;
+
+typedef UserInitialState = InitialState<User>;
+typedef UserLoadingState = LoadingState<User>;
+typedef UserSucceedState = SucceedState<User>;
+typedef UserFailedState = FailedState<User>;
+
+typedef UserBlocBuilder = BlocBuilder<UserBloc, UserState>;
+typedef UserBlocListener = BlocListener<UserBloc, UserState>;
+typedef UserBlocConsumer = BlocConsumer<UserBloc, UserState>;
+
+typedef UserBlocEaseBuilder = FourStateBuilder<UserBloc, User>;
+typedef UserBlocEaseListener = FourStateListener<UserBloc, User>;
+typedef UserBlocEaseConsumer = FourStateConsumer<UserBloc, User>;
+
+class UserBloc extends Bloc<UserEvent,UserState> {
+  UserBloc()
+      : super(const UserInitialState()){
+    // on...
+  } 
+}
+```
+
 ### Accessing default widget using context.
 Sometimes, we need to access the default loading widget without using builder or we need to wrap the default loading widget with some other widget.
 We can access the default widgets with the help of context extensions.
