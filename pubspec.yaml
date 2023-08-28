@@ -1,6 +1,6 @@
 name: bloc_ease
 description: A dart library to solve boilerplate issues with flutter_bloc by just using typedefs instead of defining state classes.
-version: 0.1.0
+version: 0.1.0+1
 repository: https://github.com/Bharathh-Raj/bloc_ease
 issue_tracker: https://github.com/Bharathh-Raj/bloc_ease/issues
 
