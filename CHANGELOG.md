@@ -1,3 +1,11 @@
-## 0.0.1
-
-* TODO: Describe initial release.
+## 0.1.0
+- FourStates declaration
+- BlocEaseStateWidgetsProvider widget - Used to configure default state widgets
+- FourStateBuilder widget - Used instead of BlocBuilder which gives typesafe success object to build UI
+- FourStateListener widget - Used instead of BlocListener which gives typesafe success object
+- FourStateConsumer widget - Used instead of BlocConsumer
+- Context extensions
+  - `initialStateWidget` - Gives default initial state widget
+  - `loadingStateWidget` - Gives default loading state widget
+  - `failedStateWidget` - Gives default failed state widget
+- Included Intellj and VSCode extensions to create cubit/bloc
