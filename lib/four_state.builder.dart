@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'callbacks.dart';
 
+/// Can be used instead of BlocBuilder.
+/// Only need to handle success state with 'succeedBuilder' field. Initial, Loading, Failed states are all handled automatically
+/// with the configuration we provided with [BlocEaseStateWidgetsProvider].
 class FourStateBuilder<B extends BlocBase<FourStates<T>>, T>
     extends BlocBuilder<B, FourStates<T>> {
   FourStateBuilder({

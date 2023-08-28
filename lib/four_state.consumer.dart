@@ -4,6 +4,9 @@ import 'callbacks.dart';
 import 'four_states.dart';
 import 'state_widgets.provider.dart';
 
+/// Can be used instead of BlocConsumer.
+/// 'succeedBuilder' is the only required param.
+/// Provides success object in typesafe manner.
 class FourStateConsumer<B extends BlocBase<FourStates<T>>, T>
     extends BlocConsumer<B, FourStates<T>> {
   FourStateConsumer({

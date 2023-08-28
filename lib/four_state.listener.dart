@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'four_states.dart';
 
+/// Can be used instead of BlocListener.
+/// Provides success object in typesafe manner.
 class FourStateListener<B extends BlocBase<FourStates<T>>, T>
     extends BlocListener<B, FourStates<T>> {
   FourStateListener({

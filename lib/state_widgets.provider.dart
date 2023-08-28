@@ -2,6 +2,10 @@ import 'package:flutter/widgets.dart';
 
 import 'callbacks.dart';
 
+/// Used to configure default widget for InitialState, LoadingState and FailedState.
+/// Wrap over any widget to change the default widgets for these states for its widget sub-tree.
+///
+/// Make sure to wrap this widget over the [MaterialApp], so that all pages and widgets can have access to this.
 class BlocEaseStateWidgetsProvider extends InheritedWidget {
   const BlocEaseStateWidgetsProvider({
     required this.initialStateBuilder,
