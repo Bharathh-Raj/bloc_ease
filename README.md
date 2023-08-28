@@ -415,6 +415,8 @@ These example projects are taken from the official [flutter_bloc](https://pub.de
 2. [flutter_shopping_cart](https://github.com/Bharathh-Raj/bloc_ease/tree/main/examples/flutter_shopping_cart)
 
 ## Features and bugs
-Please file feature requests and bugs at the [issue tracker][tracker].
+Please file feature requests and bugs at the [issue tracker](https://github.com/Bharathh-Raj/bloc_ease/issues).
 
-[tracker]: https://github.com/Bharathh-Raj/bloc_ease/issues
+## Connect with me [@Bharath](https://linktr.ee/bharath.dev)
+
+[![image](https://www.buymeacoffee.com/assets/img/guidelines/download-assets-sm-3.svg)](https://www.buymeacoffee.com/bharath213)
