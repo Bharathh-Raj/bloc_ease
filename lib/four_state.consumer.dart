@@ -25,32 +25,22 @@ class FourStateConsumer<B extends BlocBase<FourStates<T>>, T>
   }) : super(
           bloc: bloc,
           listenWhen: listenWhen,
-          listener: (context, state) => switch (state) {
-            InitialState<T>() =>
-              initialListener == null ? null : initialListener(),
-            LoadingState<T>() =>
-              loadingListener == null ? null : loadingListener(state.progress),
-            FailedState<T>() => failureListener == null
-                ? null
-                : failureListener(state.failureMessage, state.exceptionObject),
-            SucceedState<T>() => succeedListener == null
-                ? null
-                : succeedListener(state.successObject),
-          },
+          listener: (context, state) => state.mayBeMap(
+            orElse: () => null,
+            initialState: initialListener,
+            loadingState: loadingListener,
+            succeedState: succeedListener,
+            failedState: failureListener,
+          ),
           buildWhen: buildWhen,
-          builder: (context, state) => switch (state) {
-            InitialState<T>() => initialBuilder == null
-                ? BlocEaseStateWidgetsProvider.of(context).initialStateBuilder()
-                : initialBuilder(),
-            LoadingState<T>() => loadingBuilder == null
-                ? BlocEaseStateWidgetsProvider.of(context)
-                    .loadingStateBuilder(state.progress)
-                : loadingBuilder(state.progress),
-            FailedState<T>() => failureBuilder == null
-                ? BlocEaseStateWidgetsProvider.of(context).failureStateBuilder(
-                    state.exceptionObject, state.failureMessage)
-                : failureBuilder(state.exceptionObject, state.failureMessage),
-            SucceedState<T>() => succeedBuilder(state.successObject),
-          },
+          builder: (context, state) => state.map(
+            initialState: initialBuilder ??
+                BlocEaseStateWidgetsProvider.of(context).initialStateBuilder,
+            loadingState: loadingBuilder ??
+                BlocEaseStateWidgetsProvider.of(context).loadingStateBuilder,
+            failedState: failureBuilder ??
+                BlocEaseStateWidgetsProvider.of(context).failureStateBuilder,
+            succeedState: succeedBuilder,
+          ),
         );
 }

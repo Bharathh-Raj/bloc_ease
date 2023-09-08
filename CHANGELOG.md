@@ -9,3 +9,7 @@
   - `loadingStateWidget` - Gives default loading state widget
   - `failedStateWidget` - Gives default failed state widget
 - Included Intellj and VSCode extensions to create cubit/bloc
+
+## 0.2.0
+- map function for state
+- mayBeMap function for state

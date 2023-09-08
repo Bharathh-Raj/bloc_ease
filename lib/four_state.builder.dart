@@ -17,21 +17,18 @@ class FourStateBuilder<B extends BlocBase<FourStates<T>>, T>
     BlocBuilderCondition<FourStates<T>>? buildWhen,
     super.key,
   }) : super(
-          bloc: bloc,
-          buildWhen: buildWhen,
-          builder: (context, state) => switch (state) {
-            InitialState<T>() => initialBuilder == null
-                ? BlocEaseStateWidgetsProvider.of(context).initialStateBuilder()
-                : initialBuilder(),
-            LoadingState<T>() => loadingBuilder == null
-                ? BlocEaseStateWidgetsProvider.of(context)
-                    .loadingStateBuilder(state.progress)
-                : loadingBuilder(state.progress),
-            FailedState<T>() => failureBuilder == null
-                ? BlocEaseStateWidgetsProvider.of(context).failureStateBuilder(
-                    state.exceptionObject, state.failureMessage)
-                : failureBuilder(state.exceptionObject, state.failureMessage),
-            SucceedState<T>() => succeedBuilder(state.successObject),
-          },
-        );
+            bloc: bloc,
+            buildWhen: buildWhen,
+            builder: (context, state) => state.map(
+                  initialState: initialBuilder ??
+                      BlocEaseStateWidgetsProvider.of(context)
+                          .initialStateBuilder,
+                  loadingState: loadingBuilder ??
+                      BlocEaseStateWidgetsProvider.of(context)
+                          .loadingStateBuilder,
+                  failedState: failureBuilder ??
+                      BlocEaseStateWidgetsProvider.of(context)
+                          .failureStateBuilder,
+                  succeedState: succeedBuilder,
+                ));
 }

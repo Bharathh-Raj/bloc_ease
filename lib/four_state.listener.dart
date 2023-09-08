@@ -20,18 +20,13 @@ class FourStateListener<B extends BlocBase<FourStates<T>>, T>
   }) : super(
           bloc: bloc,
           listenWhen: listenWhen,
-          listener: (context, state) => switch (state) {
-            InitialState<T>() =>
-              initialListener == null ? null : initialListener(),
-            LoadingState<T>() =>
-              loadingListener == null ? null : loadingListener(state.progress),
-            FailedState<T>() => failureListener == null
-                ? null
-                : failureListener(state.failureMessage, state.exceptionObject),
-            SucceedState<T>() => succeedListener == null
-                ? null
-                : succeedListener(state.successObject),
-          },
+          listener: (context, state) => state.mayBeMap(
+            orElse: () => null,
+            initialState: initialListener,
+            loadingState: loadingListener,
+            succeedState: succeedListener,
+            failedState: failureListener,
+          ),
           child: child,
         );
 }
