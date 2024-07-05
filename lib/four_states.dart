@@ -12,8 +12,7 @@ sealed class FourStates<T> {
       InitialState<T>() => initialState(),
       LoadingState<T>() => loadingState(state.progress),
       SucceedState<T>() => succeedState(state.successObject),
-      FailedState<T>() =>
-        failedState(state.failureMessage, state.exceptionObject),
+      FailedState<T>() => failedState(state.failureMessage, state.exceptionObject),
     };
   }
 
@@ -27,15 +26,14 @@ sealed class FourStates<T> {
     final FourStates<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState == null ? orElse() : initialState(),
-      LoadingState<T>() =>
-        loadingState == null ? orElse() : loadingState(state.progress),
-      SucceedState<T>() =>
-        succeedState == null ? orElse() : succeedState(state.successObject),
-      FailedState<T>() => failedState == null
-          ? orElse()
-          : failedState(state.failureMessage, state.exceptionObject),
+      LoadingState<T>() => loadingState == null ? orElse() : loadingState(state.progress),
+      SucceedState<T>() => succeedState == null ? orElse() : succeedState(state.successObject),
+      FailedState<T>() =>
+        failedState == null ? orElse() : failedState(state.failureMessage, state.exceptionObject),
     };
   }
+
+  bool get isLoading => mayBeMap(orElse: () => false, loadingState: (_) => true);
 }
 
 class InitialState<T> extends FourStates<T> {
@@ -50,9 +48,7 @@ class LoadingState<T> extends FourStates<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is LoadingState &&
-          runtimeType == other.runtimeType &&
-          progress == other.progress;
+      other is LoadingState && runtimeType == other.runtimeType && progress == other.progress;
 
   @override
   int get hashCode => progress.hashCode;
