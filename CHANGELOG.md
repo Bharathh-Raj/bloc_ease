@@ -13,3 +13,6 @@
 ## 0.2.0
 - map function for state
 - mayBeMap function for state
+
+## 0.2.1
+- feat: isLoading getter in FourState
