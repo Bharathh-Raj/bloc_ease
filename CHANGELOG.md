@@ -16,3 +16,7 @@
 
 ## 0.2.1
 - feat: isLoading getter in FourState
+
+## 0.3.0
+- feat: when and maybeWhen function for state
+- retryCallback in failed state

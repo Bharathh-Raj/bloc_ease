@@ -33,7 +33,7 @@
     },
     {
       "name": "collection",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/collection-1.17.1",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/collection-1.18.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
@@ -45,9 +45,9 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///Users/bharatht/Flutter%20SDK/flutter/packages/flutter",
+      "rootUri": "file:///Users/bharatht/development/flutter/packages/flutter",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.3"
     },
     {
       "name": "flutter_bloc",
@@ -63,15 +63,27 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///Users/bharatht/Flutter%20SDK/flutter/packages/flutter_test",
+      "rootUri": "file:///Users/bharatht/development/flutter/packages/flutter_test",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.3"
     },
     {
-      "name": "js",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/js-0.6.7",
+      "name": "leak_tracker",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/leak_tracker-10.0.5",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "leak_tracker_flutter_testing",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/leak_tracker_flutter_testing-3.0.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "leak_tracker_testing",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/leak_tracker_testing-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
     },
     {
       "name": "lints",
@@ -81,19 +93,19 @@
     },
     {
       "name": "matcher",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/matcher-0.12.15",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/matcher-0.12.16+1",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "3.0"
     },
     {
       "name": "material_color_utilities",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/material_color_utilities-0.2.0",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/material_color_utilities-0.11.1",
       "packageUri": "lib/",
-      "languageVersion": "2.13"
+      "languageVersion": "2.17"
     },
     {
       "name": "meta",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/meta-1.9.1",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/meta-1.15.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -105,9 +117,9 @@
     },
     {
       "name": "path",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/path-1.8.3",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/path-1.9.0",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "3.0"
     },
     {
       "name": "provider",
@@ -117,27 +129,27 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///Users/bharatht/Flutter%20SDK/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///Users/bharatht/development/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.2"
     },
     {
       "name": "source_span",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/source_span-1.9.1",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/source_span-1.10.0",
       "packageUri": "lib/",
-      "languageVersion": "2.14"
+      "languageVersion": "2.18"
     },
     {
       "name": "stack_trace",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/stack_trace-1.11.0",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/stack_trace-1.11.1",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "stream_channel",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/stream_channel-2.1.1",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/stream_channel-2.1.2",
       "packageUri": "lib/",
-      "languageVersion": "2.14"
+      "languageVersion": "2.19"
     },
     {
       "name": "string_scanner",
@@ -153,9 +165,9 @@
     },
     {
       "name": "test_api",
-      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/test_api-0.5.1",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/test_api-0.7.2",
       "packageUri": "lib/",
-      "languageVersion": "2.18"
+      "languageVersion": "3.2"
     },
     {
       "name": "vector_math",
@@ -164,13 +176,22 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "vm_service",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/vm_service-14.2.5",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
       "name": "bloc_ease",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2023-09-08T05:43:27.369907Z",
+  "generated": "2024-11-26T10:28:14.411825Z",
   "generator": "pub",
-  "generatorVersion": "3.0.5"
+  "generatorVersion": "3.5.4",
+  "flutterRoot": "file:///Users/bharatht/development/flutter",
+  "flutterVersion": "3.24.4",
+  "pubCache": "file:///Users/bharatht/.pub-cache"
 }

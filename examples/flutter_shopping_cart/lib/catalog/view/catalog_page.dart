@@ -18,8 +18,7 @@ class CatalogPage extends StatelessWidget {
             loadingBuilder: ([progress]) => SliverFillRemaining(
               child: context.loadingStateWidget(progress),
             ),
-            failureBuilder: ([failureMessage, exception]) =>
-                SliverFillRemaining(
+            failureBuilder: ([failureMessage, exception, retryCallback]) => SliverFillRemaining(
               child: context.failedStateWidget(failureMessage, exception),
             ),
             succeedBuilder: (catalog) => SliverList(
@@ -53,12 +52,8 @@ class AddButton extends StatelessWidget {
             style: TextButton.styleFrom(
               disabledForegroundColor: theme.primaryColor,
             ),
-            onPressed: isInCart
-                ? null
-                : () => context.read<CartBloc>().add(CartItemAdded(item)),
-            child: isInCart
-                ? const Icon(Icons.check, semanticLabel: 'ADDED')
-                : const Text('ADD'),
+            onPressed: isInCart ? null : () => context.read<CartBloc>().add(CartItemAdded(item)),
+            child: isInCart ? const Icon(Icons.check, semanticLabel: 'ADDED') : const Text('ADD'),
           );
         },
       ),

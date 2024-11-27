@@ -30,7 +30,7 @@ class App extends StatelessWidget {
         loadingStateBuilder: ([progress]) => Center(
           child: CircularProgressIndicator(value: progress),
         ),
-        failureStateBuilder: ([failureMessage, exception]) => Center(
+        failureStateBuilder: ([failureMessage, exception, retryCallback]) => Center(
           child: Text(failureMessage ?? 'Something went wrong!'),
         ),
         child: MaterialApp(

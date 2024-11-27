@@ -25,7 +25,7 @@ class FourStateConsumer<B extends BlocBase<FourStates<T>>, T>
   }) : super(
           bloc: bloc,
           listenWhen: listenWhen,
-          listener: (context, state) => state.mayBeMap(
+          listener: (context, state) => state.maybeWhen(
             orElse: () => null,
             initialState: initialListener,
             loadingState: loadingListener,
@@ -33,7 +33,7 @@ class FourStateConsumer<B extends BlocBase<FourStates<T>>, T>
             failedState: failureListener,
           ),
           buildWhen: buildWhen,
-          builder: (context, state) => state.map(
+          builder: (context, state) => state.when(
             initialState: initialBuilder ??
                 BlocEaseStateWidgetsProvider.of(context).initialStateBuilder,
             loadingState: loadingBuilder ??

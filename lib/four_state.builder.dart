@@ -19,7 +19,7 @@ class FourStateBuilder<B extends BlocBase<FourStates<T>>, T>
   }) : super(
             bloc: bloc,
             buildWhen: buildWhen,
-            builder: (context, state) => state.map(
+            builder: (context, state) => state.when(
                   initialState: initialBuilder ??
                       BlocEaseStateWidgetsProvider.of(context)
                           .initialStateBuilder,

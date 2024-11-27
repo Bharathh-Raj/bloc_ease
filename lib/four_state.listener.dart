@@ -20,7 +20,7 @@ class FourStateListener<B extends BlocBase<FourStates<T>>, T>
   }) : super(
           bloc: bloc,
           listenWhen: listenWhen,
-          listener: (context, state) => state.mayBeMap(
+          listener: (context, state) => state.maybeWhen(
             orElse: () => null,
             initialState: initialListener,
             loadingState: loadingListener,
