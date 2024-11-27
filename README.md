@@ -269,7 +269,7 @@ class BlocEaseListenerExampleWidget extends StatelessWidget {
     return UserBlocEaseListener( //<-- <CubitName>BlocEaseListener
       initialListener: () {},
       loadingListener: ([progress]) {},
-      failureListener: ([failureMessage, exception]) {},
+      failureListener: ([failureMessage, exception, retryCallback]) {},
       succeedListener: (user) {},
       child: //..//,
     );
@@ -285,12 +285,12 @@ class BlocEaseConsumerExampleWidget extends StatelessWidget {
     return UserBlocEaseConsumer( //<-- <CubitName>BlocEaseConsumer
       initialListener: () {},
       loadingListener: ([progress]) {},
-      failureListener: ([failureMessage, exception]) {},
+      failureListener: ([failureMessage, exception, retryCallback]) {},
       succeedListener: (user) {},
 
       initialBuilder: () {},
       loadingBuilder: ([progress]) {},
-      failureBuilder: ([failureMessage, exception]) ={},
+      failureBuilder: ([failureMessage, exception, retryCallback]) ={},
       succeedBuilder: (user) => SomeWidget(user),
     );
   }
@@ -410,7 +410,7 @@ class SomePage extends StatelessWidget {
     return BlocEaseStateWidgetsProvider(
       initialStateBuilder: () => const SizedBox(),
       loadingStateBuilder: ([progress]) => const CustomLoader(),
-      failureStateBuilder: ([exception, message]) => Text(message ?? 'Oops something went wrong!'),
+      failureStateBuilder: ([exception, message, retryCallback]) => Text(message ?? 'Oops something went wrong!'),
       child: //..//,
     );
   }
