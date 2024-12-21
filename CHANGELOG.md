@@ -20,3 +20,8 @@
 ## 0.3.0
 - feat: when and maybeWhen function for state
 - retryCallback in failed state
+
+## 0.3.1
+- feat: BlocEaseCombinedStateListener widget 
+  - Used to listen to states of multiple cubits that emits FourStates.
+  - Even used to extract specific states of different cubits by using BlocEaseCombinedStateListener<SucceedState>. eg: List<SucceedState> for cubits that emits FourStates.
