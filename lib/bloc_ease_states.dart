@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-sealed class FourStates<T> {
-  const FourStates();
+sealed class BlocEaseState<T> {
+  const BlocEaseState();
 
   R map<R extends Object?>({
     required R Function(InitialState<T> initialState) initialState,
@@ -9,7 +9,7 @@ sealed class FourStates<T> {
     required R Function(SucceedState<T> succeedState) succeedState,
     required R Function(FailedState<T> failedState) failedState,
   }) {
-    final FourStates<T> state = this;
+    final BlocEaseState<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState(state),
       LoadingState<T>() => loadingState(state),
@@ -25,7 +25,7 @@ sealed class FourStates<T> {
     required R Function(String? failureMessage, dynamic exception, VoidCallback? retryCallback)
         failedState,
   }) {
-    final FourStates<T> state = this;
+    final BlocEaseState<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState(),
       LoadingState<T>() => loadingState(state.progress),
@@ -42,7 +42,7 @@ sealed class FourStates<T> {
     R Function(SucceedState<T> succeedState)? succeedState,
     R Function(FailedState<T> failedState)? failedState,
   }) {
-    final FourStates<T> state = this;
+    final BlocEaseState<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState == null ? orElse() : initialState(state),
       LoadingState<T>() => loadingState == null ? orElse() : loadingState(state),
@@ -58,7 +58,7 @@ sealed class FourStates<T> {
     R Function(T successObject)? succeedState,
     R Function(String? failureMessage, dynamic exception, VoidCallback? retryCallback)? failedState,
   }) {
-    final FourStates<T> state = this;
+    final BlocEaseState<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState == null ? orElse() : initialState(),
       LoadingState<T>() => loadingState == null ? orElse() : loadingState(state.progress),
@@ -72,11 +72,11 @@ sealed class FourStates<T> {
   bool get isLoading => maybeWhen(orElse: () => false, loadingState: (_) => true);
 }
 
-class InitialState<T> extends FourStates<T> {
+class InitialState<T> extends BlocEaseState<T> {
   const InitialState();
 }
 
-class LoadingState<T> extends FourStates<T> {
+class LoadingState<T> extends BlocEaseState<T> {
   const LoadingState([this.progress]);
 
   final double? progress;
@@ -90,7 +90,7 @@ class LoadingState<T> extends FourStates<T> {
   int get hashCode => progress.hashCode;
 }
 
-class SucceedState<T> extends FourStates<T> {
+class SucceedState<T> extends BlocEaseState<T> {
   const SucceedState(this.successObject);
   final T successObject;
 
@@ -105,7 +105,7 @@ class SucceedState<T> extends FourStates<T> {
   int get hashCode => successObject.hashCode;
 }
 
-class FailedState<T> extends FourStates<T> {
+class FailedState<T> extends BlocEaseState<T> {
   final String? failureMessage;
   final dynamic exceptionObject;
   final VoidCallback? retryCallback;

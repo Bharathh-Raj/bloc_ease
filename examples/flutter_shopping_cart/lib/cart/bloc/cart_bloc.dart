@@ -9,14 +9,14 @@ import '../models/cart.dart';
 
 part 'cart_event.dart';
 
-typedef CartState = FourStates<Cart>;
+typedef CartState = BlocEaseState<Cart>;
 
 typedef CartInitialState = InitialState<Cart>;
 typedef CartLoadingState = LoadingState<Cart>;
 typedef CartSucceedState = SucceedState<Cart>;
 typedef CartFailedState = FailedState<Cart>;
 
-typedef CartBuilder = FourStateConsumer<CartBloc, Cart>;
+typedef CartBuilder = BlocEaseStateConsumer<CartBloc, Cart>;
 
 class CartBloc extends Bloc<CartEvent, CartState> {
   CartBloc({required this.shoppingRepository}) : super(CartLoadingState()) {

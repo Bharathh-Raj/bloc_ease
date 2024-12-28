@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-class BlocEaseCombinedStateListener<S extends FourStates> extends StatefulWidget {
+class BlocEaseCombinedStateListener<S extends BlocEaseState> extends StatefulWidget {
   const BlocEaseCombinedStateListener({
     super.key,
     required this.blocEaseCubits,
@@ -13,7 +13,7 @@ class BlocEaseCombinedStateListener<S extends FourStates> extends StatefulWidget
     required this.child,
   });
 
-  final List<Cubit<FourStates>> blocEaseCubits;
+  final List<Cubit<BlocEaseState>> blocEaseCubits;
   final void Function(List<S> states) onStateChange;
   final Widget child;
 
@@ -21,9 +21,9 @@ class BlocEaseCombinedStateListener<S extends FourStates> extends StatefulWidget
   State<BlocEaseCombinedStateListener<S>> createState() => _BlocEaseCombinedStateListenerState<S>();
 }
 
-class _BlocEaseCombinedStateListenerState<S extends FourStates>
+class _BlocEaseCombinedStateListenerState<S extends BlocEaseState>
     extends State<BlocEaseCombinedStateListener<S>> {
-  late final StreamSubscription<List<FourStates>> _stream;
+  late final StreamSubscription<List<BlocEaseState>> _stream;
 
   @override
   void initState() {

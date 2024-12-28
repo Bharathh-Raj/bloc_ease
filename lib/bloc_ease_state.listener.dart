@@ -2,20 +2,20 @@ import 'package:bloc_ease/callbacks.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'four_states.dart';
+import 'bloc_ease_states.dart';
 
 /// Can be used instead of BlocListener.
 /// Provides success object in typesafe manner.
-class FourStateListener<B extends BlocBase<FourStates<T>>, T>
-    extends BlocListener<B, FourStates<T>> {
-  FourStateListener({
+class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T>
+    extends BlocListener<B, BlocEaseState<T>> {
+  BlocEaseStateListener({
     SuccessListener<T>? succeedListener,
     Widget? child,
     InitialListener? initialListener,
     LoadingListener? loadingListener,
     FailureListener? failureListener,
     B? bloc,
-    BlocListenerCondition<FourStates<T>>? listenWhen,
+    BlocListenerCondition<BlocEaseState<T>>? listenWhen,
     super.key,
   }) : super(
           bloc: bloc,

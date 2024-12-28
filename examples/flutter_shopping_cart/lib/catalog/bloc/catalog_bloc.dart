@@ -7,14 +7,14 @@ import '../../shopping_repository.dart';
 
 part 'catalog_event.dart';
 
-typedef CatalogState = FourStates<Catalog>;
+typedef CatalogState = BlocEaseState<Catalog>;
 
 typedef CatalogInitialState = InitialState<Catalog>;
 typedef CatalogLoadingState = LoadingState<Catalog>;
 typedef CatalogSucceedState = SucceedState<Catalog>;
 typedef CatalogFailedState = FailedState<Catalog>;
 
-typedef CatalogBuilder = FourStateConsumer<CatalogBloc, Catalog>;
+typedef CatalogBuilder = BlocEaseStateConsumer<CatalogBloc, Catalog>;
 
 class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
   CatalogBloc({required this.shoppingRepository})

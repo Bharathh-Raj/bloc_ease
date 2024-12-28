@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../repository.dart';
 import '../models/item.dart';
 
-typedef ComplexListState = FourStates<List<Item>>;
+typedef ComplexListState = BlocEaseState<List<Item>>;
 
 typedef ComplexListInitialState = InitialState<List<Item>>;
 typedef ComplexListLoadingState = LoadingState<List<Item>>;
@@ -21,11 +21,11 @@ typedef ComplexListBlocConsumer
     = BlocConsumer<ComplexListCubit, ComplexListState>;
 
 typedef ComplexListBlocEaseBuilder
-    = FourStateBuilder<ComplexListCubit, List<Item>>;
+    = BlocEaseStateBuilder<ComplexListCubit, List<Item>>;
 typedef ComplexListBlocEaseListener
-    = FourStateListener<ComplexListCubit, List<Item>>;
+    = BlocEaseStateListener<ComplexListCubit, List<Item>>;
 typedef ComplexListBlocEaseConsumer
-    = FourStateConsumer<ComplexListCubit, List<Item>>;
+    = BlocEaseStateConsumer<ComplexListCubit, List<Item>>;
 
 class ComplexListCubit extends Cubit<ComplexListState> {
   ComplexListCubit({required this.repository})
