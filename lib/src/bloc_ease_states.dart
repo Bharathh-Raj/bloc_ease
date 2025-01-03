@@ -20,7 +20,7 @@ sealed class BlocEaseState<T> {
 
   R when<R extends Object?>({
     required R Function() initialState,
-    required R Function(double? progress) loadingState,
+    required R Function(String? message, double? progress) loadingState,
     required R Function(T successObject) succeedState,
     required R Function(String? failureMessage, dynamic exception, VoidCallback? retryCallback)
         failedState,
@@ -28,7 +28,7 @@ sealed class BlocEaseState<T> {
     final BlocEaseState<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState(),
-      LoadingState<T>() => loadingState(state.progress),
+      LoadingState<T>() => loadingState(state.message, state.progress),
       SucceedState<T>() => succeedState(state.successObject),
       FailedState<T>() =>
         failedState(state.failureMessage, state.exceptionObject, state.retryCallback),
@@ -54,14 +54,14 @@ sealed class BlocEaseState<T> {
   R maybeWhen<R extends Object?>({
     required R Function() orElse,
     R Function()? initialState,
-    R Function(double? progress)? loadingState,
+    R Function(String? message, double? progress)? loadingState,
     R Function(T successObject)? succeedState,
     R Function(String? failureMessage, dynamic exception, VoidCallback? retryCallback)? failedState,
   }) {
     final BlocEaseState<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState == null ? orElse() : initialState(),
-      LoadingState<T>() => loadingState == null ? orElse() : loadingState(state.progress),
+      LoadingState<T>() => loadingState == null ? orElse() : loadingState(state.message, state.progress),
       SucceedState<T>() => succeedState == null ? orElse() : succeedState(state.successObject),
       FailedState<T>() => failedState == null
           ? orElse()
@@ -69,7 +69,7 @@ sealed class BlocEaseState<T> {
     };
   }
 
-  bool get isLoading => maybeWhen(orElse: () => false, loadingState: (_) => true);
+  bool get isLoading => maybeWhen(orElse: () => false, loadingState: (_, __) => true);
 }
 
 class InitialState<T> extends BlocEaseState<T> {
@@ -77,17 +77,21 @@ class InitialState<T> extends BlocEaseState<T> {
 }
 
 class LoadingState<T> extends BlocEaseState<T> {
-  const LoadingState([this.progress]);
+  const LoadingState([this.message, this.progress]);
 
+  final String? message;
   final double? progress;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is LoadingState && runtimeType == other.runtimeType && progress == other.progress;
+      other is LoadingState &&
+          runtimeType == other.runtimeType &&
+          message == other.message &&
+          progress == other.progress;
 
   @override
-  int get hashCode => progress.hashCode;
+  int get hashCode => message.hashCode ^ progress.hashCode;
 }
 
 class SucceedState<T> extends BlocEaseState<T> {

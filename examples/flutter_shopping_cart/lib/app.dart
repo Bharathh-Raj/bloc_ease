@@ -27,7 +27,7 @@ class App extends StatelessWidget {
       ],
       child: BlocEaseStateWidgetsProvider(
         initialStateBuilder: () => const SizedBox(),
-        loadingStateBuilder: ([progress]) => Center(
+        loadingStateBuilder: ([message, progress]) => Center(
           child: CircularProgressIndicator(value: progress),
         ),
         failureStateBuilder: ([failureMessage, exception, retryCallback]) => Center(

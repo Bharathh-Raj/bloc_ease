@@ -10,7 +10,7 @@ void main() {
   Bloc.observer = const SimpleBlocObserver();
   runApp(BlocEaseStateWidgetsProvider(
       initialStateBuilder: () => const Placeholder(),
-      loadingStateBuilder: ([progress]) => const Center(child: CircularProgressIndicator()),
+      loadingStateBuilder: ([message, progress]) => const Center(child: CircularProgressIndicator()),
       failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
           Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
       child: App(repository: Repository())));

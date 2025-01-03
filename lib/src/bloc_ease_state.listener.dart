@@ -43,7 +43,7 @@ class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
       if (state is InitialState<T> && widget.initialListener != null) {
         widget.initialListener!();
       } else if (state is LoadingState<T> && widget.loadingListener != null) {
-        widget.loadingListener!(state.progress);
+        widget.loadingListener!(state.message, state.progress);
       } else if (state is FailedState<T> && widget.failureListener != null) {
         widget.failureListener!(state.failureMessage, state.exceptionObject, state.retryCallback);
       } else if (state is SucceedState<T> && widget.succeedListener != null) {

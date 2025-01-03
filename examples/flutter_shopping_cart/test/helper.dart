@@ -19,7 +19,7 @@ extension PumpApp on WidgetTester {
     return pumpWidget(
       BlocEaseStateWidgetsProvider(
         initialStateBuilder: () => const SizedBox(),
-        loadingStateBuilder: ([progress]) => const Center(child: CircularProgressIndicator()),
+        loadingStateBuilder: ([message, progress]) => const Center(child: CircularProgressIndicator()),
         failureStateBuilder: ([failureMessage, exception, retryCallback]) => Center(
           child: Text(failureMessage ?? 'Something went wrong!'),
         ),

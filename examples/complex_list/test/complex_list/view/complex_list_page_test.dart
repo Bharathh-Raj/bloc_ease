@@ -18,7 +18,7 @@ extension on WidgetTester {
     return pumpWidget(
       BlocEaseStateWidgetsProvider(
         initialStateBuilder: () => const Placeholder(),
-        loadingStateBuilder: ([progress]) => const Center(child: CircularProgressIndicator()),
+        loadingStateBuilder: ([message, progress]) => const Center(child: CircularProgressIndicator()),
         failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
             Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
         child: MaterialApp(
@@ -35,7 +35,7 @@ extension on WidgetTester {
     return pumpWidget(
       BlocEaseStateWidgetsProvider(
         initialStateBuilder: () => const Placeholder(),
-        loadingStateBuilder: ([progress]) => const Center(child: CircularProgressIndicator()),
+        loadingStateBuilder: ([message, progress]) => const Center(child: CircularProgressIndicator()),
         failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
             Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
         child: MaterialApp(

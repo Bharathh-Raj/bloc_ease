@@ -15,8 +15,8 @@ class CatalogPage extends StatelessWidget {
           const CatalogAppBar(),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           CatalogBuilder(
-            loadingBuilder: ([progress]) => SliverFillRemaining(
-              child: context.loadingStateWidget(progress),
+            loadingBuilder: ([message, progress]) => SliverFillRemaining(
+              child: context.loadingStateWidget(message, progress),
             ),
             failureBuilder: ([failureMessage, exception, retryCallback]) => SliverFillRemaining(
               child: context.failedStateWidget(failureMessage, exception),
