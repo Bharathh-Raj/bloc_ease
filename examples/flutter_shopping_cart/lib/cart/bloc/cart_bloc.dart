@@ -43,7 +43,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   ) async {
     final state = this.state;
     if (state is CartSucceedState) {
-      final cart = state.successObject;
+      final cart = state.success;
       try {
         shoppingRepository.addItemToCart(event.item);
         emit(CartSucceedState(Cart(items: [...cart.items, event.item])));
@@ -56,7 +56,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   void _onItemRemoved(CartItemRemoved event, Emitter<CartState> emit) {
     final state = this.state;
     if (state is CartSucceedState) {
-      final cart = state.successObject;
+      final cart = state.success;
 
       try {
         shoppingRepository.removeItemFromCart(event.item);

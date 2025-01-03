@@ -11,6 +11,9 @@ A dart library to solve boilerplate issues with [flutter_bloc](https://pub.dev/p
 - [Readme](#readme)
 - [How to use?](#how-to-use)
 - [Example Snippets](#example-snippets)
+- [Cache State with Ease - BlocEaseStateCacheMixin](#cache-state-with-ease---bloceasestatecachemixin)
+- [Listen to multiple Blocs - BlocEaseMultiStateListener](#listen-to-multiple-blocs---bloceasemultistatelistener)
+- [Multi state builder - BlocEaseMultiStateBuilder](#multi-state-builder---bloceasemultistatebuilder)
 - [Templates](#templates)
 - [Tips and Tricks](#tips-and-tricks)
   - [Using `BlocEaseListener` and `BlocEaseConsumer`](#using-bloceaselistener-and-bloceaseconsumer)
@@ -161,6 +164,140 @@ Since we need to fetch the item on opening the page, this usually holds 3 states
 
 Notice that, `ItemInitialState` not used even though it can be accessed.
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/0b4020be-020f-4d0a-8190-90f995a629fd)
+
+## Cache State with Ease - BlocEaseStateCacheMixin
+Just by using this Mixin `BlocEaseStateCacheMixin` with any bloc or cubit that emits `BlocEaseState`, we get access to previous states of type with `exLoadingState`, `exSucceedState` and `exFailedState`.
+With this exStates, we can compare the change and do operation based on that.
+
+```dart
+import 'package:bloc_ease/bloc_ease.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+typedef CurrentUserState = BlocEaseState<User>;
+
+// -- Uses Mixin BlocEaseStateCacheMixin
+class CurrentUserCubit extends Cubit<CurrentUserState> with BlocEaseStateCacheMixin { 
+  CurrentUserCubit()
+      : super(const CurrentUserInitialState());
+      
+  void doSomething() {
+    final userId = exSucceedState?.success.id; //<-- We can access exSucceedState
+    if(userId != null) {
+      ...
+    }
+  }
+
+  void resetState() {
+	emit(const CurrentUserInitialState());
+	resetCache(); //<-- (Can call resetCache method to force reset cache)
+  }
+}
+
+typedef CurrentUserInitialState = InitialState<User>;
+typedef CurrentUserLoadingState = LoadingState<User>;
+typedef CurrentUserSucceedState = SucceedState<User>;
+typedef CurrentUserFailedState = FailedState<User>;
+...
+```
+
+```dart
+class SomeWidget extends StatelessWidget {  
+  const SomeWidget({super.key});  
+    
+  @override  
+  Widget build(BuildContext context) {  
+    final currentUserCubit = context.read<CurrentUserCubit>();  
+    return CurrentUserBlocEaseListener(  
+      succeedListener: (user) {  
+        final exUser = currentUserCubit.exSucceedState?.success; //<-- Can access exSucceedState
+        if(exUser?.email == null && user.email != null) {  
+          welcomeUserViaEmail(user.email);  
+        }  
+      },  
+      child: ...  
+    );  
+  }  
+}
+```
+
+> **Tip**: We can animate between loading states or success states by comparing `exLoadingState` and current `loadingState` or `exSucceedState` and current `succeedState`.
+
+## Listen to multiple Blocs - BlocEaseMultiStateListener
+BlocEaseMultiStateListener lets us listen to multiple bloc/cubit that emits `BlocEaseState`. There are so many use cases like
+- Showing progress dialog when any of the cubit is still in `LoadingState`. 
+- Showing error message if any cubit emits `FailedState`.
+- Showing success snackbar if only all cubits emits `SucceedState`.
+- ...
+
+```dart
+class SomeWidget extends StatelessWidget {
+  const SomeWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Remember: Both AuthBloc and UserBloc should emit BlocEaseState
+    final blocEaseBlocs = [context.read<AuthBloc>(), context.read<UserBloc>()];
+    return BlocEaseMultiStateListener(
+      blocEaseBlocs: blocEaseBlocs,
+      onStateChange: (states) {
+        if(states.any((e) => e is LoadingState)) {
+          showLoadingDialog();
+        } else if(states.any((e) => e is FailedState)) {
+          showErrorDialog();
+        } else if(states.every((e) => e is SucceedState)) {
+          showSuccessSnackBar();
+        }
+      },
+      child: ...,
+    );
+  }
+}
+```
+> **PRO TIP:** If you want to handle only one state, you can simply use Generics like
+
+```dart
+class SomeWidget extends StatelessWidget {
+  const SomeWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Remember: Both AuthBloc and UserBloc should emit BlocEaseState
+    final blocEaseBlocs = [context.read<AuthBloc>(), context.read<UserBloc>()];
+    return BlocEaseMultiStateListener<SucceedState>( //<-- If you just want to handle SucceedState
+      blocEaseBlocs: blocEaseBlocs,
+      onStateChange: (states) => showSuccessSnackBar(),
+      child: ...,
+    );
+  }
+}
+```
+
+## Multi state builder - BlocEaseMultiStateBuilder
+BlocEaseMultiStateBuilder lets you combine different bloc/cubits that emits BlocEaseState and handle as one widget. There are so many use cases in here as well like
+- Showing single loading indicator instead of one of every bloc.
+- Showing single error widget instead of multiple error widgets on screen.
+- Since we know how many bloc/cubits are in `LoadingState`, we can show loading progress. (Automatically handles with `BlocEaseStateWidgetsProvider` - `progress` field)
+- Showing all widget at once instead of loading separately.
+- By default, we just need to pass `successBuilder`, all other states are handled by default with `BlocEaseStateWidgetsProvider`.
+
+> **REMEMBER:** If any state is `FailedState`, it draws error widget. else if any state is `InitialState`, it draws initialWidget. else if any state is `LoadingState`, it draws `LoadingWidget`. Only if all states are `SucceedState`, it draws success widget.
+
+```dart
+class SomeWidget extends StatelessWidget {
+  const SomeWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Remember: All of these Bloc/Cubit should exit BlocEaseState
+    final blocEaseBlocs = [context.read<UserBloc>(), context.read<OrdersBloc>(), context.read<ReturnsBloc>(), context.read<WishlistBloc>()];
+    return BlocEaseMultiStateBuilder( //<-- If you just want to handle SucceedState
+      blocEaseBlocs: blocEaseBlocs,
+      successBuilder: (states) => Dashboard(),
+    );
+  }
+}
+```
+![image](https://i.imgur.com/u2JGXP3.png)
 
 ## Templates
 ### Intellij and Android Studio 

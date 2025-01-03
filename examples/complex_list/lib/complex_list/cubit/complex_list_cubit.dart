@@ -24,7 +24,7 @@ class ComplexListCubit extends Cubit<ComplexListState> with BlocEaseStateCacheMi
   void deleteItem(String id) async {
     final state = this.state;
     if (state is ComplexListSucceedState) {
-      final items = state.successObject;
+      final items = state.success;
       final deleteInProgress = List.of(items).map((item) {
         return item.id == id ? item.copyWith(isDeleting: true) : item;
       }).toList();

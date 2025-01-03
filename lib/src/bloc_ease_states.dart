@@ -29,9 +29,9 @@ sealed class BlocEaseState<T> {
     return switch (state) {
       InitialState<T>() => initialState(),
       LoadingState<T>() => loadingState(state.message, state.progress),
-      SucceedState<T>() => succeedState(state.successObject),
+      SucceedState<T>() => succeedState(state.success),
       FailedState<T>() =>
-        failedState(state.failureMessage, state.exceptionObject, state.retryCallback),
+        failedState(state.message, state.exception, state.retryCallback),
     };
   }
 
@@ -62,10 +62,10 @@ sealed class BlocEaseState<T> {
     return switch (state) {
       InitialState<T>() => initialState == null ? orElse() : initialState(),
       LoadingState<T>() => loadingState == null ? orElse() : loadingState(state.message, state.progress),
-      SucceedState<T>() => succeedState == null ? orElse() : succeedState(state.successObject),
+      SucceedState<T>() => succeedState == null ? orElse() : succeedState(state.success),
       FailedState<T>() => failedState == null
           ? orElse()
-          : failedState(state.failureMessage, state.exceptionObject, state.retryCallback),
+          : failedState(state.message, state.exception, state.retryCallback),
     };
   }
 
@@ -95,36 +95,36 @@ class LoadingState<T> extends BlocEaseState<T> {
 }
 
 class SucceedState<T> extends BlocEaseState<T> {
-  const SucceedState(this.successObject);
-  final T successObject;
+  const SucceedState(this.success);
+  final T success;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is SucceedState &&
           runtimeType == other.runtimeType &&
-          successObject == other.successObject;
+          success == other.success;
 
   @override
-  int get hashCode => successObject.hashCode;
+  int get hashCode => success.hashCode;
 }
 
 class FailedState<T> extends BlocEaseState<T> {
-  final String? failureMessage;
-  final dynamic exceptionObject;
+  final String? message;
+  final dynamic exception;
   final VoidCallback? retryCallback;
 
-  FailedState([this.failureMessage, this.exceptionObject, this.retryCallback]);
+  FailedState([this.message, this.exception, this.retryCallback]);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is FailedState &&
           runtimeType == other.runtimeType &&
-          failureMessage == other.failureMessage &&
-          exceptionObject == other.exceptionObject &&
+          message == other.message &&
+          exception == other.exception &&
           retryCallback == other.retryCallback;
 
   @override
-  int get hashCode => failureMessage.hashCode ^ exceptionObject.hashCode ^ retryCallback.hashCode;
+  int get hashCode => message.hashCode ^ exception.hashCode ^ retryCallback.hashCode;
 }

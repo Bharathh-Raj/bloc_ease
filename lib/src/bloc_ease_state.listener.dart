@@ -46,9 +46,9 @@ class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
       } else if (state is LoadingState<T> && widget.loadingListener != null) {
         widget.loadingListener!(state.message, state.progress);
       } else if (state is FailedState<T> && widget.failureListener != null) {
-        widget.failureListener!(state.failureMessage, state.exceptionObject, state.retryCallback);
+        widget.failureListener!(state.message, state.exception, state.retryCallback);
       } else if (state is SucceedState<T> && widget.succeedListener != null) {
-        widget.succeedListener!(state.successObject);
+        widget.succeedListener!(state.success);
       }
     });
     super.initState();
@@ -57,7 +57,7 @@ class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
   @override
   Widget build(BuildContext context) {
     return BlocListener<B, BlocEaseState<T>>(
-      bloc: widget.bloc as B?,
+      bloc: widget.bloc,
       listenWhen: widget.listenWhen,
       listener: (context, state) => state.maybeWhen(
         orElse: () => null,
