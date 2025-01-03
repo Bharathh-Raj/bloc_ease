@@ -22,12 +22,15 @@
 - retryCallback in failed state
 
 ## 0.3.1
-- feat: BlocEaseCombinedStateListener widget 
-  - Used to listen to states of multiple cubits that emits FourStates.
-  - Even used to extract specific states of different cubits by using BlocEaseCombinedStateListener<SucceedState>. eg: List<SucceedState> for cubits that emits FourStates.
+- feat: BlocEaseMultiStateListener widget 
+  - Used to listen to states of multiple cubits that emits BlocEaseState.
+  - Even used to extract specific states of different cubits by using BlocEaseMultiStateListener<SucceedState>. eg: List<SucceedState> for cubits that emits FourStates.
 
 ## 1.0.0
 - Breaking: FourStates -> BlocEaseState
+  - Make sure to update the code snippets
 - feat: BlocEaseStateCacheMixin
   - Caches the last loading, succeed and failed state.
 - feat: message field in LoadingState
+- feat: BlocEaseMultiStateBuilder
+  - Used to combine multiple states that emits BlocEaseState
