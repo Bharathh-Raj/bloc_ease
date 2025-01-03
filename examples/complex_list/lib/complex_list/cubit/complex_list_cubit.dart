@@ -6,34 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../repository.dart';
 import '../models/item.dart';
 
-typedef ComplexListState = BlocEaseState<List<Item>>;
-
-typedef ComplexListInitialState = InitialState<List<Item>>;
-typedef ComplexListLoadingState = LoadingState<List<Item>>;
-typedef ComplexListSucceedState = SucceedState<List<Item>>;
-typedef ComplexListFailedState = FailedState<List<Item>>;
-
-typedef ComplexListBlocBuilder
-    = BlocBuilder<ComplexListCubit, ComplexListState>;
-typedef ComplexListBlocListener
-    = BlocListener<ComplexListCubit, ComplexListState>;
-typedef ComplexListBlocConsumer
-    = BlocConsumer<ComplexListCubit, ComplexListState>;
-
-typedef ComplexListBlocEaseBuilder
-    = BlocEaseStateBuilder<ComplexListCubit, List<Item>>;
-typedef ComplexListBlocEaseListener
-    = BlocEaseStateListener<ComplexListCubit, List<Item>>;
-typedef ComplexListBlocEaseConsumer
-    = BlocEaseStateConsumer<ComplexListCubit, List<Item>>;
-
-class ComplexListCubit extends Cubit<ComplexListState> {
+class ComplexListCubit extends Cubit<ComplexListState> with BlocEaseStateCacheMixin{
   ComplexListCubit({required this.repository})
       : super(const ComplexListLoadingState());
 
   final Repository repository;
 
-  Future<void> fetchList() async {
+  void fetchList() async {
     try {
       final items = await repository.fetchItems();
       emit(ComplexListSucceedState(items));
@@ -42,7 +21,7 @@ class ComplexListCubit extends Cubit<ComplexListState> {
     }
   }
 
-  Future<void> deleteItem(String id) async {
+  void deleteItem(String id) async {
     final state = this.state;
     if (state is ComplexListSucceedState) {
       final items = state.successObject;
@@ -62,3 +41,18 @@ class ComplexListCubit extends Cubit<ComplexListState> {
     }
   }
 }
+
+typedef ComplexListState = BlocEaseState<List<Item>>;
+
+typedef ComplexListInitialState = InitialState<List<Item>>;
+typedef ComplexListLoadingState = LoadingState<List<Item>>;
+typedef ComplexListSucceedState = SucceedState<List<Item>>;
+typedef ComplexListFailedState = FailedState<List<Item>>;
+
+typedef ComplexListBlocBuilder = BlocBuilder<ComplexListCubit, ComplexListState>;
+typedef ComplexListBlocListener = BlocListener<ComplexListCubit, ComplexListState>;
+typedef ComplexListBlocConsumer = BlocConsumer<ComplexListCubit, ComplexListState>;
+
+typedef ComplexListBlocEaseBuilder = BlocEaseStateBuilder<ComplexListCubit, List<Item>>;
+typedef ComplexListBlocEaseListener = BlocEaseStateListener<ComplexListCubit, List<Item>>;
+typedef ComplexListBlocEaseConsumer = BlocEaseStateConsumer<ComplexListCubit, List<Item>>;

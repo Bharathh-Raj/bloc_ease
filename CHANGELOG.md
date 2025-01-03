@@ -25,3 +25,9 @@
 - feat: BlocEaseCombinedStateListener widget 
   - Used to listen to states of multiple cubits that emits FourStates.
   - Even used to extract specific states of different cubits by using BlocEaseCombinedStateListener<SucceedState>. eg: List<SucceedState> for cubits that emits FourStates.
+
+## 1.0.0
+- Breaking: FourStates -> BlocEaseState
+- feat: BlocEaseStateCacheMixin
+  - Caches the last loading, succeed and failed state.
+- feat: message field in LoadingState

@@ -1,27 +1,31 @@
 import 'dart:async';
 
-import '../bloc_ease.dart';
-import 'bloc_ease_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-mixin BlocEaseStateCache<T> on BlocEaseCubit<T> {
-  late final StreamSubscription<BlocEaseState<T>>? _stateStreamListener;
+import 'bloc_ease_states.dart';
+
+mixin BlocEaseStateCacheMixin<T> on BlocBase<BlocEaseState<T>> {
   LoadingState<T>? exLoadingState;
   SucceedState<T>? exSucceedState;
   FailedState<T>? exFailedState;
 
-  void initCache() {
-    _stateStreamListener = stream.listen((event) => event.maybeMap(
+  @override
+  void onChange(Change<BlocEaseState<T>> change) {
+    final exState = change.currentState;
+    exState.maybeMap(
       orElse: () => null,
       succeedState: (succeedState) => exSucceedState = succeedState,
       loadingState: (loadingState) => exLoadingState = loadingState,
       failedState: (failedState) => exFailedState = failedState,
-    ));
+    );
+    super.onChange(change);
   }
 
-  void resetCache() {
+  @override
+  Future<void> close() {
     exLoadingState = null;
     exSucceedState = null;
     exFailedState = null;
-    _stateStreamListener?.cancel();
+    return super.close();
   }
 }
