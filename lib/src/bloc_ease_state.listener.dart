@@ -33,7 +33,8 @@ class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T> extends Sta
 }
 
 class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
-    extends State<BlocEaseStateListener> {
+    extends State<BlocEaseStateListener<B, T>> {
+
   @override
   void initState() {
     if (!widget.shouldRunOnInit) return;
