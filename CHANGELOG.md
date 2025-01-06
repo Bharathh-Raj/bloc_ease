@@ -29,8 +29,13 @@
 ## 1.0.0
 - Breaking: FourStates -> BlocEaseState
   - Make sure to update the code snippets
-- feat: BlocEaseStateCacheMixin
+- feat: CacheExBlocEaseStateMixin
   - Caches the last loading, succeed and failed state.
 - feat: message field in LoadingState
 - feat: BlocEaseMultiStateBuilder
   - Used to combine multiple states that emits BlocEaseState
+
+## 1.0.1
+- Breaking: BlocEaseStateCacheMixin -> CacheExBlocEaseStateMixin
+- feat: exSucceedObject in BlocEaseState
+  - Used to extract the succeed object from the state
