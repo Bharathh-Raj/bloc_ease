@@ -12,7 +12,7 @@ import 'bloc_ease_states.dart';
 /// Useful to do operation based on the change in same type of state.
 /// eg: Animate between [LoadingState] with [LoadingState.progress]
 /// Do operation only on some update in [SucceedState]
-mixin BlocEaseStateCacheMixin<T> on BlocBase<BlocEaseState<T>> {
+mixin CacheExBlocEaseStateMixin<T> on BlocBase<BlocEaseState<T>> {
   LoadingState<T>? _exLoadingState;
   SucceedState<T>? _exSucceedState;
   FailedState<T>? _exFailedState;
@@ -20,6 +20,7 @@ mixin BlocEaseStateCacheMixin<T> on BlocBase<BlocEaseState<T>> {
   LoadingState<T>? get exLoadingState => _exLoadingState;
   SucceedState<T>? get exSucceedState => _exSucceedState;
   FailedState<T>? get exFailedState => _exFailedState;
+  T? get exSucceedObject => _exSucceedState?.success;
 
   @override
   void onChange(Change<BlocEaseState<T>> change) {

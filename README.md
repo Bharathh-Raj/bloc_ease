@@ -11,7 +11,7 @@ A dart library to solve boilerplate issues with [flutter_bloc](https://pub.dev/p
 - [Readme](#readme)
 - [How to use?](#how-to-use)
 - [Example Snippets](#example-snippets)
-- [Cache State with Ease - BlocEaseStateCacheMixin](#cache-state-with-ease---bloceasestatecachemixin)
+- [Cache State with Ease - CacheExBlocEaseStateMixin](#cache-state-with-ease---CacheExBlocEaseStateMixin)
 - [Listen to multiple Blocs - BlocEaseMultiStateListener](#listen-to-multiple-blocs---bloceasemultistatelistener)
 - [Multi state builder - BlocEaseMultiStateBuilder](#multi-state-builder---bloceasemultistatebuilder)
 - [Templates](#templates)
@@ -165,9 +165,9 @@ Since we need to fetch the item on opening the page, this usually holds 3 states
 Notice that, `ItemInitialState` not used even though it can be accessed.
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/0b4020be-020f-4d0a-8190-90f995a629fd)
 
-## Cache State with Ease - BlocEaseStateCacheMixin
-Just by using this Mixin `BlocEaseStateCacheMixin` with any bloc or cubit that emits `BlocEaseState`, we get access to previous states of type with `exLoadingState`, `exSucceedState` and `exFailedState`.
-With this exStates, we can compare the change and do operation based on that.
+## Cache State with Ease - CacheExBlocEaseStateMixin
+Just by using this Mixin `CacheExBlocEaseStateMixin` with any bloc or cubit that emits `BlocEaseState`, we get access to previous states of type with `exLoadingState`, `exSucceedState` and `exFailedState`.
+We also get `exSucceedObject` that directly lets us access previous success object if exist. With this exStates, we can compare the change and do operation based on that.
 
 ```dart
 import 'package:bloc_ease/bloc_ease.dart';
@@ -175,13 +175,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 typedef CurrentUserState = BlocEaseState<User>;
 
-// -- Uses Mixin BlocEaseStateCacheMixin
-class CurrentUserCubit extends Cubit<CurrentUserState> with BlocEaseStateCacheMixin { 
+// -- Uses Mixin CacheExBlocEaseStateMixin
+class CurrentUserCubit extends Cubit<CurrentUserState> with CacheExBlocEaseStateMixin { 
   CurrentUserCubit()
       : super(const CurrentUserInitialState());
       
   void doSomething() {
-    final userId = exSucceedState?.success.id; //<-- We can access exSucceedState
+    final userId = exSucceedObject?.id; //<-- We can access exSucceedObject
     if(userId != null) {
       ...
     }
@@ -209,7 +209,7 @@ class SomeWidget extends StatelessWidget {
     final currentUserCubit = context.read<CurrentUserCubit>();  
     return CurrentUserBlocEaseListener(  
       succeedListener: (user) {  
-        final exUser = currentUserCubit.exSucceedState?.success; //<-- Can access exSucceedState
+        final exUser = currentUserCubit.exSucceedObject; //<-- Can access exSucceedObject
         if(exUser?.email == null && user.email != null) {  
           welcomeUserViaEmail(user.email);  
         }  

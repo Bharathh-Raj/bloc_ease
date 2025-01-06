@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../repository.dart';
 import '../models/item.dart';
 
-class ComplexListCubit extends Cubit<ComplexListState> with BlocEaseStateCacheMixin{
+class ComplexListCubit extends Cubit<ComplexListState> with CacheExBlocEaseStateMixin{
   ComplexListCubit({required this.repository})
       : super(const ComplexListLoadingState());
 
