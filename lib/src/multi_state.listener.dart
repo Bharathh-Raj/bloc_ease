@@ -15,7 +15,8 @@ import 'package:rxdart/rxdart.dart';
 ///
 /// PRO TIP: We can limit the type of [BlocEaseState] for all [blocEaseBlocs] by using Generics.
 /// eg: By calling BlocEaseMultiStateListener<SucceedState>(blocEaseCubits: [...]), all the states we get via [onStateChange] will be [SucceedState]
-class BlocEaseMultiStateListener<S extends BlocEaseState> extends StatefulWidget {
+class BlocEaseMultiStateListener<S extends BlocEaseState>
+    extends StatefulWidget {
   const BlocEaseMultiStateListener({
     super.key,
     required this.blocEaseBlocs,
@@ -33,7 +34,8 @@ class BlocEaseMultiStateListener<S extends BlocEaseState> extends StatefulWidget
   final Widget child;
 
   @override
-  State<BlocEaseMultiStateListener<S>> createState() => _BlocEaseMultiStateListenerState<S>();
+  State<BlocEaseMultiStateListener<S>> createState() =>
+      _BlocEaseMultiStateListenerState<S>();
 }
 
 class _BlocEaseMultiStateListenerState<S extends BlocEaseState>
@@ -43,7 +45,7 @@ class _BlocEaseMultiStateListenerState<S extends BlocEaseState>
   @override
   void initState() {
     _stream = MergeStream(widget.blocEaseBlocs.map((e) => e.stream)).listen(
-          (event) {
+      (event) {
         final states = widget.blocEaseBlocs.map((e) => e.state).toList();
         final areAllStateAligningWithType = states.every((e) => e is S);
         if (areAllStateAligningWithType) {

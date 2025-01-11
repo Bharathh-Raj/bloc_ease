@@ -60,12 +60,12 @@ class BlocEaseStateConsumer<B extends BlocBase<BlocEaseState<T>>, T>
           ),
           buildWhen: buildWhen,
           builder: (context, state) => state.when(
-            initialState:
-                initialBuilder ?? BlocEaseStateWidgetProvider.of(context).initialStateBuilder,
-            loadingState:
-                loadingBuilder ?? BlocEaseStateWidgetProvider.of(context).loadingStateBuilder,
-            failedState:
-                failureBuilder ?? BlocEaseStateWidgetProvider.of(context).failureStateBuilder,
+            initialState: initialBuilder ??
+                BlocEaseStateWidgetProvider.of(context).initialStateBuilder,
+            loadingState: loadingBuilder ??
+                BlocEaseStateWidgetProvider.of(context).loadingStateBuilder,
+            failedState: failureBuilder ??
+                BlocEaseStateWidgetProvider.of(context).failureStateBuilder,
             succeedState: succeedBuilder,
           ),
         );

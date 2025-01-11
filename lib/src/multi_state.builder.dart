@@ -42,26 +42,29 @@ class BlocEaseMultiStateBuilder extends StatefulWidget {
   final Widget Function(List<FailedState>? states)? failureBuilder;
 
   @override
-  State<BlocEaseMultiStateBuilder> createState() => _BlocEaseMultiStateBuilderState();
+  State<BlocEaseMultiStateBuilder> createState() =>
+      _BlocEaseMultiStateBuilderState();
 }
 
 class _BlocEaseMultiStateBuilderState extends State<BlocEaseMultiStateBuilder>
     with AutomaticKeepAliveClientMixin {
   late final _stream = MergeStream(widget.blocEaseBlocs.map((e) => e.stream));
 
-  Widget failureWidget(List<FailedState>? failedStates) => widget.failureBuilder != null
-      ? widget.failureBuilder!(failedStates)
-      : context.failedStateWidget(failedStates?.first.message, failedStates?.first.exception,
-          failedStates?.first.retryCallback);
+  Widget failureWidget(List<FailedState>? failedStates) =>
+      widget.failureBuilder != null
+          ? widget.failureBuilder!(failedStates)
+          : context.failedStateWidget(failedStates?.first.message,
+              failedStates?.first.exception, failedStates?.first.retryCallback);
 
-  Widget loadingWidget(List<LoadingState> loadingStates) => widget.loadingBuilder != null
-      ? widget.loadingBuilder!(loadingStates)
-      : context.loadingStateWidget(
-          loadingStates.first.message,
-          loadingStates
-                  .map<double>((e) => e.progress ?? 0.0)
-                  .fold<double>(0.0, (progress, e) => progress + e) /
-              loadingStates.length);
+  Widget loadingWidget(List<LoadingState> loadingStates) =>
+      widget.loadingBuilder != null
+          ? widget.loadingBuilder!(loadingStates)
+          : context.loadingStateWidget(
+              loadingStates.first.message,
+              loadingStates
+                      .map<double>((e) => e.progress ?? 0.0)
+                      .fold<double>(0.0, (progress, e) => progress + e) /
+                  loadingStates.length);
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +79,8 @@ class _BlocEaseMultiStateBuilderState extends State<BlocEaseMultiStateBuilder>
           final failedStates = states.whereType<FailedState>().toList();
           if (failedStates.isNotEmpty) return failureWidget(failedStates);
 
-          final areAnyInitialState = states.any((state) => state is InitialState);
+          final areAnyInitialState =
+              states.any((state) => state is InitialState);
           if (areAnyInitialState) return context.initialStateWidget();
 
           final loadingStates = states.whereType<LoadingState>().toList();

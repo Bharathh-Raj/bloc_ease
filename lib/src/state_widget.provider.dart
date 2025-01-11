@@ -30,7 +30,8 @@ class BlocEaseStateWidgetProvider extends InheritedWidget {
   final FailureBuilder failureStateBuilder;
 
   static BlocEaseStateWidgetProvider? maybeOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<BlocEaseStateWidgetProvider>();
+    return context
+        .dependOnInheritedWidgetOfExactType<BlocEaseStateWidgetProvider>();
   }
 
   static BlocEaseStateWidgetProvider of(BuildContext context) {
@@ -49,11 +50,14 @@ class BlocEaseStateWidgetProvider extends InheritedWidget {
 /// Extension on [BuildContext] to easily access the default state builders.
 extension ContextX on BuildContext {
   /// Retrieves the default `InitialState` builder from the nearest [BlocEaseStateWidgetProvider].
-  InitialBuilder get initialStateWidget => BlocEaseStateWidgetProvider.of(this).initialStateBuilder;
+  InitialBuilder get initialStateWidget =>
+      BlocEaseStateWidgetProvider.of(this).initialStateBuilder;
 
   /// Retrieves the default `LoadingState` builder from the nearest [BlocEaseStateWidgetProvider].
-  LoadingBuilder get loadingStateWidget => BlocEaseStateWidgetProvider.of(this).loadingStateBuilder;
+  LoadingBuilder get loadingStateWidget =>
+      BlocEaseStateWidgetProvider.of(this).loadingStateBuilder;
 
   /// Retrieves the default `FailedState` builder from the nearest [BlocEaseStateWidgetProvider].
-  FailureBuilder get failedStateWidget => BlocEaseStateWidgetProvider.of(this).failureStateBuilder;
+  FailureBuilder get failedStateWidget =>
+      BlocEaseStateWidgetProvider.of(this).failureStateBuilder;
 }

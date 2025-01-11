@@ -61,7 +61,8 @@ sealed class BlocEaseState<T> {
     required R Function() initialState,
     required R Function(String? message, double? progress) loadingState,
     required R Function(T successObject) succeedState,
-    required R Function(String? failureMessage, dynamic exception, VoidCallback? retryCallback)
+    required R Function(String? failureMessage, dynamic exception,
+            VoidCallback? retryCallback)
         failedState,
   }) {
     final BlocEaseState<T> state = this;
@@ -69,7 +70,8 @@ sealed class BlocEaseState<T> {
       InitialState<T>() => initialState(),
       LoadingState<T>() => loadingState(state.message, state.progress),
       SucceedState<T>() => succeedState(state.success),
-      FailedState<T>() => failedState(state.message, state.exception, state.retryCallback),
+      FailedState<T>() =>
+        failedState(state.message, state.exception, state.retryCallback),
     };
   }
 
@@ -99,9 +101,12 @@ sealed class BlocEaseState<T> {
   }) {
     final BlocEaseState<T> state = this;
     return switch (state) {
-      InitialState<T>() => initialState == null ? orElse() : initialState(state),
-      LoadingState<T>() => loadingState == null ? orElse() : loadingState(state),
-      SucceedState<T>() => succeedState == null ? orElse() : succeedState(state),
+      InitialState<T>() =>
+        initialState == null ? orElse() : initialState(state),
+      LoadingState<T>() =>
+        loadingState == null ? orElse() : loadingState(state),
+      SucceedState<T>() =>
+        succeedState == null ? orElse() : succeedState(state),
       FailedState<T>() => failedState == null ? orElse() : failedState(state),
     };
   }
@@ -128,14 +133,18 @@ sealed class BlocEaseState<T> {
     R Function()? initialState,
     R Function(String? message, double? progress)? loadingState,
     R Function(T successObject)? succeedState,
-    R Function(String? failureMessage, dynamic exception, VoidCallback? retryCallback)? failedState,
+    R Function(String? failureMessage, dynamic exception,
+            VoidCallback? retryCallback)?
+        failedState,
   }) {
     final BlocEaseState<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState == null ? orElse() : initialState(),
-      LoadingState<T>() =>
-        loadingState == null ? orElse() : loadingState(state.message, state.progress),
-      SucceedState<T>() => succeedState == null ? orElse() : succeedState(state.success),
+      LoadingState<T>() => loadingState == null
+          ? orElse()
+          : loadingState(state.message, state.progress),
+      SucceedState<T>() =>
+        succeedState == null ? orElse() : succeedState(state.success),
       FailedState<T>() => failedState == null
           ? orElse()
           : failedState(state.message, state.exception, state.retryCallback),
@@ -143,7 +152,8 @@ sealed class BlocEaseState<T> {
   }
 
   /// Checks if the current state is `LoadingState`.
-  bool get isLoading => maybeWhen(orElse: () => false, loadingState: (_, __) => true);
+  bool get isLoading =>
+      maybeWhen(orElse: () => false, loadingState: (_, __) => true);
 }
 
 /// Represents the initial state of a Bloc.
@@ -183,7 +193,9 @@ class SucceedState<T> extends BlocEaseState<T> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SucceedState && runtimeType == other.runtimeType && success == other.success;
+      other is SucceedState &&
+          runtimeType == other.runtimeType &&
+          success == other.success;
 
   @override
   int get hashCode => success.hashCode;
@@ -211,5 +223,6 @@ class FailedState<T> extends BlocEaseState<T> {
           retryCallback == other.retryCallback;
 
   @override
-  int get hashCode => message.hashCode ^ exception.hashCode ^ retryCallback.hashCode;
+  int get hashCode =>
+      message.hashCode ^ exception.hashCode ^ retryCallback.hashCode;
 }

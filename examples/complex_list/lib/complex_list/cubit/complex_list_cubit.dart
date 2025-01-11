@@ -6,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../repository.dart';
 import '../models/item.dart';
 
-class ComplexListCubit extends Cubit<ComplexListState> with CacheExBlocEaseStateMixin{
+class ComplexListCubit extends Cubit<ComplexListState>
+    with CacheExBlocEaseStateMixin {
   ComplexListCubit({required this.repository})
       : super(const ComplexListLoadingState());
 
@@ -49,10 +50,16 @@ typedef ComplexListLoadingState = LoadingState<List<Item>>;
 typedef ComplexListSucceedState = SucceedState<List<Item>>;
 typedef ComplexListFailedState = FailedState<List<Item>>;
 
-typedef ComplexListBlocBuilder = BlocBuilder<ComplexListCubit, ComplexListState>;
-typedef ComplexListBlocListener = BlocListener<ComplexListCubit, ComplexListState>;
-typedef ComplexListBlocConsumer = BlocConsumer<ComplexListCubit, ComplexListState>;
+typedef ComplexListBlocBuilder
+    = BlocBuilder<ComplexListCubit, ComplexListState>;
+typedef ComplexListBlocListener
+    = BlocListener<ComplexListCubit, ComplexListState>;
+typedef ComplexListBlocConsumer
+    = BlocConsumer<ComplexListCubit, ComplexListState>;
 
-typedef ComplexListBlocEaseBuilder = BlocEaseStateBuilder<ComplexListCubit, List<Item>>;
-typedef ComplexListBlocEaseListener = BlocEaseStateListener<ComplexListCubit, List<Item>>;
-typedef ComplexListBlocEaseConsumer = BlocEaseStateConsumer<ComplexListCubit, List<Item>>;
+typedef ComplexListBlocEaseBuilder
+    = BlocEaseStateBuilder<ComplexListCubit, List<Item>>;
+typedef ComplexListBlocEaseListener
+    = BlocEaseStateListener<ComplexListCubit, List<Item>>;
+typedef ComplexListBlocEaseConsumer
+    = BlocEaseStateConsumer<ComplexListCubit, List<Item>>;
