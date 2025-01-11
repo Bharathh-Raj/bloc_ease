@@ -5,8 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 
-/// Sometimes we need more than one cubit's state to do some operation.
-/// This combines all the states from blocs/cubits passed on [blocEaseBlocs] and lets us access all via [onStateChange].
+/// A widget that listens to multiple Bloc states and triggers a callback when states change.
+///
+/// This widget is useful when you need to perform an operation based on the combined states of multiple cubits.
+///
+/// - [blocEaseBlocs] is a list of cubits that emit [BlocEaseState].
+/// - [onStateChange] is a callback that is invoked with the combined states.
+/// - [child] is the widget below this widget in the tree.
 ///
 /// PRO TIP: We can limit the type of [BlocEaseState] for all [blocEaseBlocs] by using Generics.
 /// eg: By calling BlocEaseMultiStateListener<SucceedState>(blocEaseCubits: [...]), all the states we get via [onStateChange] will be [SucceedState]
@@ -18,11 +23,13 @@ class BlocEaseMultiStateListener<S extends BlocEaseState> extends StatefulWidget
     required this.child,
   });
 
-  /// List of Cubits that emits [BlocEaseState].
-  final List<Cubit<BlocEaseState>> blocEaseBlocs;
+  /// List of cubits that emit [BlocEaseState].
+  final List<StateStreamable<BlocEaseState>> blocEaseBlocs;
 
-  /// Combines all states in [states] param.
+  /// Callback that is invoked with the combined states.
   final void Function(List<S> states) onStateChange;
+
+  /// The widget below this widget in the tree.
   final Widget child;
 
   @override
@@ -36,7 +43,7 @@ class _BlocEaseMultiStateListenerState<S extends BlocEaseState>
   @override
   void initState() {
     _stream = MergeStream(widget.blocEaseBlocs.map((e) => e.stream)).listen(
-      (event) {
+          (event) {
         final states = widget.blocEaseBlocs.map((e) => e.state).toList();
         final areAllStateAligningWithType = states.every((e) => e is S);
         if (areAllStateAligningWithType) {

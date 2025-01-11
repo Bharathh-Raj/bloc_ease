@@ -65,8 +65,8 @@ Don't worry about any of these. This package will take care of everything.
   - Selecting app currency `SucceedState<Currency>(USD())` or unit of temperature `SucceedState<TemperatureUnit>(Celsius())`
 
 ## How to use?
-### Step 1 - Configuring `BlocEaseStateWidgetsProvider`
-`BlocEaseStateWidgetsProvider` is used to configure the default widgets for `InitialState`, `LoadingState` and `FailedState`. 
+### Step 1 - Configuring `BlocEaseStateWidgetProvider`
+`BlocEaseStateWidgetProvider` is used to configure the default widgets for `InitialState`, `LoadingState` and `FailedState`. 
 Remember, make sure this widget is wrapped over the `MaterialApp` so that it is accessible from everywhere.
 ```dart
 class MyApp extends StatelessWidget {
@@ -74,7 +74,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocEaseStateWidgetsProvider( // <--
+    return BlocEaseStateWidgetProvider( // <--
       initialStateBuilder: () => const Placeholder(),
       loadingStateBuilder: ([progress]) => const Center(child: CircularProgressIndicator()),
       failureStateBuilder: ([exceptionObject, failureMessage]) => Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
@@ -276,9 +276,9 @@ class SomeWidget extends StatelessWidget {
 BlocEaseMultiStateBuilder lets you combine different bloc/cubits that emits BlocEaseState and handle as one widget. There are so many use cases in here as well like
 - Showing single loading indicator instead of one of every bloc.
 - Showing single error widget instead of multiple error widgets on screen.
-- Since we know how many bloc/cubits are in `LoadingState`, we can show loading progress. (Automatically handles with `BlocEaseStateWidgetsProvider` - `progress` field)
+- Since we know how many bloc/cubits are in `LoadingState`, we can show loading progress. (Automatically handles with `BlocEaseStateWidgetProvider` - `progress` field)
 - Showing all widget at once instead of loading separately.
-- By default, we just need to pass `successBuilder`, all other states are handled by default with `BlocEaseStateWidgetsProvider`.
+- By default, we just need to pass `successBuilder`, all other states are handled by default with `BlocEaseStateWidgetProvider`.
 
 > **REMEMBER:** If any state is `FailedState`, it draws error widget. else if any state is `InitialState`, it draws initialWidget. else if any state is `LoadingState`, it draws `LoadingWidget`. Only if all states are `SucceedState`, it draws success widget.
 
@@ -537,7 +537,7 @@ One of the painful work with using BlocBuilder is that we need to write the enti
 - `UserBlocConsumer` instead of `BlocConsumer<UserCubit, UserState>`
 
 ### Overriding the default state widgets for a certain page or widget tree
-If we wrap the same `BlocEaseStateWidgetsProvider` over some widget tree, all the default widgets gets overridden with this new implementation.
+If we wrap the same `BlocEaseStateWidgetProvider` over some widget tree, all the default widgets gets overridden with this new implementation.
 So all the BlocEaseBuilders comes under this widget use this overridden widgets as default case.
 ```dart
 class SomePage extends StatelessWidget {
@@ -545,7 +545,7 @@ class SomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocEaseStateWidgetsProvider(
+    return BlocEaseStateWidgetProvider(
       initialStateBuilder: () => const SizedBox(),
       loadingStateBuilder: ([progress]) => const CustomLoader(),
       failureStateBuilder: ([exception, message, retryCallback]) => Text(message ?? 'Oops something went wrong!'),
