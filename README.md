@@ -1,6 +1,8 @@
 # bloc_ease
 A dart library to solve boilerplate issues with [flutter_bloc](https://pub.dev/packages/flutter_bloc) by just using typedefs instead of defining state classes.
 
+![bloc_ease_template](https://i.imgur.com/iotZZaP.gif)
+
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/f9a24509-a816-48fd-bd14-5b5163a97d00)
 
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/115729d6-4e51-4b42-9c4c-80ef683cb294)
