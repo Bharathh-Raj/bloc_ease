@@ -5,7 +5,7 @@ A dart library to solve boilerplate issues with [flutter_bloc](https://pub.dev/p
 
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/115729d6-4e51-4b42-9c4c-80ef683cb294)
 
-# Index
+## Index
 - [Problems this library addresses](#problems-this-library-addresses)
 - [Solutions this library provides](#solutions-this-library-provides)
 - [Readme](#readme)
@@ -26,14 +26,14 @@ A dart library to solve boilerplate issues with [flutter_bloc](https://pub.dev/p
 - [Example projects](#example-projects)
 - [Connect with me](#connect-with-me-bharath)
 
-## Problems this library addresses
-1. Writing same type of states for every blocs / cubits (Initial, Loading, Success, Failure).
-2. Overriding == and hashcode, or using Equatable package for all states.
-3. Need to handle every states in the UI even-though we just need success state.
-4. Return same widget for same kind of state across all blocs / cubits (ProgressIndicator for Loading state).
-5. Need to handle buildWhen so that we don't need to handle every states.
-6. Choosing bad practice of using Single-state class instead of Inheritance so that its easy for us to handle in UI.
-7. Choosing bad practice of managing multiple states together because of boilerplate.
+## Problems This Library Addresses
+1. Repeatedly writing the same types of states for every Bloc/Cubit (Initial, Loading, Success, Failure).
+2. Overriding `==` and `hashCode`, or using the Equatable package for all states.
+3. Handling every state in the UI, even when only the success state is needed.
+4. Returning the same widget for the same kind of state across all Blocs/Cubits (e.g., `ProgressIndicator` for the Loading state).
+5. Managing `buildWhen` to avoid handling every state.
+6. Adopting poor practices such as using a single-state class instead of inheritance.
+7. Managing multiple states together due to boilerplate code.
 
 We are going to solve these using
   - Generics (Inherited states)
@@ -42,32 +42,39 @@ We are going to solve these using
   - typedefs (Use [templates](#templates))
 Don't worry about any of these. This package will take care of everything.
 
-## Solutions this library provides
-1. Don't need to write state classes for any Bloc / Cubit. Instead using the state comes with this package with generics (`SucceedState<Auth>` vs `SucceedState<User>`).
-2. Globally handling common states like Initial, Loading, Failure states in UI. Don't need to worry about these state where-ever we are using Bloc / Cubit.
-3. Comes with a builder that provides the success object in typesafe manner and it could handle other states by itself.
-4. Using typedefs to easily differentiate between states (`typedef AuthSucceedState = SucceedState<Auth>`). (Snippet included for Intellij and VSCode)
+## Solutions This Library Provides
+
+1. Elimination of the need to write state classes for any Bloc/Cubit. Instead, utilize the states provided by this package with generics (e.g., `SucceedState<Auth>` vs `SucceedState<User>`).
+2. Global handling of common states such as Initial, Loading, and Failure states in the UI. This removes the necessity to manage these states wherever Bloc/Cubit is used.
+3. Provision of a builder that offers the success object in a type-safe manner, while autonomously handling other states.
+4. Utilization of typedefs to easily differentiate between states (e.g., `typedef AuthSucceedState = SucceedState<Auth>`). Snippets are included for IntelliJ and VSCode.
 
 ## Readme
-`InitialState` `LoadingState` `SucceedState` `FailedState`. Trust me, we could hold any state with one of these states. If we could not hold our state within these states, we are most probably managing multiple states together.
-- Asynchronous CRUD Operation state can usually be either of these 4 states.
+
+The states `InitialState`, `LoadingState`, `SucceedState`, and `FailedState` can encapsulate most state. If a state cannot be represented within these states, it is likely that multiple states are being managed together.
+
+- **Asynchronous CRUD Operation State**: Typically falls into one of these four states:
   - Backend fetching
-  - Device IO Job
+  - Device I/O Job
   - Multi-threaded operations
-- Some synchronous Operation state can be either of 3 states other than `LoadingState`.
+
+- **Synchronous Operation State**: Can be one of three states, excluding `LoadingState`:
   - Parsing logic
-  - Encryption / Decryption logic
-  - Filtering a list with some condition
-- Some synchronous operation can hold just `SucceedState` or `FailedState`.
+  - Encryption/Decryption logic
+  - Filtering a list based on a condition
+
+- **Synchronous Operation**: Can be represented by either `SucceedState` or `FailedState`:
   - Calculation (`SucceedState<double>(10)` vs `FailedState<double>(DivideByZeroException())`)
-- Some state can only be depicted as `SucceedState`.
-  - Flutter's Default counter app state `SucceedState<Int>(0)`
+
+- **Specific State Representation**: Some states can only be depicted as `SucceedState`:
+  - Flutter's default counter app state `SucceedState<int>(0)`
   - Selecting app currency `SucceedState<Currency>(USD())` or unit of temperature `SucceedState<TemperatureUnit>(Celsius())`
 
 ## How to use?
 ### Step 1 - Configuring `BlocEaseStateWidgetProvider`
-`BlocEaseStateWidgetProvider` is used to configure the default widgets for `InitialState`, `LoadingState` and `FailedState`. 
-Remember, make sure this widget is wrapped over the `MaterialApp` so that it is accessible from everywhere.
+`BlocEaseStateWidgetProvider` is used to configure the default widgets for `InitialState`, `LoadingState`, and `FailedState`. 
+Ensure that this widget is wrapped around the `MaterialApp` so that it is accessible from everywhere.
+
 ```dart
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -86,9 +93,9 @@ class MyApp extends StatelessWidget {
 }
 ```
 ### Step 2 - Create Bloc/Cubit with the snippet/template provided below.
-Use the shortcut `bloceasebloc` or `bloceasecubit` from the [template](#templates) to create bloc or cubit based on the need. That creates this template and you just need to edit 2 names.
-1. Cubit name -> UserCubit
-2. Success Object -> User (This is the object we expect from the success state of the bloc/cubit)
+Use the shortcut `bloceasebloc` or `bloceasecubit` from the [template](#templates) to create a bloc or cubit based on the need. This creates a template that requires editing two names:
+Cubit name -> UserCubit
+Success Object -> User (This is the object expected from the success state of the bloc/cubit)
 
 ```dart
 import 'package:bloc_ease/bloc_ease.dart';
@@ -129,8 +136,8 @@ class UserCubit extends Cubit<UserState> { //<--Cubit name
 ```
 
 ### Step 3 - Use `<CubitName>BlocEaseBuilder` instead of BlocBuilder in the UI
-`<CubitName>BlocEaseBuilder (UserBlocEaseBuilder)` is the builder we can use to access the Success Object we configured in Step 2 with `succeedBuilder` required field.
-All the other states `InitialState`, `LoadingState` and `FailedState` uses the default widgets we configured in Step 1.
+`<CubitName>BlocEaseBuilder (UserBlocEaseBuilder)` is the builder used to access the Success Object configured in Step 2 with the succeedBuilder required field. 
+All other states (`InitialState`, `LoadingState`, and `FailedState`) use the default widgets configured in Step 1.
 
 ```dart
 class SomeWidget extends StatelessWidget {
@@ -166,8 +173,8 @@ Notice that, `ItemInitialState` not used even though it can be accessed.
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/0b4020be-020f-4d0a-8190-90f995a629fd)
 
 ## Cache State with Ease - CacheExBlocEaseStateMixin
-Just by using this Mixin `CacheExBlocEaseStateMixin` with any bloc or cubit that emits `BlocEaseState`, we get access to previous states of type with `exLoadingState`, `exSucceedState` and `exFailedState`.
-We also get `exSucceedObject` that directly lets us access previous success object if exist. With this exStates, we can compare the change and do operation based on that.
+By utilizing the `CacheExBlocEaseStateMixin` mixin with any Bloc or Cubit that emits `BlocEaseState`, you gain access to previous states, including `exLoadingState`, `exSucceedState`, and `exFailedState`. 
+Additionally, the `exSucceedObject` allows direct access to the previous success object, if it exists. These extended states enable comparison and operations based on state changes.
 
 ```dart
 import 'package:bloc_ease/bloc_ease.dart';
@@ -220,13 +227,13 @@ class SomeWidget extends StatelessWidget {
 }
 ```
 
-> **Tip**: We can animate between loading states or success states by comparing `exLoadingState` and current `loadingState` or `exSucceedState` and current `succeedState`.
+> **Tip**: It is possible to animate transitions between loading states or success states by comparing the `exLoadingState` with the current `loadingState` or the `exSucceedState` with the current `succeedState`.
 
 ## Listen to multiple Blocs - BlocEaseMultiStateListener
-BlocEaseMultiStateListener lets us listen to multiple bloc/cubit that emits `BlocEaseState`. There are so many use cases like
-- Showing progress dialog when any of the cubit is still in `LoadingState`. 
-- Showing error message if any cubit emits `FailedState`.
-- Showing success snackbar if only all cubits emits `SucceedState`.
+BlocEaseMultiStateListener allows for monitoring multiple blocs or cubits that emit `BlocEaseState`. The primary use cases include:
+- Displaying a progress dialog when any cubit is in the `LoadingState`.
+- Showing an error message if any cubit emits a `FailedState`.
+- Displaying a success snackbar only when all cubits emit a `SucceedState`.
 - ...
 
 ```dart
@@ -272,15 +279,17 @@ class SomeWidget extends StatelessWidget {
 }
 ```
 
-## Multi state builder - BlocEaseMultiStateBuilder
-BlocEaseMultiStateBuilder lets you combine different bloc/cubits that emits BlocEaseState and handle as one widget. There are so many use cases in here as well like
-- Showing single loading indicator instead of one of every bloc.
-- Showing single error widget instead of multiple error widgets on screen.
-- Since we know how many bloc/cubits are in `LoadingState`, we can show loading progress. (Automatically handles with `BlocEaseStateWidgetProvider` - `progress` field)
-- Showing all widget at once instead of loading separately.
-- By default, we just need to pass `successBuilder`, all other states are handled by default with `BlocEaseStateWidgetProvider`.
+## Multi-State Builder - BlocEaseMultiStateBuilder
+The `BlocEaseMultiStateBuilder` allows for the combination of different blocs or cubits that emit `BlocEaseState` into a single widget. This utility offers several use cases, including:
 
-> **REMEMBER:** If any state is `FailedState`, it draws error widget. else if any state is `InitialState`, it draws initialWidget. else if any state is `LoadingState`, it draws `LoadingWidget`. Only if all states are `SucceedState`, it draws success widget.
+- Displaying a single loading indicator instead of one for each bloc.
+- Showing a single error widget instead of multiple error widgets on the screen.
+- Indicating loading progress by knowing how many blocs or cubits are in the `LoadingState` (automatically handled with `BlocEaseStateWidgetProvider` - `progress` field).
+- Rendering all widgets at once instead of loading them separately.
+
+By default, only the `successBuilder` needs to be provided; all other states are managed by default with `BlocEaseStateWidgetProvider`.
+
+> **Note:** If any state is a `FailedState`, an error widget is displayed. If any state is an `InitialState`, the initial widget is shown. If any state is a `LoadingState`, the loading widget is rendered. Only if all states are `SucceedState`, the success widget is displayed.
 
 ```dart
 class SomeWidget extends StatelessWidget {
@@ -490,7 +499,7 @@ class SomeWidget extends StatelessWidget {
 ```
 
 ### Take advantage of Records when defining SuccessObject type.
-In some cases, we need multiple params as Success object. In that case, we could easily take advantage of Records instead of creating a data class for that.
+In some cases, we need multiple params as Success object. In that case, we could easily take advantage of [Records](https://dart.dev/language/records) instead of creating a data class for that.
 ```dart
 import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
