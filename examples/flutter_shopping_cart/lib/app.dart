@@ -25,12 +25,13 @@ class App extends StatelessWidget {
           )..add(CartStarted()),
         )
       ],
-      child: BlocEaseStateWidgetsProvider(
+      child: BlocEaseStateWidgetProvider(
         initialStateBuilder: () => const SizedBox(),
         loadingStateBuilder: ([message, progress]) => Center(
           child: CircularProgressIndicator(value: progress),
         ),
-        failureStateBuilder: ([failureMessage, exception, retryCallback]) => Center(
+        failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
+            Center(
           child: Text(failureMessage ?? 'Something went wrong!'),
         ),
         child: MaterialApp(

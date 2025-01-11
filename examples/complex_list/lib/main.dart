@@ -8,9 +8,10 @@ import 'simple_bloc_observer.dart';
 
 void main() {
   Bloc.observer = const SimpleBlocObserver();
-  runApp(BlocEaseStateWidgetsProvider(
+  runApp(BlocEaseStateWidgetProvider(
       initialStateBuilder: () => const Placeholder(),
-      loadingStateBuilder: ([message, progress]) => const Center(child: CircularProgressIndicator()),
+      loadingStateBuilder: ([message, progress]) =>
+          const Center(child: CircularProgressIndicator()),
       failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
           Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
       child: App(repository: Repository())));

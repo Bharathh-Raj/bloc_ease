@@ -11,14 +11,16 @@ import 'package:mocktail/mocktail.dart';
 
 class MockRepository extends Mock implements Repository {}
 
-class MockComplexListCubit extends MockCubit<ComplexListState> implements ComplexListCubit {}
+class MockComplexListCubit extends MockCubit<ComplexListState>
+    implements ComplexListCubit {}
 
 extension on WidgetTester {
   Future<void> pumpListPage(Repository repository) {
     return pumpWidget(
-      BlocEaseStateWidgetsProvider(
+      BlocEaseStateWidgetProvider(
         initialStateBuilder: () => const Placeholder(),
-        loadingStateBuilder: ([message, progress]) => const Center(child: CircularProgressIndicator()),
+        loadingStateBuilder: ([message, progress]) =>
+            const Center(child: CircularProgressIndicator()),
         failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
             Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
         child: MaterialApp(
@@ -33,9 +35,10 @@ extension on WidgetTester {
 
   Future<void> pumpListView(ComplexListCubit listCubit) {
     return pumpWidget(
-      BlocEaseStateWidgetsProvider(
+      BlocEaseStateWidgetProvider(
         initialStateBuilder: () => const Placeholder(),
-        loadingStateBuilder: ([message, progress]) => const Center(child: CircularProgressIndicator()),
+        loadingStateBuilder: ([message, progress]) =>
+            const Center(child: CircularProgressIndicator()),
         failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
             Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
         child: MaterialApp(
