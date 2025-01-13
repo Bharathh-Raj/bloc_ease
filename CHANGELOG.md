@@ -40,5 +40,5 @@
 - feat: exSucceedObject in BlocEaseState
   - Used to extract the succeed object from the state
 
-## 1.0.3
+## 1.0.4
 - Docs update
