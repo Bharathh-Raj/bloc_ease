@@ -49,24 +49,26 @@ class BlocEaseStateConsumer<B extends BlocBase<BlocEaseState<T>>, T>
     BlocBuilderCondition<BlocEaseState<T>>? buildWhen,
     super.key,
   }) : super(
-          bloc: bloc,
-          listenWhen: listenWhen,
-          listener: (context, state) => state.maybeWhen(
-            orElse: () => null,
-            initialState: initialListener,
-            loadingState: loadingListener,
-            succeedState: succeedListener,
-            failedState: failureListener,
-          ),
-          buildWhen: buildWhen,
-          builder: (context, state) => state.when(
-            initialState: initialBuilder ??
-                BlocEaseStateWidgetProvider.of(context).initialStateBuilder,
-            loadingState: loadingBuilder ??
-                BlocEaseStateWidgetProvider.of(context).loadingStateBuilder,
-            failedState: failureBuilder ??
-                BlocEaseStateWidgetProvider.of(context).failureStateBuilder,
-            succeedState: succeedBuilder,
-          ),
-        );
+            bloc: bloc,
+            listenWhen: listenWhen,
+            listener: (context, state) => state.maybeWhen(
+                  orElse: () => null,
+                  initialState: initialListener,
+                  loadingState: loadingListener,
+                  succeedState: succeedListener,
+                  failedState: failureListener,
+                ),
+            buildWhen: buildWhen,
+            builder: (context, state) => state.when(
+                  initialState: initialBuilder ??
+                      () => BlocEaseStateWidgetProvider.of(context)
+                          .initialStateBuilder(state as InitialState<T>),
+                  loadingState: loadingBuilder ??
+                      ([_, __]) => BlocEaseStateWidgetProvider.of(context)
+                          .loadingStateBuilder(state as LoadingState<T>),
+                  failedState: failureBuilder ??
+                      ([_, __, ___]) => BlocEaseStateWidgetProvider.of(context)
+                          .failureStateBuilder(state as FailedState<T>),
+                  succeedState: succeedBuilder,
+                ));
 }

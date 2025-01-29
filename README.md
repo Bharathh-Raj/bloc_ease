@@ -84,9 +84,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocEaseStateWidgetProvider( // <--
-      initialStateBuilder: () => const Placeholder(),
-      loadingStateBuilder: ([progress]) => const Center(child: CircularProgressIndicator()),
-      failureStateBuilder: ([exceptionObject, failureMessage]) => Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
+      initialStateBuilder: (state) => const Placeholder(),
+      loadingStateBuilder: (state) => const Center(child: CircularProgressIndicator()),
+      failureStateBuilder: (state) => Center(child: Text(state.message ?? 'Oops something went wrong!')),
       child: MaterialApp(
           //..
           ),
@@ -418,7 +418,7 @@ class BlocEaseListenerExampleWidget extends StatelessWidget {
     return UserBlocEaseListener( //<-- <CubitName>BlocEaseListener
       initialListener: () {},
       loadingListener: ([progress]) {},
-      failureListener: ([failureMessage, exception, retryCallback]) {},
+      failureListener: ([message, exception, retryCallback]) {},
       succeedListener: (user) {},
       child: //..//,
     );
@@ -434,12 +434,12 @@ class BlocEaseConsumerExampleWidget extends StatelessWidget {
     return UserBlocEaseConsumer( //<-- <CubitName>BlocEaseConsumer
       initialListener: () {},
       loadingListener: ([progress]) {},
-      failureListener: ([failureMessage, exception, retryCallback]) {},
+      failureListener: ([message, exception, retryCallback]) {},
       succeedListener: (user) {},
 
       initialBuilder: () {},
       loadingBuilder: ([progress]) {},
-      failureBuilder: ([failureMessage, exception, retryCallback]) ={},
+      failureBuilder: ([message, exception, retryCallback]) ={},
       succeedBuilder: (user) => SomeWidget(user),
     );
   }
@@ -474,29 +474,6 @@ class UserBloc extends Bloc<UserEvent,UserState> {
       : super(const UserInitialState()){
     // on...
   } 
-}
-```
-
-### Accessing default widget using context.
-Sometimes, we need to access the default loading widget without using builder or we need to wrap the default loading widget with some other widget.
-We can access the default widgets with the help of context extensions.
-- `context.initialStateWidget` -> Default initial state widget.
-- `context.loadingStateWidget` -> Default loading state widget.
-- `context.failedStateWidget` -> Default failed state widget.
-```dart
-class SomeWidget extends StatelessWidget {
-  const SomeWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return UserBlocEaseBuilder(
-      loadingBuilder: ([progress]) => ColoredBox(
-        color: Colors.yellow,
-        child: context.loadingStateWidget(progress), //<--Accessing default loading widget with 'context.loadingStateWidget'
-      ),
-      succeedBuilder: (user) => SomeOtherWidget(user),
-    );
-  }
 }
 ```
 

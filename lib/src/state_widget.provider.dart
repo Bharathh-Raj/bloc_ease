@@ -8,9 +8,9 @@ import 'callbacks.dart';
 /// have access to the default state widgets. It allows configuring the default widgets for these states
 /// for its widget sub-tree.
 ///
-/// - [initialStateBuilder] should be provided with a default widget that will be rendered for `InitialState` in [BlocEaseStateBuilder].
-/// - [loadingStateBuilder] should be provided with a default widget that will be rendered for `LoadingState` in [BlocEaseStateBuilder].
-/// - [failureStateBuilder] should be provided with a default widget that will be rendered for `FailedState` in [BlocEaseStateBuilder].
+/// - [initialStateBuilder] should be provided with a default widget that will be rendered for `InitialState` in [BlocEaseStateBuilder] || [BLocEaseStateConsumer].
+/// - [loadingStateBuilder] should be provided with a default widget that will be rendered for `LoadingState` in [BlocEaseStateBuilder] || [BLocEaseStateConsumer].
+/// - [failureStateBuilder] should be provided with a default widget that will be rendered for `FailedState` in [BlocEaseStateBuilder] || [BLocEaseStateConsumer].
 class BlocEaseStateWidgetProvider extends InheritedWidget {
   const BlocEaseStateWidgetProvider({
     required this.initialStateBuilder,
@@ -21,13 +21,13 @@ class BlocEaseStateWidgetProvider extends InheritedWidget {
   });
 
   /// Default widget builder for the `InitialState`.
-  final InitialBuilder initialStateBuilder;
+  final InitialStateBuilder initialStateBuilder;
 
   /// Default widget builder for the `LoadingState`.
-  final LoadingBuilder loadingStateBuilder;
+  final LoadingStateBuilder loadingStateBuilder;
 
   /// Default widget builder for the `FailedState`.
-  final FailureBuilder failureStateBuilder;
+  final FailureStateBuilder failureStateBuilder;
 
   static BlocEaseStateWidgetProvider? maybeOf(BuildContext context) {
     return context
@@ -50,14 +50,14 @@ class BlocEaseStateWidgetProvider extends InheritedWidget {
 /// Extension on [BuildContext] to easily access the default state builders.
 extension ContextX on BuildContext {
   /// Retrieves the default `InitialState` builder from the nearest [BlocEaseStateWidgetProvider].
-  InitialBuilder get initialStateWidget =>
+  InitialStateBuilder get initialStateWidget =>
       BlocEaseStateWidgetProvider.of(this).initialStateBuilder;
 
   /// Retrieves the default `LoadingState` builder from the nearest [BlocEaseStateWidgetProvider].
-  LoadingBuilder get loadingStateWidget =>
+  LoadingStateBuilder get loadingStateWidget =>
       BlocEaseStateWidgetProvider.of(this).loadingStateBuilder;
 
   /// Retrieves the default `FailedState` builder from the nearest [BlocEaseStateWidgetProvider].
-  FailureBuilder get failedStateWidget =>
+  FailureStateBuilder get failedStateWidget =>
       BlocEaseStateWidgetProvider.of(this).failureStateBuilder;
 }

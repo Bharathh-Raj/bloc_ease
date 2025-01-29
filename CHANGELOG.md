@@ -42,3 +42,7 @@
 
 ## 1.0.4
 - Docs update
+
+## 1.1.0
+- feat: state parameter support in BlocEaseStateWidgetsProvider
+  - Useful for state type checks. 

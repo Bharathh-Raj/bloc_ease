@@ -41,14 +41,14 @@ class BlocEaseStateBuilder<B extends BlocBase<BlocEaseState<T>>, T>
             buildWhen: buildWhen,
             builder: (context, state) => state.when(
                   initialState: initialBuilder ??
-                      BlocEaseStateWidgetProvider.of(context)
-                          .initialStateBuilder,
+                      () => BlocEaseStateWidgetProvider.of(context)
+                          .initialStateBuilder(state as InitialState<T>),
                   loadingState: loadingBuilder ??
-                      BlocEaseStateWidgetProvider.of(context)
-                          .loadingStateBuilder,
+                      ([_, __]) => BlocEaseStateWidgetProvider.of(context)
+                          .loadingStateBuilder(state as LoadingState<T>),
                   failedState: failureBuilder ??
-                      BlocEaseStateWidgetProvider.of(context)
-                          .failureStateBuilder,
+                      ([_, __, ___]) => BlocEaseStateWidgetProvider.of(context)
+                          .failureStateBuilder(state as FailedState<T>),
                   succeedState: succeedBuilder,
                 ));
 }
