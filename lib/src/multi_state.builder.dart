@@ -74,8 +74,9 @@ class _BlocEaseMultiStateBuilderState extends State<BlocEaseMultiStateBuilder>
           if (failedStates.isNotEmpty) return failureWidget(failedStates);
 
           final initialStates = states.whereType<InitialState>().toList();
-          if (initialStates.isNotEmpty)
-            return context.initialStateWidget(initialStates.last);
+          if (initialStates.isNotEmpty) {
+            return context.initialStateWidget(initialStates.first);
+          }
 
           final loadingStates = states.whereType<LoadingState>().toList();
           if (loadingStates.isNotEmpty) return loadingWidget(loadingStates);
