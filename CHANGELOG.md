@@ -46,3 +46,6 @@
 ## 1.1.0
 - feat: state parameter support in BlocEaseStateWidgetsProvider
   - Useful for state type checks. 
+
+## 1.1.1
+- feat: util function -> waitUntilBlocEaseLoading
