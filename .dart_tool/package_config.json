@@ -128,6 +128,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "rxdart",
+      "rootUri": "file:///Users/bharatht/.pub-cache/hosted/pub.dev/rxdart-0.28.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///Users/bharatht/development/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -188,7 +194,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2024-11-26T10:28:14.411825Z",
+  "generated": "2025-01-29T14:49:27.102019Z",
   "generator": "pub",
   "generatorVersion": "3.5.4",
   "flutterRoot": "file:///Users/bharatht/development/flutter",

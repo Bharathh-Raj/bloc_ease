@@ -8,8 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 class MockCartBloc extends MockBloc<CartEvent, CartState> implements CartBloc {}
 
-class MockCatalogBloc extends MockBloc<CatalogEvent, CatalogState>
-    implements CatalogBloc {}
+class MockCatalogBloc extends MockBloc<CatalogEvent, CatalogState> implements CatalogBloc {}
 
 extension PumpApp on WidgetTester {
   Future<void> pumpApp({
@@ -19,12 +18,10 @@ extension PumpApp on WidgetTester {
   }) {
     return pumpWidget(
       BlocEaseStateWidgetProvider(
-        initialStateBuilder: () => const SizedBox(),
-        loadingStateBuilder: ([message, progress]) =>
-            const Center(child: CircularProgressIndicator()),
-        failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
-            Center(
-          child: Text(failureMessage ?? 'Something went wrong!'),
+        initialStateBuilder: (_) => const SizedBox(),
+        loadingStateBuilder: (_) => const Center(child: CircularProgressIndicator()),
+        failureStateBuilder: (failedState) => Center(
+          child: Text(failedState.message ?? 'Something went wrong!'),
         ),
         child: MaterialApp(
           home: MultiBlocProvider(

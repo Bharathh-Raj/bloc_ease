@@ -1,4 +1,3 @@
-import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_shopping_cart/cart/cart.dart';
@@ -14,14 +13,7 @@ class CatalogPage extends StatelessWidget {
         slivers: [
           const CatalogAppBar(),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
-          CatalogBuilder(
-            loadingBuilder: ([message, progress]) => SliverFillRemaining(
-              child: context.loadingStateWidget(message, progress),
-            ),
-            failureBuilder: ([failureMessage, exception, retryCallback]) =>
-                SliverFillRemaining(
-              child: context.failedStateWidget(failureMessage, exception),
-            ),
+          CatalogBlocEaseBuilder(
             succeedBuilder: (catalog) => SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) => CatalogListItem(

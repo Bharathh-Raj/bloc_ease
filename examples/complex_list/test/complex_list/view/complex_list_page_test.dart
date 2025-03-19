@@ -18,11 +18,11 @@ extension on WidgetTester {
   Future<void> pumpListPage(Repository repository) {
     return pumpWidget(
       BlocEaseStateWidgetProvider(
-        initialStateBuilder: () => const Placeholder(),
-        loadingStateBuilder: ([message, progress]) =>
+        initialStateBuilder: (_) => const Placeholder(),
+        loadingStateBuilder: (_) =>
             const Center(child: CircularProgressIndicator()),
-        failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
-            Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
+        failureStateBuilder: (failedState) =>
+            Center(child: Text(failedState.message ?? 'Oops something went wrong!')),
         child: MaterialApp(
           home: RepositoryProvider.value(
             value: repository,
@@ -36,11 +36,11 @@ extension on WidgetTester {
   Future<void> pumpListView(ComplexListCubit listCubit) {
     return pumpWidget(
       BlocEaseStateWidgetProvider(
-        initialStateBuilder: () => const Placeholder(),
-        loadingStateBuilder: ([message, progress]) =>
+        initialStateBuilder: (_) => const Placeholder(),
+        loadingStateBuilder: (_) =>
             const Center(child: CircularProgressIndicator()),
-        failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
-            Center(child: Text(failureMessage ?? 'Oops something went wrong!')),
+        failureStateBuilder: (failedState) =>
+            Center(child: Text(failedState.message ?? 'Oops something went wrong!')),
         child: MaterialApp(
           home: BlocProvider.value(
             value: listCubit,

@@ -26,13 +26,12 @@ class App extends StatelessWidget {
         )
       ],
       child: BlocEaseStateWidgetProvider(
-        initialStateBuilder: () => const SizedBox(),
-        loadingStateBuilder: ([message, progress]) => Center(
-          child: CircularProgressIndicator(value: progress),
+        initialStateBuilder: (_) => const SizedBox(),
+        loadingStateBuilder: (loadingState) => Center(
+          child: CircularProgressIndicator(value: loadingState.progress),
         ),
-        failureStateBuilder: ([failureMessage, exception, retryCallback]) =>
-            Center(
-          child: Text(failureMessage ?? 'Something went wrong!'),
+        failureStateBuilder: (failedState) => Center(
+          child: Text(failedState.message ?? 'Something went wrong!'),
         ),
         child: MaterialApp(
           title: 'Flutter Bloc Shopping Cart',
