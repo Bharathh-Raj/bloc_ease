@@ -8,3 +8,4 @@ export 'src/multi_state.listener.dart';
 export 'src/multi_state.builder.dart';
 export 'src/states.dart';
 export 'src/state_cache.mixin.dart';
+export 'src/bloc_ease_utils.dart';
