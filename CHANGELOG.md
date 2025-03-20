@@ -49,3 +49,6 @@
 
 ## 1.1.1
 - feat: util function -> waitUntilBlocEaseLoading
+
+## 1.1.1+1
+- fix: expose BlocEaseUtils
