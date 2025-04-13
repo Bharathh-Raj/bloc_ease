@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 /// A sealed class representing the state of a Bloc.
 ///
-/// This class provides methods to map and handle different states such as `InitialState`, `LoadingState`, `SucceedState`, and `FailedState`.
+/// This class provides methods to map and handle different states such as `InitialState`, `LoadingState`, `SuccessState`, and `FailureState`.
 sealed class BlocEaseState<T> {
   const BlocEaseState();
 
@@ -10,32 +10,32 @@ sealed class BlocEaseState<T> {
   ///
   /// - [initialState]: Function to handle `InitialState`.
   /// - [loadingState]: Function to handle `LoadingState`.
-  /// - [succeedState]: Function to handle `SucceedState`.
-  /// - [failedState]: Function to handle `FailedState`.
+  /// - [successState]: Function to handle `SuccessState`.
+  /// - [failureState]: Function to handle `FailureState`.
   ///
   /// Example usage:
   /// ```dart
-  /// final state = SucceedState<int>(42);
+  /// final state = SuccessState<int>(42);
   /// final result = state.map(
   ///   initialState: (state) => 'Initial',
   ///   loadingState: (state) => 'Loading',
-  ///   succeedState: (state) => 'Success: ${state.success}',
-  ///   failedState: (state) => 'Failed',
+  ///   successState: (state) => 'Success: ${state.success}',
+  ///   failureState: (state) => 'Failed',
   /// );
   /// print(result); // Output: Success: 42
   /// ```
   R map<R extends Object?>({
     required R Function(InitialState<T> initialState) initialState,
     required R Function(LoadingState<T> loadingState) loadingState,
-    required R Function(SucceedState<T> succeedState) succeedState,
-    required R Function(FailedState<T> failedState) failedState,
+    required R Function(SuccessState<T> successState) successState,
+    required R Function(FailureState<T> failureState) failureState,
   }) {
     final BlocEaseState<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState(state),
       LoadingState<T>() => loadingState(state),
-      SucceedState<T>() => succeedState(state),
-      FailedState<T>() => failedState(state),
+      SuccessState<T>() => successState(state),
+      FailureState<T>() => failureState(state),
     };
   }
 
@@ -43,8 +43,8 @@ sealed class BlocEaseState<T> {
   ///
   /// - [initialState]: Function to handle `InitialState`.
   /// - [loadingState]: Function to handle `LoadingState`.
-  /// - [succeedState]: Function to handle `SucceedState`.
-  /// - [failedState]: Function to handle `FailedState`.
+  /// - [successState]: Function to handle `SuccessState`.
+  /// - [failureState]: Function to handle `FailureState`.
   ///
   /// Example usage:
   /// ```dart
@@ -52,26 +52,26 @@ sealed class BlocEaseState<T> {
   /// final result = state.when(
   ///   initialState: () => 'Initial',
   ///   loadingState: (message, progress) => 'Loading: $message, progress: $progress',
-  ///   succeedState: (success) => 'Success: $success',
-  ///   failedState: (message, exception, retryCallback) => 'Failed: $message',
+  ///   successState: (success) => 'Success: $success',
+  ///   failureState: (message, exception, retryCallback) => 'Failed: $message',
   /// );
   /// print(result); // Output: Loading: Loading, progress: 0.5
   /// ```
   R when<R extends Object?>({
     required R Function() initialState,
     required R Function(String? message, double? progress) loadingState,
-    required R Function(T successObject) succeedState,
+    required R Function(T successObject) successState,
     required R Function(String? failureMessage, dynamic exception,
             VoidCallback? retryCallback)
-        failedState,
+        failureState,
   }) {
     final BlocEaseState<T> state = this;
     return switch (state) {
       InitialState<T>() => initialState(),
       LoadingState<T>() => loadingState(state.message, state.progress),
-      SucceedState<T>() => succeedState(state.success),
-      FailedState<T>() =>
-        failedState(state.message, state.exception, state.retryCallback),
+      SuccessState<T>() => successState(state.success),
+      FailureState<T>() =>
+        failureState(state.message, state.exception, state.retryCallback),
     };
   }
 
@@ -80,8 +80,8 @@ sealed class BlocEaseState<T> {
   /// - [orElse]: Default function to execute if no state matches.
   /// - [initialState]: Optional function to handle `InitialState`.
   /// - [loadingState]: Optional function to handle `LoadingState`.
-  /// - [succeedState]: Optional function to handle `SucceedState`.
-  /// - [failedState]: Optional function to handle `FailedState`.
+  /// - [successState]: Optional function to handle `SuccessState`.
+  /// - [failureState]: Optional function to handle `FailureState`.
   ///
   /// Example usage:
   /// ```dart
@@ -96,8 +96,8 @@ sealed class BlocEaseState<T> {
     required R Function() orElse,
     R Function(InitialState<T> initialState)? initialState,
     R Function(LoadingState<T> loadingState)? loadingState,
-    R Function(SucceedState<T> succeedState)? succeedState,
-    R Function(FailedState<T> failedState)? failedState,
+    R Function(SuccessState<T> successState)? successState,
+    R Function(FailureState<T> failureState)? failureState,
   }) {
     final BlocEaseState<T> state = this;
     return switch (state) {
@@ -105,9 +105,9 @@ sealed class BlocEaseState<T> {
         initialState == null ? orElse() : initialState(state),
       LoadingState<T>() =>
         loadingState == null ? orElse() : loadingState(state),
-      SucceedState<T>() =>
-        succeedState == null ? orElse() : succeedState(state),
-      FailedState<T>() => failedState == null ? orElse() : failedState(state),
+      SuccessState<T>() =>
+        successState == null ? orElse() : successState(state),
+      FailureState<T>() => failureState == null ? orElse() : failureState(state),
     };
   }
 
@@ -116,15 +116,15 @@ sealed class BlocEaseState<T> {
   /// - [orElse]: Default function to execute if no state matches.
   /// - [initialState]: Optional function to handle `InitialState`.
   /// - [loadingState]: Optional function to handle `LoadingState`.
-  /// - [succeedState]: Optional function to handle `SucceedState`.
-  /// - [failedState]: Optional function to handle `FailedState`.
+  /// - [successState]: Optional function to handle `SuccessState`.
+  /// - [failureState]: Optional function to handle `FailureState`.
   ///
   /// Example usage:
   /// ```dart
-  /// final state = FailedState<int>('Error', Exception('Failed'));
+  /// final state = FailureState<int>('Error', Exception('Failed'));
   /// final result = state.maybeWhen(
   ///   orElse: () => 'Unknown state',
-  ///   failedState: (message, exception, retryCallback) => 'Failed: $message',
+  ///   failureState: (message, exception, retryCallback) => 'Failed: $message',
   /// );
   /// print(result); // Output: Failed: Error
   /// ```
@@ -132,10 +132,10 @@ sealed class BlocEaseState<T> {
     required R Function() orElse,
     R Function()? initialState,
     R Function(String? message, double? progress)? loadingState,
-    R Function(T successObject)? succeedState,
+    R Function(T successObject)? successState,
     R Function(String? failureMessage, dynamic exception,
             VoidCallback? retryCallback)?
-        failedState,
+        failureState,
   }) {
     final BlocEaseState<T> state = this;
     return switch (state) {
@@ -143,11 +143,11 @@ sealed class BlocEaseState<T> {
       LoadingState<T>() => loadingState == null
           ? orElse()
           : loadingState(state.message, state.progress),
-      SucceedState<T>() =>
-        succeedState == null ? orElse() : succeedState(state.success),
-      FailedState<T>() => failedState == null
+      SuccessState<T>() =>
+        successState == null ? orElse() : successState(state.success),
+      FailureState<T>() => failureState == null
           ? orElse()
-          : failedState(state.message, state.exception, state.retryCallback),
+          : failureState(state.message, state.exception, state.retryCallback),
     };
   }
 
@@ -186,14 +186,14 @@ class LoadingState<T> extends BlocEaseState<T> {
 /// Represents the success state of a Bloc.
 ///
 /// - [success]: The success object of the state.
-class SucceedState<T> extends BlocEaseState<T> {
-  const SucceedState(this.success);
+class SuccessState<T> extends BlocEaseState<T> {
+  const SuccessState(this.success);
   final T success;
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is SucceedState &&
+      other is SuccessState &&
           runtimeType == other.runtimeType &&
           success == other.success;
 
@@ -206,17 +206,17 @@ class SucceedState<T> extends BlocEaseState<T> {
 /// - [message]: Optional message describing the failure.
 /// - [exception]: Optional exception that caused the failure.
 /// - [retryCallback]: Optional callback to retry the operation.
-class FailedState<T> extends BlocEaseState<T> {
+class FailureState<T> extends BlocEaseState<T> {
   final String? message;
   final dynamic exception;
   final VoidCallback? retryCallback;
 
-  FailedState([this.message, this.exception, this.retryCallback]);
+  FailureState([this.message, this.exception, this.retryCallback]);
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is FailedState &&
+      other is FailureState &&
           runtimeType == other.runtimeType &&
           message == other.message &&
           exception == other.exception &&

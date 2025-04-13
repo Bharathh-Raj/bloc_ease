@@ -14,7 +14,7 @@ void main() {
     group('CatalogLoaded', () {
       test('supports value comparison', () {
         final catalog = Catalog(itemNames: const ['item #1', 'item #2']);
-        expect(CatalogSucceedState(catalog), CatalogSucceedState(catalog));
+        expect(CatalogSuccessState(catalog), CatalogSuccessState(catalog));
       });
     });
   });

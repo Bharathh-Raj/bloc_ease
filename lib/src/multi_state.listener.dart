@@ -14,7 +14,7 @@ import 'package:rxdart/rxdart.dart';
 /// - [child] is the widget below this widget in the tree.
 ///
 /// PRO TIP: We can limit the type of [BlocEaseState] for all [blocEaseBlocs] by using Generics.
-/// eg: By calling BlocEaseMultiStateListener<SucceedState>(blocEaseCubits: [...]), all the states we get via [onStateChange] will be [SucceedState]
+/// eg: By calling BlocEaseMultiStateListener<SuccessState>(blocEaseCubits: [...]), all the states we get via [onStateChange] will be [SuccessState]
 class BlocEaseMultiStateListener<S extends BlocEaseState>
     extends StatefulWidget {
   const BlocEaseMultiStateListener({

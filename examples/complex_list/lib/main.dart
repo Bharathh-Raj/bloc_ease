@@ -12,7 +12,7 @@ void main() {
       initialStateBuilder: (_) => const Placeholder(),
       loadingStateBuilder: (_) =>
           const Center(child: CircularProgressIndicator()),
-      failureStateBuilder: (failedState) =>
-          Center(child: Text(failedState.message ?? 'Oops something went wrong!')),
+      failureStateBuilder: (failureState) =>
+          Center(child: Text(failureState.message ?? 'Oops something went wrong!')),
       child: App(repository: Repository())));
 }

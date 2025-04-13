@@ -44,7 +44,7 @@ class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T>
   /// Setting this to true will trigger the listener immediately upon initialization.
   final bool shouldRunOnInit;
 
-  /// Callback to be called when the state is `SucceedState`.
+  /// Callback to be called when the state is `SuccessState`.
   final SuccessListener<T>? succeedListener;
 
   /// The widget which will be rendered as a descendant of the `BlocListenerBase`.
@@ -56,7 +56,7 @@ class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T>
   /// Callback to be called when the state is `LoadingState`.
   final LoadingListener? loadingListener;
 
-  /// Callback to be called when the state is `FailedState`.
+  /// Callback to be called when the state is `FailureState`.
   final FailureListener? failureListener;
 
   /// Bloc to listen to. If not provided, it will use the nearest Bloc with context.
@@ -82,10 +82,10 @@ class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
         widget.initialListener!();
       } else if (state is LoadingState<T> && widget.loadingListener != null) {
         widget.loadingListener!(state.message, state.progress);
-      } else if (state is FailedState<T> && widget.failureListener != null) {
+      } else if (state is FailureState<T> && widget.failureListener != null) {
         widget.failureListener!(
             state.message, state.exception, state.retryCallback);
-      } else if (state is SucceedState<T> && widget.succeedListener != null) {
+      } else if (state is SuccessState<T> && widget.succeedListener != null) {
         widget.succeedListener!(state.success);
       }
     });
@@ -101,8 +101,8 @@ class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
         orElse: () => null,
         initialState: widget.initialListener,
         loadingState: widget.loadingListener,
-        succeedState: widget.succeedListener,
-        failedState: widget.failureListener,
+        successState: widget.succeedListener,
+        failureState: widget.failureListener,
       ),
       child: widget.child,
     );

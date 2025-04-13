@@ -11,8 +11,8 @@ typedef CatalogState = BlocEaseState<Catalog>;
 
 typedef CatalogInitialState = InitialState<Catalog>;
 typedef CatalogLoadingState = LoadingState<Catalog>;
-typedef CatalogSucceedState = SucceedState<Catalog>;
-typedef CatalogFailedState = FailedState<Catalog>;
+typedef CatalogSuccessState = SuccessState<Catalog>;
+typedef CatalogFailureState = FailureState<Catalog>;
 
 typedef CatalogBlocBuilder = BlocBuilder<CatalogBloc, CatalogState>;
 typedef CatalogBlocListener = BlocListener<CatalogBloc, CatalogState>;
@@ -37,9 +37,9 @@ class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {
     emit(CatalogLoadingState());
     try {
       final catalog = await shoppingRepository.loadCatalog();
-      emit(CatalogSucceedState(Catalog(itemNames: catalog)));
+      emit(CatalogSuccessState(Catalog(itemNames: catalog)));
     } catch (_) {
-      emit(CatalogFailedState());
+      emit(CatalogFailureState());
     }
   }
 }

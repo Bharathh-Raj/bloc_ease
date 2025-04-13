@@ -46,14 +46,14 @@ Don't worry about any of these. This package will take care of everything.
 
 ## Solutions This Library Provides
 
-1. Elimination of the need to write state classes for any Bloc/Cubit. Instead, utilize the states provided by this package with generics (e.g., `SucceedState<Auth>` vs `SucceedState<User>`).
+1. Elimination of the need to write state classes for any Bloc/Cubit. Instead, utilize the states provided by this package with generics (e.g., `SuccessState<Auth>` vs `SuccessState<User>`).
 2. Global handling of common states such as Initial, Loading, and Failure states in the UI. This removes the necessity to manage these states wherever Bloc/Cubit is used.
 3. Provision of a builder that offers the success object in a type-safe manner, while autonomously handling other states.
-4. Utilization of typedefs to easily differentiate between states (e.g., `typedef AuthSucceedState = SucceedState<Auth>`). Snippets are included for IntelliJ and VSCode.
+4. Utilization of typedefs to easily differentiate between states (e.g., `typedef AuthSuccessState = SuccessState<Auth>`). Snippets are included for IntelliJ and VSCode.
 
 ## Readme
 
-The states `InitialState`, `LoadingState`, `SucceedState`, and `FailedState` can encapsulate most state. If a state cannot be represented within these states, it is likely that multiple states are being managed together.
+The states `InitialState`, `LoadingState`, `SuccessState`, and `FailureState` can encapsulate most state. If a state cannot be represented within these states, it is likely that multiple states are being managed together.
 
 - **Asynchronous CRUD Operation State**: Typically falls into one of these four states:
   - Backend fetching
@@ -65,16 +65,16 @@ The states `InitialState`, `LoadingState`, `SucceedState`, and `FailedState` can
   - Encryption/Decryption logic
   - Filtering a list based on a condition
 
-- **Synchronous Operation**: Can be represented by either `SucceedState` or `FailedState`:
-  - Calculation (`SucceedState<double>(10)` vs `FailedState<double>(DivideByZeroException())`)
+- **Synchronous Operation**: Can be represented by either `SuccessState` or `FailureState`:
+  - Calculation (`SuccessState<double>(10)` vs `FailureState<double>(DivideByZeroException())`)
 
-- **Specific State Representation**: Some states can only be depicted as `SucceedState`:
-  - Flutter's default counter app state `SucceedState<int>(0)`
-  - Selecting app currency `SucceedState<Currency>(USD())` or unit of temperature `SucceedState<TemperatureUnit>(Celsius())`
+- **Specific State Representation**: Some states can only be depicted as `SuccessState`:
+  - Flutter's default counter app state `SuccessState<int>(0)`
+  - Selecting app currency `SuccessState<Currency>(USD())` or unit of temperature `SuccessState<TemperatureUnit>(Celsius())`
 
 ## How to use?
 ### Step 1 - Configuring `BlocEaseStateWidgetProvider`
-`BlocEaseStateWidgetProvider` is used to configure the default widgets for `InitialState`, `LoadingState`, and `FailedState`. 
+`BlocEaseStateWidgetProvider` is used to configure the default widgets for `InitialState`, `LoadingState`, and `FailureState`. 
 Ensure that this widget is wrapped around the `MaterialApp` so that it is accessible from everywhere.
 
 ```dart
@@ -107,8 +107,8 @@ typedef UserState = BlocEaseState<User>; // <-- Success Object
 
 typedef UserInitialState = InitialState<User>;
 typedef UserLoadingState = LoadingState<User>;
-typedef UserSucceedState = SucceedState<User>;
-typedef UserFailedState = FailedState<User>;
+typedef UserSuccessState = SuccessState<User>;
+typedef UserFailureState = FailureState<User>;
 
 typedef UserBlocBuilder = BlocBuilder<UserCubit, UserState>;
 typedef UserBlocListener = BlocListener<UserCubit, UserState>;
@@ -129,9 +129,9 @@ class UserCubit extends Cubit<UserState> { //<--Cubit name
 
     try {
       final user = userRepo.fetchUser();
-      emit(UserSucceedState(user));
+      emit(UserSuccessState(user));
     } catch (e) {
-      emit(UserFailedState('Failed to fetch user', e));
+      emit(UserFailureState('Failed to fetch user', e));
     }
   }
 }
@@ -139,7 +139,7 @@ class UserCubit extends Cubit<UserState> { //<--Cubit name
 
 ### Step 3 - Use `<CubitName>BlocEaseBuilder` instead of BlocBuilder in the UI
 `<CubitName>BlocEaseBuilder (UserBlocEaseBuilder)` is the builder used to access the Success Object configured in Step 2 with the succeedBuilder required field. 
-All other states (`InitialState`, `LoadingState`, and `FailedState`) use the default widgets configured in Step 1.
+All other states (`InitialState`, `LoadingState`, and `FailureState`) use the default widgets configured in Step 1.
 
 ```dart
 class SomeWidget extends StatelessWidget {
@@ -175,7 +175,7 @@ Notice that, `ItemInitialState` not used even though it can be accessed.
 ![image](https://github.com/Bharathh-Raj/bloc_ease/assets/42716432/0b4020be-020f-4d0a-8190-90f995a629fd)
 
 ## Cache State with Ease - CacheExBlocEaseStateMixin
-By utilizing the `CacheExBlocEaseStateMixin` mixin with any Bloc or Cubit that emits `BlocEaseState`, you gain access to previous states, including `exLoadingState`, `exSucceedState`, and `exFailedState`. 
+By utilizing the `CacheExBlocEaseStateMixin` mixin with any Bloc or Cubit that emits `BlocEaseState`, you gain access to previous states, including `exLoadingState`, `exSuccessState`, and `exFailureState`. 
 Additionally, the `exSucceedObject` allows direct access to the previous success object, if it exists. These extended states enable comparison and operations based on state changes.
 
 ```dart
@@ -204,8 +204,8 @@ class CurrentUserCubit extends Cubit<CurrentUserState> with CacheExBlocEaseState
 
 typedef CurrentUserInitialState = InitialState<User>;
 typedef CurrentUserLoadingState = LoadingState<User>;
-typedef CurrentUserSucceedState = SucceedState<User>;
-typedef CurrentUserFailedState = FailedState<User>;
+typedef CurrentUserSuccessState = SuccessState<User>;
+typedef CurrentUserFailureState = FailureState<User>;
 ...
 ```
 
@@ -229,13 +229,13 @@ class SomeWidget extends StatelessWidget {
 }
 ```
 
-> **Tip**: It is possible to animate transitions between loading states or success states by comparing the `exLoadingState` with the current `loadingState` or the `exSucceedState` with the current `succeedState`.
+> **Tip**: It is possible to animate transitions between loading states or success states by comparing the `exLoadingState` with the current `loadingState` or the `exSuccessState` with the current `successState`.
 
 ## Listen to multiple Blocs - BlocEaseMultiStateListener
 BlocEaseMultiStateListener allows for monitoring multiple blocs or cubits that emit `BlocEaseState`. The primary use cases include:
 - Displaying a progress dialog when any cubit is in the `LoadingState`.
-- Showing an error message if any cubit emits a `FailedState`.
-- Displaying a success snackbar only when all cubits emit a `SucceedState`.
+- Showing an error message if any cubit emits a `FailureState`.
+- Displaying a success snackbar only when all cubits emit a `SuccessState`.
 - ...
 
 ```dart
@@ -251,9 +251,9 @@ class SomeWidget extends StatelessWidget {
       onStateChange: (states) {
         if(states.any((e) => e is LoadingState)) {
           showLoadingDialog();
-        } else if(states.any((e) => e is FailedState)) {
+        } else if(states.any((e) => e is FailureState)) {
           showErrorDialog();
-        } else if(states.every((e) => e is SucceedState)) {
+        } else if(states.every((e) => e is SuccessState)) {
           showSuccessSnackBar();
         }
       },
@@ -272,7 +272,7 @@ class SomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Remember: Both AuthBloc and UserBloc should emit BlocEaseState
     final blocEaseBlocs = [context.read<AuthBloc>(), context.read<UserBloc>()];
-    return BlocEaseMultiStateListener<SucceedState>( //<-- If you just want to handle SucceedState
+    return BlocEaseMultiStateListener<SuccessState>( //<-- If you just want to handle SuccessState
       blocEaseBlocs: blocEaseBlocs,
       onStateChange: (states) => showSuccessSnackBar(),
       child: ...,
@@ -291,7 +291,7 @@ The `BlocEaseMultiStateBuilder` allows for the combination of different blocs or
 
 By default, only the `successBuilder` needs to be provided; all other states are managed by default with `BlocEaseStateWidgetProvider`.
 
-> **Note:** If any state is a `FailedState`, an error widget is displayed. If any state is an `InitialState`, the initial widget is shown. If any state is a `LoadingState`, the loading widget is rendered. Only if all states are `SucceedState`, the success widget is displayed.
+> **Note:** If any state is a `FailureState`, an error widget is displayed. If any state is an `InitialState`, the initial widget is shown. If any state is a `LoadingState`, the loading widget is rendered. Only if all states are `SuccessState`, the success widget is displayed.
 
 ```dart
 class SomeWidget extends StatelessWidget {
@@ -301,7 +301,7 @@ class SomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Remember: All of these Bloc/Cubit should exit BlocEaseState
     final blocEaseBlocs = [context.read<UserBloc>(), context.read<OrdersBloc>(), context.read<ReturnsBloc>(), context.read<WishlistBloc>()];
-    return BlocEaseMultiStateBuilder( //<-- If you just want to handle SucceedState
+    return BlocEaseMultiStateBuilder( //<-- If you just want to handle SuccessState
       blocEaseBlocs: blocEaseBlocs,
       successBuilder: (states) => Dashboard(),
     );
@@ -316,7 +316,7 @@ class SomeWidget extends StatelessWidget {
 Copy both templates at once -> Intellij/Android studio Settings -> Live Templates -> Create new template group as BlocEase -> Paste
 
 ```dtd
-<template name="bloceasebloc" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;typedef $BlocName$State = BlocEaseState&lt;$SuccessType$&gt;;&#10;&#10;class $BlocName$Bloc extends Bloc&lt;$BlocName$Event,$BlocName$State&gt; {&#10;  $BlocName$Bloc()&#10;      : super(const $BlocName$InitialState());&#10;      &#10;  $Dependencies$&#10;      &#10;  void $FunctionName$() {&#10;    emit(const $BlocName$LoadingState());&#10;    &#10;    $ImplementationStart$&#10;  }&#10;}&#10;&#10;typedef $BlocName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$BlocBuilder = BlocBuilder&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocListener = BlocListener&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocConsumer = BlocConsumer&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;&#10;typedef $BlocName$BlocEaseBuilder = BlocEaseStateBuilder&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;typedef $BlocName$BlocEaseListener = BlocEaseStateListener&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;typedef $BlocName$BlocEaseConsumer = BlocEaseStateConsumer&lt;$BlocName$Bloc, $SuccessType$&gt;;" description="BlocEase Four state bloc template" toReformat="false" toShortenFQNames="true">
+<template name="bloceasebloc" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;typedef $BlocName$State = BlocEaseState&lt;$SuccessType$&gt;;&#10;&#10;class $BlocName$Bloc extends Bloc&lt;$BlocName$Event,$BlocName$State&gt; {&#10;  $BlocName$Bloc()&#10;      : super(const $BlocName$InitialState());&#10;      &#10;  $Dependencies$&#10;      &#10;  void $FunctionName$() {&#10;    emit(const $BlocName$LoadingState());&#10;    &#10;    $ImplementationStart$&#10;  }&#10;}&#10;&#10;typedef $BlocName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$SuccessState = SuccessState&lt;$SuccessType$&gt;;&#10;typedef $BlocName$FailureState = FailureState&lt;$SuccessType$&gt;;&#10;&#10;typedef $BlocName$BlocBuilder = BlocBuilder&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocListener = BlocListener&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;typedef $BlocName$BlocConsumer = BlocConsumer&lt;$BlocName$Bloc, $BlocName$State&gt;;&#10;&#10;typedef $BlocName$BlocEaseBuilder = BlocEaseStateBuilder&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;typedef $BlocName$BlocEaseListener = BlocEaseStateListener&lt;$BlocName$Bloc, $SuccessType$&gt;;&#10;typedef $BlocName$BlocEaseConsumer = BlocEaseStateConsumer&lt;$BlocName$Bloc, $SuccessType$&gt;;" description="BlocEase Four state bloc template" toReformat="false" toShortenFQNames="true">
   <variable name="BlocName" expression="" defaultValue="" alwaysStopAt="true" />
   <variable name="SuccessType" expression="" defaultValue="" alwaysStopAt="true" />
   <variable name="Dependencies" expression="" defaultValue="" alwaysStopAt="true" />
@@ -327,7 +327,7 @@ Copy both templates at once -> Intellij/Android studio Settings -> Live Template
     <option name="FLUTTER" value="true" />
   </context>
 </template>
-<template name="bloceasecubit" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;typedef $CubitName$State = BlocEaseState&lt;$SuccessType$&gt;;&#10;&#10;class $CubitName$Cubit extends Cubit&lt;$CubitName$State&gt; {&#10;  $CubitName$Cubit()&#10;      : super(const $CubitName$InitialState());&#10;      &#10;  $Dependencies$&#10;      &#10;  void $FunctionName$() {&#10;    emit(const $CubitName$LoadingState());&#10;    &#10;    $ImplementationStart$&#10;  }&#10;}&#10;&#10;typedef $CubitName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$SucceedState = SucceedState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$FailedState = FailedState&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$BlocBuilder = BlocBuilder&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocListener = BlocListener&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocConsumer = BlocConsumer&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;&#10;typedef $CubitName$BlocEaseBuilder = BlocEaseStateBuilder&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;typedef $CubitName$BlocEaseListener = BlocEaseStateListener&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;typedef $CubitName$BlocEaseConsumer = BlocEaseStateConsumer&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;" description="BlocEase Four state cubit template" toReformat="false" toShortenFQNames="true">
+<template name="bloceasecubit" value="import 'package:bloc_ease/bloc_ease.dart';&#10;import 'package:flutter_bloc/flutter_bloc.dart';&#10;&#10;typedef $CubitName$State = BlocEaseState&lt;$SuccessType$&gt;;&#10;&#10;class $CubitName$Cubit extends Cubit&lt;$CubitName$State&gt; {&#10;  $CubitName$Cubit()&#10;      : super(const $CubitName$InitialState());&#10;      &#10;  $Dependencies$&#10;      &#10;  void $FunctionName$() {&#10;    emit(const $CubitName$LoadingState());&#10;    &#10;    $ImplementationStart$&#10;  }&#10;}&#10;&#10;typedef $CubitName$InitialState = InitialState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$LoadingState = LoadingState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$SuccessState = SuccessState&lt;$SuccessType$&gt;;&#10;typedef $CubitName$FailureState = FailureState&lt;$SuccessType$&gt;;&#10;&#10;typedef $CubitName$BlocBuilder = BlocBuilder&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocListener = BlocListener&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;typedef $CubitName$BlocConsumer = BlocConsumer&lt;$CubitName$Cubit, $CubitName$State&gt;;&#10;&#10;typedef $CubitName$BlocEaseBuilder = BlocEaseStateBuilder&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;typedef $CubitName$BlocEaseListener = BlocEaseStateListener&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;typedef $CubitName$BlocEaseConsumer = BlocEaseStateConsumer&lt;$CubitName$Cubit, $SuccessType$&gt;;&#10;" description="BlocEase Four state cubit template" toReformat="false" toShortenFQNames="true">
   <variable name="CubitName" expression="" defaultValue="" alwaysStopAt="true" />
   <variable name="SuccessType" expression="" defaultValue="SuccessType" alwaysStopAt="true" />
   <variable name="Dependencies" expression="" defaultValue="" alwaysStopAt="true" />
@@ -359,8 +359,8 @@ Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -
       "",
       "typedef ${1}InitialState = InitialState<${2}>;",
       "typedef ${1}LoadingState = LoadingState<${2}>;",
-      "typedef ${1}SucceedState = SucceedState<${2}>;",
-      "typedef ${1}FailedState = FailedState<${2}>;",
+      "typedef ${1}SuccessState = SuccessState<${2}>;",
+      "typedef ${1}FailureState = FailureState<${2}>;",
       "",
       "typedef ${1}BlocBuilder = BlocBuilder<${1}Bloc, ${1}State>;",
       "typedef ${1}BlocListener = BlocListener<${1}Bloc, ${1}State>;",
@@ -386,8 +386,8 @@ Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -
       "",
       "typedef ${1}InitialState = InitialState<${2}>;",
       "typedef ${1}LoadingState = LoadingState<${2}>;",
-      "typedef ${1}SucceedState = SucceedState<${2}>;",
-      "typedef ${1}FailedState = FailedState<${2}>;",
+      "typedef ${1}SuccessState = SuccessState<${2}>;",
+      "typedef ${1}FailureState = FailureState<${2}>;",
       "",
       "typedef ${1}BlocBuilder = BlocBuilder<${1}Cubit, ${1}State>;",
       "typedef ${1}BlocListener = BlocListener<${1}Cubit, ${1}State>;",
@@ -458,8 +458,8 @@ typedef UserState = BlocEaseState<User>;
 
 typedef UserInitialState = InitialState<User>;
 typedef UserLoadingState = LoadingState<User>;
-typedef UserSucceedState = SucceedState<User>;
-typedef UserFailedState = FailedState<User>;
+typedef UserSuccessState = SuccessState<User>;
+typedef UserFailureState = FailureState<User>;
 
 typedef UserBlocBuilder = BlocBuilder<UserBloc, UserState>;
 typedef UserBlocListener = BlocListener<UserBloc, UserState>;
@@ -487,8 +487,8 @@ typedef UserState = BlocEaseState<(User, String)>; // <-- Success Object
 
 typedef UserInitialState = InitialState<(User, String)>;
 typedef UserLoadingState = LoadingState<(User, String)>;
-typedef UserSucceedState = SucceedState<(User, String)>;
-typedef UserFailedState = FailedState<(User, String)>;
+typedef UserSuccessState = SuccessState<(User, String)>;
+typedef UserFailureState = FailureState<(User, String)>;
 
 typedef UserBlocBuilder = BlocBuilder<UserCubit, UserState>;
 typedef UserBlocListener = BlocListener<UserCubit, UserState>;
@@ -507,13 +507,13 @@ class UserCubit extends Cubit<UserState> {
 Testing is also totally straight-forward as just using Bloc/Cubit.
 ```dart
 blocTest<UserCubit, UserState>(
-        'emits UserSucceedState after fetching user',
+        'emits UserSuccessState after fetching user',
         setUp: () {
           when(repo.fetchUser).thenAnswer((_) async => mockUser);
         },
         build: () => UserCubit(repository: repo),
         act: (cubit) => cubit.fetchUser(),
-        expect: () => UserSucceedState(mockUser), //<--
+        expect: () => UserSuccessState(mockUser), //<--
         verify: (_) => verify(repository.fetchUser).called(1),
       );
 ```

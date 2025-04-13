@@ -16,27 +16,27 @@ class ComplexListCubit extends Cubit<ComplexListState>
   void fetchList() async {
     try {
       final items = await repository.fetchItems();
-      emit(ComplexListSucceedState(items));
+      emit(ComplexListSuccessState(items));
     } on Exception {
-      emit(ComplexListFailedState());
+      emit(ComplexListFailureState());
     }
   }
 
   void deleteItem(String id) async {
     final state = this.state;
-    if (state is ComplexListSucceedState) {
+    if (state is ComplexListSuccessState) {
       final items = state.success;
       final deleteInProgress = List.of(items).map((item) {
         return item.id == id ? item.copyWith(isDeleting: true) : item;
       }).toList();
 
-      emit(ComplexListSucceedState(deleteInProgress));
+      emit(ComplexListSuccessState(deleteInProgress));
 
       unawaited(
         repository.deleteItem(id).then((_) {
           final deleteSuccess = List.of(items)
             ..removeWhere((element) => element.id == id);
-          emit(ComplexListSucceedState(deleteSuccess));
+          emit(ComplexListSuccessState(deleteSuccess));
         }),
       );
     }
@@ -47,8 +47,8 @@ typedef ComplexListState = BlocEaseState<List<Item>>;
 
 typedef ComplexListInitialState = InitialState<List<Item>>;
 typedef ComplexListLoadingState = LoadingState<List<Item>>;
-typedef ComplexListSucceedState = SucceedState<List<Item>>;
-typedef ComplexListFailedState = FailedState<List<Item>>;
+typedef ComplexListSuccessState = SuccessState<List<Item>>;
+typedef ComplexListFailureState = FailureState<List<Item>>;
 
 typedef ComplexListBlocBuilder
     = BlocBuilder<ComplexListCubit, ComplexListState>;

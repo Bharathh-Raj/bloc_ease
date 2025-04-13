@@ -37,7 +37,7 @@ void main() {
       act: (bloc) => bloc.add(CatalogStarted()),
       expect: () => <CatalogState>[
         CatalogLoadingState(),
-        CatalogSucceedState(Catalog(itemNames: mockItemNames)),
+        CatalogSuccessState(Catalog(itemNames: mockItemNames)),
       ],
       verify: (_) => verify(shoppingRepository.loadCatalog).called(1),
     );
@@ -52,7 +52,7 @@ void main() {
       act: (bloc) => bloc.add(CatalogStarted()),
       expect: () => <CatalogState>[
         CatalogLoadingState(),
-        CatalogFailedState(),
+        CatalogFailureState(),
       ],
       verify: (_) => verify(shoppingRepository.loadCatalog).called(1),
     );

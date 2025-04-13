@@ -48,7 +48,7 @@ typedef SuccessBuilder<T> = Widget Function(T success);
 ///
 /// - [T]: The type of the state.
 /// - [state]: The success state object.
-typedef SuccessStateBuilder<T> = Widget Function(SucceedState<T> state);
+typedef SuccessStateBuilder<T> = Widget Function(SuccessState<T> state);
 
 /// Typedef for a builder function that returns a widget for the failure state.
 ///
@@ -68,7 +68,7 @@ typedef FailureBuilder = Widget Function(
 ///
 /// - [T]: The type of the state.
 /// - [state]: The failure state object.
-typedef FailureStateBuilder<T> = Widget Function(FailedState<T> state);
+typedef FailureStateBuilder<T> = Widget Function(FailureState<T> state);
 
 /// Typedef for a listener function that is called for the initial state.
 ///

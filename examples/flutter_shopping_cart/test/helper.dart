@@ -20,8 +20,8 @@ extension PumpApp on WidgetTester {
       BlocEaseStateWidgetProvider(
         initialStateBuilder: (_) => const SizedBox(),
         loadingStateBuilder: (_) => const Center(child: CircularProgressIndicator()),
-        failureStateBuilder: (failedState) => Center(
-          child: Text(failedState.message ?? 'Something went wrong!'),
+        failureStateBuilder: (failureState) => Center(
+          child: Text(failureState.message ?? 'Something went wrong!'),
         ),
         child: MaterialApp(
           home: MultiBlocProvider(

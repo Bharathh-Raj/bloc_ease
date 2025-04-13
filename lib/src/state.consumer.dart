@@ -28,7 +28,7 @@ class BlocEaseStateConsumer<B extends BlocBase<BlocEaseState<T>>, T>
   /// Creates a `BlocEaseStateConsumer` widget.
   ///
   /// The [succeedBuilder] is a required callback that will be invoked when the
-  /// state is `SucceedState`. The [initialBuilder], [loadingBuilder], and
+  /// state is `SuccessState`. The [initialBuilder], [loadingBuilder], and
   /// [failureBuilder] are optional callbacks. If not provided, the corresponding widgets
   /// configured in [BlocEaseStateWidgetProvider] will be used. The [succeedListener],
   /// [initialListener], [loadingListener], and [failureListener] are optional callbacks
@@ -55,8 +55,8 @@ class BlocEaseStateConsumer<B extends BlocBase<BlocEaseState<T>>, T>
                   orElse: () => null,
                   initialState: initialListener,
                   loadingState: loadingListener,
-                  succeedState: succeedListener,
-                  failedState: failureListener,
+                  successState: succeedListener,
+                  failureState: failureListener,
                 ),
             buildWhen: buildWhen,
             builder: (context, state) => state.when(
@@ -66,9 +66,9 @@ class BlocEaseStateConsumer<B extends BlocBase<BlocEaseState<T>>, T>
                   loadingState: loadingBuilder ??
                       ([_, __]) => BlocEaseStateWidgetProvider.of(context)
                           .loadingStateBuilder(state as LoadingState<T>),
-                  failedState: failureBuilder ??
+                  failureState: failureBuilder ??
                       ([_, __, ___]) => BlocEaseStateWidgetProvider.of(context)
-                          .failureStateBuilder(state as FailedState<T>),
-                  succeedState: succeedBuilder,
+                          .failureStateBuilder(state as FailureState<T>),
+                  successState: succeedBuilder,
                 ));
 }

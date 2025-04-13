@@ -30,8 +30,8 @@ class App extends StatelessWidget {
         loadingStateBuilder: (loadingState) => Center(
           child: CircularProgressIndicator(value: loadingState.progress),
         ),
-        failureStateBuilder: (failedState) => Center(
-          child: Text(failedState.message ?? 'Something went wrong!'),
+        failureStateBuilder: (failureState) => Center(
+          child: Text(failureState.message ?? 'Something went wrong!'),
         ),
         child: MaterialApp(
           title: 'Flutter Bloc Shopping Cart',

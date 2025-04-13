@@ -8,10 +8,10 @@ void main() {
     const mockItems = [Item(id: '1', value: '1')];
     test('support value comparisons', () {
       expect(ComplexListLoadingState(), ComplexListLoadingState());
-      expect(ComplexListFailedState(), ComplexListFailedState());
+      expect(ComplexListFailureState(), ComplexListFailureState());
       expect(
-        ComplexListSucceedState(mockItems),
-        ComplexListSucceedState(mockItems),
+        ComplexListSuccessState(mockItems),
+        ComplexListSuccessState(mockItems),
       );
     });
   });

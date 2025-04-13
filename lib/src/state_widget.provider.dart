@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import 'callbacks.dart';
 
-/// Provides default widgets for `InitialState`, `LoadingState`, and `FailedState`.
+/// Provides default widgets for `InitialState`, `LoadingState`, and `FailureState`.
 ///
 /// This widget should be wrapped around the [MaterialApp] to ensure that all pages and widgets
 /// have access to the default state widgets. It allows configuring the default widgets for these states
@@ -10,7 +10,7 @@ import 'callbacks.dart';
 ///
 /// - [initialStateBuilder] should be provided with a default widget that will be rendered for `InitialState` in [BlocEaseStateBuilder] || [BLocEaseStateConsumer].
 /// - [loadingStateBuilder] should be provided with a default widget that will be rendered for `LoadingState` in [BlocEaseStateBuilder] || [BLocEaseStateConsumer].
-/// - [failureStateBuilder] should be provided with a default widget that will be rendered for `FailedState` in [BlocEaseStateBuilder] || [BLocEaseStateConsumer].
+/// - [failureStateBuilder] should be provided with a default widget that will be rendered for `FailureState` in [BlocEaseStateBuilder] || [BLocEaseStateConsumer].
 class BlocEaseStateWidgetProvider extends InheritedWidget {
   const BlocEaseStateWidgetProvider({
     required this.initialStateBuilder,
@@ -26,7 +26,7 @@ class BlocEaseStateWidgetProvider extends InheritedWidget {
   /// Default widget builder for the `LoadingState`.
   final LoadingStateBuilder loadingStateBuilder;
 
-  /// Default widget builder for the `FailedState`.
+  /// Default widget builder for the `FailureState`.
   final FailureStateBuilder failureStateBuilder;
 
   static BlocEaseStateWidgetProvider? maybeOf(BuildContext context) {
@@ -57,7 +57,7 @@ extension ContextX on BuildContext {
   LoadingStateBuilder get loadingStateWidget =>
       BlocEaseStateWidgetProvider.of(this).loadingStateBuilder;
 
-  /// Retrieves the default `FailedState` builder from the nearest [BlocEaseStateWidgetProvider].
-  FailureStateBuilder get failedStateWidget =>
+  /// Retrieves the default `FailureState` builder from the nearest [BlocEaseStateWidgetProvider].
+  FailureStateBuilder get failureStateWidget =>
       BlocEaseStateWidgetProvider.of(this).failureStateBuilder;
 }

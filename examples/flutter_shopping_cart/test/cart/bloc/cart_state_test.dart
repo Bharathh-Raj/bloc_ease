@@ -15,13 +15,13 @@ void main() {
     group('CartLoaded', () {
       final cart = FakeCart();
       test('supports value comparison', () {
-        expect(CartSucceedState(cart), CartSucceedState(cart));
+        expect(CartSuccessState(cart), CartSuccessState(cart));
       });
     });
 
     group('CartError', () {
       test('supports value comparison', () {
-        expect(CartFailedState(), CartFailedState());
+        expect(CartFailureState(), CartFailureState());
       });
     });
   });

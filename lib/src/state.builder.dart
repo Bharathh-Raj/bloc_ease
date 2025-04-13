@@ -23,7 +23,7 @@ class BlocEaseStateBuilder<B extends BlocBase<BlocEaseState<T>>, T>
   /// Creates a `BlocEaseStateBuilder` widget.
   ///
   /// The [succeedBuilder] is a required callback that will be invoked when the
-  /// state is `SucceedState`. The [initialBuilder], [loadingBuilder], and
+  /// state is `SuccessState`. The [initialBuilder], [loadingBuilder], and
   /// [failureBuilder] are optional callbacks. If not provided, the corresponding widgets
   /// configured in [BlocEaseStateWidgetProvider] will be used. The [bloc] parameter is optional
   /// and will use the nearest Bloc with context if not provided. The [buildWhen] parameter
@@ -46,9 +46,9 @@ class BlocEaseStateBuilder<B extends BlocBase<BlocEaseState<T>>, T>
                   loadingState: loadingBuilder ??
                       ([_, __]) => BlocEaseStateWidgetProvider.of(context)
                           .loadingStateBuilder(state as LoadingState<T>),
-                  failedState: failureBuilder ??
+                  failureState: failureBuilder ??
                       ([_, __, ___]) => BlocEaseStateWidgetProvider.of(context)
-                          .failureStateBuilder(state as FailedState<T>),
-                  succeedState: succeedBuilder,
+                          .failureStateBuilder(state as FailureState<T>),
+                  successState: succeedBuilder,
                 ));
 }

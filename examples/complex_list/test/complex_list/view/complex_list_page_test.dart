@@ -21,8 +21,8 @@ extension on WidgetTester {
         initialStateBuilder: (_) => const Placeholder(),
         loadingStateBuilder: (_) =>
             const Center(child: CircularProgressIndicator()),
-        failureStateBuilder: (failedState) =>
-            Center(child: Text(failedState.message ?? 'Oops something went wrong!')),
+        failureStateBuilder: (failureState) =>
+            Center(child: Text(failureState.message ?? 'Oops something went wrong!')),
         child: MaterialApp(
           home: RepositoryProvider.value(
             value: repository,
@@ -39,8 +39,8 @@ extension on WidgetTester {
         initialStateBuilder: (_) => const Placeholder(),
         loadingStateBuilder: (_) =>
             const Center(child: CircularProgressIndicator()),
-        failureStateBuilder: (failedState) =>
-            Center(child: Text(failedState.message ?? 'Oops something went wrong!')),
+        failureStateBuilder: (failureState) =>
+            Center(child: Text(failureState.message ?? 'Oops something went wrong!')),
         child: MaterialApp(
           home: BlocProvider.value(
             value: listCubit,
@@ -87,7 +87,7 @@ void main() {
     testWidgets(
         'renders error text '
         'when items fail to load', (tester) async {
-      when(() => listCubit.state).thenReturn(ComplexListFailedState());
+      when(() => listCubit.state).thenReturn(ComplexListFailureState());
       await tester.pumpListView(listCubit);
       expect(find.text('Oops something went wrong!'), findsOneWidget);
     });
@@ -96,7 +96,7 @@ void main() {
         'renders ComplexListView after items '
         'are finished loading', (tester) async {
       when(() => listCubit.state).thenReturn(
-        const ComplexListSucceedState(mockItems),
+        const ComplexListSuccessState(mockItems),
       );
       await tester.pumpListView(listCubit);
       expect(find.byType(ComplexListView), findsOneWidget);
@@ -105,7 +105,7 @@ void main() {
         'renders no content text when '
         'no items are present', (tester) async {
       when(() => listCubit.state).thenReturn(
-        const ComplexListSucceedState([]),
+        const ComplexListSuccessState([]),
       );
       await tester.pumpListView(listCubit);
       expect(find.text('no content'), findsOneWidget);
@@ -113,7 +113,7 @@ void main() {
 
     testWidgets('renders three ItemTiles', (tester) async {
       when(() => listCubit.state).thenReturn(
-        const ComplexListSucceedState(mockItems),
+        const ComplexListSuccessState(mockItems),
       );
       await tester.pumpListView(listCubit);
       expect(find.byType(ItemTile), findsNWidgets(3));
@@ -121,7 +121,7 @@ void main() {
 
     testWidgets('deletes first item', (tester) async {
       when(() => listCubit.state).thenReturn(
-        const ComplexListSucceedState(mockItems),
+        const ComplexListSuccessState(mockItems),
       );
       when(() => listCubit.deleteItem('1')).thenAnswer((_) async {});
       await tester.pumpListView(listCubit);
@@ -134,7 +134,7 @@ void main() {
     testWidgets('renders id and value text', (tester) async {
       const mockItem = Item(id: '1', value: 'Item 1');
       when(() => listCubit.state).thenReturn(
-        const ComplexListSucceedState([mockItem]),
+        const ComplexListSuccessState([mockItem]),
       );
       await tester.pumpListView(listCubit);
       expect(find.text('#1'), findsOneWidget);
@@ -146,7 +146,7 @@ void main() {
         'when item is not being deleted', (tester) async {
       const mockItem = Item(id: '1', value: 'Item 1');
       when(() => listCubit.state).thenReturn(
-        const ComplexListSucceedState([mockItem]),
+        const ComplexListSuccessState([mockItem]),
       );
       await tester.pumpListView(listCubit);
       expect(find.byIcon(Icons.delete), findsOneWidget);
@@ -157,7 +157,7 @@ void main() {
         'when item is being deleting', (tester) async {
       const mockItem = Item(id: '1', value: 'Item 1', isDeleting: true);
       when(() => listCubit.state).thenReturn(
-        const ComplexListSucceedState([mockItem]),
+        const ComplexListSuccessState([mockItem]),
       );
       await tester.pumpListView(listCubit);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);

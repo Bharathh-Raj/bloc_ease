@@ -37,7 +37,7 @@ void main() {
         build: () => ComplexListCubit(repository: repository),
         act: (cubit) => cubit.fetchList(),
         expect: () => [
-          const ComplexListSucceedState(mockItems),
+          const ComplexListSuccessState(mockItems),
         ],
         verify: (_) => verify(repository.fetchItems).called(1),
       );
@@ -49,7 +49,7 @@ void main() {
         },
         build: () => ComplexListCubit(repository: repository),
         act: (cubit) => cubit.fetchList(),
-        expect: () => [ComplexListFailedState()],
+        expect: () => [ComplexListFailureState()],
         verify: (_) => verify(repository.fetchItems).called(1),
       );
     });
@@ -61,15 +61,15 @@ void main() {
           when(() => repository.deleteItem('2')).thenAnswer((_) async {});
         },
         build: () => ComplexListCubit(repository: repository),
-        seed: () => const ComplexListSucceedState(mockItems),
+        seed: () => const ComplexListSuccessState(mockItems),
         act: (cubit) => cubit.deleteItem('2'),
         expect: () => [
-          const ComplexListSucceedState([
+          const ComplexListSuccessState([
             Item(id: '1', value: '1'),
             Item(id: '2', value: '2', isDeleting: true),
             Item(id: '3', value: '3'),
           ]),
-          const ComplexListSucceedState([
+          const ComplexListSuccessState([
             Item(id: '1', value: '1'),
             Item(id: '3', value: '3'),
           ]),

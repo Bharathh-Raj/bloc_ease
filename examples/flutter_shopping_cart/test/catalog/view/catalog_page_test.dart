@@ -39,7 +39,7 @@ void main() {
         'renders SliverList with two items '
         'when catalog is loaded', (tester) async {
       final catalog = Catalog(itemNames: const ['item #1', 'item #2']);
-      when(() => catalogBloc.state).thenReturn(CatalogSucceedState(catalog));
+      when(() => catalogBloc.state).thenReturn(CatalogSuccessState(catalog));
       when(() => cartBloc.state).thenReturn(CartLoadingState());
       await tester.pumpApp(
         cartBloc: cartBloc,
@@ -54,7 +54,7 @@ void main() {
     testWidgets(
         'renders error text '
         'when catalog fails to load', (tester) async {
-      when(() => catalogBloc.state).thenReturn(CatalogFailedState());
+      when(() => catalogBloc.state).thenReturn(CatalogFailureState());
       await tester.pumpApp(
         catalogBloc: catalogBloc,
         child: CatalogPage(),
@@ -80,7 +80,7 @@ void main() {
     testWidgets(
         "renders 'Add' text button "
         'when item is not in the cart', (tester) async {
-      when(() => cartBloc.state).thenReturn(CartSucceedState(Cart()));
+      when(() => cartBloc.state).thenReturn(CartSuccessState(Cart()));
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: AddButton(item: mockItem),
@@ -93,7 +93,7 @@ void main() {
         'renders check icon '
         'when item is already added to cart', (tester) async {
       when(() => cartBloc.state).thenReturn(
-        CartSucceedState(Cart(items: [mockItem])),
+        CartSuccessState(Cart(items: [mockItem])),
       );
       await tester.pumpApp(
         cartBloc: cartBloc,
@@ -105,7 +105,7 @@ void main() {
     });
 
     testWidgets('adds item to the cart', (tester) async {
-      when(() => cartBloc.state).thenReturn(CartSucceedState(Cart()));
+      when(() => cartBloc.state).thenReturn(CartSuccessState(Cart()));
       await tester.pumpApp(
         cartBloc: cartBloc,
         child: AddButton(item: mockItem),
