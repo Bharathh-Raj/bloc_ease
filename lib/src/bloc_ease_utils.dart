@@ -14,7 +14,7 @@ class BlocEaseUtil {
   /// - [blocEaseBloc]: The BlocEase bloc whose state is being monitored.
   ///
   /// Returns a `Future` that completes with the current state when it is no longer loading.
-  static Future<BlocEaseState<T>> waitUntilBlocEaseLoading<T>(
+  static Future<BlocEaseState<T>> waitUntilLoading<T>(
       StateStreamable<BlocEaseState<T>> blocEaseBloc) async {
     final completer = Completer<BlocEaseState<T>>();
     final currentState = blocEaseBloc.state;
