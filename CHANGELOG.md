@@ -7,7 +7,7 @@
 - Context extensions
   - `initialStateWidget` - Gives default initial state widget
   - `loadingStateWidget` - Gives default loading state widget
-  - `failedStateWidget` - Gives default failed state widget
+  - `failureStateWidget` - Gives default failed state widget
 - Included Intellj and VSCode extensions to create cubit/bloc
 
 ## 0.2.0
@@ -24,7 +24,7 @@
 ## 0.3.1
 - feat: BlocEaseMultiStateListener widget 
   - Used to listen to states of multiple cubits that emits BlocEaseState.
-  - Even used to extract specific states of different cubits by using BlocEaseMultiStateListener<SucceedState>. eg: List<SucceedState> for cubits that emits FourStates.
+  - Even used to extract specific states of different cubits by using BlocEaseMultiStateListener<SuccessState>. eg: List<SuccessState> for cubits that emits FourStates.
 
 ## 1.0.0
 - Breaking: FourStates -> BlocEaseState
@@ -52,3 +52,12 @@
 
 ## 1.1.1+1
 - fix: expose BlocEaseUtils
+
+## 1.2.0
+- chore: update flutter_bloc to v9
+
+## 1.2.1
+- feat: emit extensions
+- breaking: state names
+  - succeedState -> successState
+  - failedState -> failureState
