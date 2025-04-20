@@ -16,6 +16,7 @@ A dart library to solve boilerplate issues with [flutter_bloc](https://pub.dev/p
 - [Cache State with Ease - CacheExBlocEaseStateMixin](#cache-state-with-ease---CacheExBlocEaseStateMixin)
 - [Listen to multiple Blocs - BlocEaseMultiStateListener](#listen-to-multiple-blocs---bloceasemultistatelistener)
 - [Multi state builder - BlocEaseMultiStateBuilder](#multi-state-builder---bloceasemultistatebuilder)
+- [Debounce State Emissions - StateDebounce Mixin](#debounce-state-emissions---statedebounce-mixin)
 - [Templates](#templates)
 - [Tips and Tricks](#tips-and-tricks)
   - [Using `BlocEaseListener` and `BlocEaseConsumer`](#using-bloceaselistener-and-bloceaseconsumer)
@@ -309,6 +310,57 @@ class SomeWidget extends StatelessWidget {
 }
 ```
 ![image](https://i.imgur.com/u2JGXP3.png)
+
+## Debounce State Emissions - StateDebounce Mixin
+The `StateDebounce` mixin provides debouncing functionality for state emissions. This is useful for scenarios like search functionality where you want to wait for the user to stop typing before making an API call, avoiding unnecessary network requests or computations.
+
+### Using with Cubit
+```dart
+class SearchCubit extends Cubit<BlocEaseState<List<String>>> with StateDebounce {
+  SearchCubit() : super(const InitialState());
+  
+  void search(String query) {
+    debounce(() async {
+      emit(const LoadingState());
+      try {
+        final results = await searchApi.search(query);
+        emit(SuccessState(results));
+      } catch (e) {
+        emit(FailureState(e.toString()));
+      }
+    });
+  }
+}
+```
+
+### Using with Bloc
+```dart
+class SearchBloc extends Bloc<SearchEvent, BlocEaseState<List<String>>> with StateDebounce {
+  SearchBloc() : super(const InitialState()) {
+    on<SearchQueryChanged>((event, emit) {
+      debounce(() async {
+        emit(const LoadingState());
+        try {
+          final results = await searchApi.search(event.query);
+          emit(SuccessState(results));
+        } catch (e) {
+          emit(FailureState(e.toString()));
+        }
+      });
+    });
+  }
+}
+```
+
+The default debounce duration is 300 milliseconds, but you can customize it by providing a specific duration:
+
+```dart
+debounce(() {
+  // Your code here
+}, Duration(milliseconds: 500));
+```
+
+> **PRO TIP:** For more complex debouncing scenarios in Bloc, consider using event transformers instead of this mixin.
 
 ## Templates
 ### Intellij and Android Studio 
