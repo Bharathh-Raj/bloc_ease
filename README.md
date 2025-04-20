@@ -348,14 +348,20 @@ Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -
 
 ```json
 {
-  "BlocEase Bloc": {
-    "prefix": ["bloceasebloc"],
-    "description": "BlocEase Four state bloc template",
-    "body": [
+	"BlocEase Bloc": {
+	  "prefix": ["bloceasebloc"],
+	  "description": "BlocEase Four state bloc template",
+	  "body": [
       "import 'package:bloc_ease/bloc_ease.dart';",
       "import 'package:flutter_bloc/flutter_bloc.dart';",
       "",
       "typedef ${1:BlocName}State = BlocEaseState<${2:SuccessType}>;",
+      "",
+      "class ${1}Bloc extends Bloc<${1}Event,${1}State> {",
+      "\t${1}Bloc() : super(const ${1}InitialState());",
+      "",
+      "\t${3:BlocBody}",
+      "}",
       "",
       "typedef ${1}InitialState = InitialState<${2}>;",
       "typedef ${1}LoadingState = LoadingState<${2}>;",
@@ -367,22 +373,24 @@ Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -
       "typedef ${1}BlocConsumer = BlocConsumer<${1}Bloc, ${1}State>;",
       "",
       "typedef ${1}BlocEaseBuilder = BlocEaseStateBuilder<${1}Bloc, ${2}>;",
-      "",
-      "class ${1}Bloc extends Bloc<${1}Event,${1}State> {",
-      "\t${1}Bloc() : super(const ${1}InitialState());",
-      "",
-      "\t${3}",
-      "}",
-    ]
-  },
-  "BlocEase Cubit": {
-    "prefix": ["bloceasecubit"],
-    "description": "BlocEase Four state cubit template",
-    "body": [
+      "typedef ${1}BlocEaseListener = BlocEaseStateListener<${1}Bloc, ${2}>;",
+      "typedef ${1}BlocEaseConsumer = BlocEaseStateConsumer<${1}Bloc, ${2}>;",
+	  ]
+	},
+	"BlocEase Cubit": {
+	  "prefix": ["bloceasecubit"],
+	  "description": "BlocEase Four state cubit template",
+	  "body": [
       "import 'package:bloc_ease/bloc_ease.dart';",
       "import 'package:flutter_bloc/flutter_bloc.dart';",
       "",
-      "typedef ${1:CubitName}State = BlocEaseState<${2:SuccessType}>;",
+      "typedef ${1:BlocName}State = BlocEaseState<${2:SuccessType}>;",
+      "",
+      "class ${1}Cubit extends Cubit<${1}State> {",
+      "\t${1}Cubit() : super(const ${1}InitialState());",
+      "",
+      "\t${3:CubitBody}",
+      "}",
       "",
       "typedef ${1}InitialState = InitialState<${2}>;",
       "typedef ${1}LoadingState = LoadingState<${2}>;",
@@ -394,15 +402,11 @@ Copy -> VSCode -> Cmd(Ctrl) + Shift + P -> "Snippets: Configure User Snippets" -
       "typedef ${1}BlocConsumer = BlocConsumer<${1}Cubit, ${1}State>;",
       "",
       "typedef ${1}BlocEaseBuilder = BlocEaseStateBuilder<${1}Cubit, ${2}>;",
-      "",
-      "class ${1}Cubit extends Cubit<${1}State> {",
-      "  ${1}Cubit() : super(const ${1}InitialState());",
-      "",
-      "  $3",
-      "}"
-    ]
-  }
-}
+      "typedef ${1}BlocEaseListener = BlocEaseStateListener<${1}Cubit, ${2}>;",
+      "typedef ${1}BlocEaseConsumer = BlocEaseStateConsumer<${1}Cubit, ${2}>;",
+	  ]
+	}
+}  
 ```
 
 ## Tips and Tricks
