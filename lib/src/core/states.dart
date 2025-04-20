@@ -152,8 +152,24 @@ sealed class BlocEaseState<T> {
   }
 
   /// Checks if the current state is `LoadingState`.
-  bool get isLoading =>
-      maybeWhen(orElse: () => false, loadingState: (_, __) => true);
+  bool get isLoading => this is LoadingState<T>;
+
+  /// Checks if the current state is `SuccessState`.
+  bool get isSuccess => this is SuccessState<T>;
+
+  /// Checks if the current state is `FailureState`.
+  bool get isFailure => this is FailureState<T>;
+
+  /// Checks if the current state is `InitialState`.
+  bool get isInitial => this is InitialState<T>;
+
+  /// Gets the success data if available, otherwise returns null
+  T? get successData => this is SuccessState<T> ? (this as SuccessState<T>).success : null; 
+  
+  /// Transforms success data if state is success, otherwise returns null
+  R? mapSuccessData<R>(R Function(T data) mapper) {
+    return this is SuccessState<T> ? mapper((this as SuccessState<T>).success) : null;
+  }
 }
 
 /// Represents the initial state of a Bloc.

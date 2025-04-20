@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'states.dart';
+import '../core/states.dart';
 
 /// Caches the last state of [InitialState], [LoadingState], [SuccessState] & [FailureState].
 /// Can access the ex states via [exInitialState], [exLoadingState], [exSuccessState] & [exFailureState].
@@ -12,6 +12,29 @@ import 'states.dart';
 /// Useful to do operation based on the change in same type of state.
 /// eg: Animate between [LoadingState] with [LoadingState.progress]
 /// Do operation only on some update in [SuccessState]
+///
+/// Example usage with Cubit:
+/// ```dart
+/// class SearchCubit extends Cubit<BlocEaseState<List<String>>> with CacheExBlocEaseStateMixin {
+///   void search(String query) {
+///     emitLoading('Searching...');
+///     
+///     // Access previous loading state progress
+///     final prevProgress = exLoadingState?.progress ?? 0;
+///     
+///     // Update progress based on previous value
+///     emitLoading('Processing...', prevProgress + 0.2);
+///     
+///     // Access previous successful results
+///     final prevResults = exSuccessState?.success;
+///     
+///     // Do something with previous results while loading new ones
+///     if (prevResults != null) {
+///       // Use cached results
+///     }
+///   }
+/// }
+/// ```
 mixin CacheExBlocEaseStateMixin<T> on BlocBase<BlocEaseState<T>> {
   InitialState<T>? _exInitialState;
   LoadingState<T>? _exLoadingState;

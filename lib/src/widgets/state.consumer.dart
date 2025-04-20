@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'callbacks.dart';
-import 'states.dart';
+import '../core/callbacks.dart';
+import '../core/states.dart';
 import 'state_widget.provider.dart';
 
 /// A custom consumer widget for Bloc states that provides type-safe success objects.

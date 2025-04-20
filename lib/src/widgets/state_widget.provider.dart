@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'callbacks.dart';
+import '../core/callbacks.dart';
 
 /// Provides default widgets for `InitialState`, `LoadingState`, and `FailureState`.
 ///

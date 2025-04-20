@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'states.dart';
-import 'callbacks.dart';
+import '../core/callbacks.dart';
+import '../core/states.dart';
 
 /// A custom listener widget for Bloc states that provides type-safe success objects.
 ///

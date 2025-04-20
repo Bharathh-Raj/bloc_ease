@@ -1,8 +1,6 @@
 import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'callbacks.dart';
-
 /// A custom builder widget for Bloc states that provides type-safe success objects.
 ///
 /// This widget can be used instead of `BlocBuilder` to handle different states
@@ -18,8 +16,7 @@ import 'callbacks.dart';
 ///   failureBuilder: (message, exception, retryCallback) => return Text('Failure: $message, exception: $exception');
 /// )
 /// ```
-class BlocEaseStateBuilder<B extends BlocBase<BlocEaseState<T>>, T>
-    extends BlocBuilder<B, BlocEaseState<T>> {
+class BlocEaseStateBuilder<B extends BlocBase<BlocEaseState<T>>, T> extends BlocBuilder<B, BlocEaseState<T>> {
   /// Creates a `BlocEaseStateBuilder` widget.
   ///
   /// The [succeedBuilder] is a required callback that will be invoked when the
