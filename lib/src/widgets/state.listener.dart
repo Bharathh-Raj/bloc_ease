@@ -13,7 +13,7 @@ import '../core/states.dart';
 /// ```dart
 /// BlocEaseStateListener<UserBloc, User>(
 ///   shouldRunOnInit: true,
-///   succeedListener: (user) => print('Success: $user'),
+///   successListener: (user) => print('Success: $user'),
 ///   initialListener: () => print('Initial state'),
 ///   loadingListener: (message, progress) => print('Loading: $message, progress: $progress'),
 ///   failureListener: (message, exception, retryCallback) => print('Failure: $message, exception: $exception'),
@@ -23,14 +23,14 @@ class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T>
     extends StatefulWidget {
   /// Creates a `BlocEaseStateListener` widget.
   ///
-  /// The [succeedListener], [initialListener], [loadingListener], and [failureListener]
+  /// The [successListener], [initialListener], [loadingListener], and [failureListener]
   /// are optional callbacks that will be invoked when the corresponding state is emitted.
   /// The [bloc] parameter is optional and will use the nearest Bloc with context if not provided.
   /// The [listenWhen] parameter is a condition to determine whether or not to invoke the listener with state.
   /// The [shouldRunOnInit] parameter determines whether to run the listener on initialization.
   const BlocEaseStateListener({
     super.key,
-    this.succeedListener,
+    this.successListener,
     this.child,
     this.initialListener,
     this.loadingListener,
@@ -45,7 +45,7 @@ class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T>
   final bool shouldRunOnInit;
 
   /// Callback to be called when the state is `SuccessState`.
-  final SuccessListener<T>? succeedListener;
+  final SuccessListener<T>? successListener;
 
   /// The widget which will be rendered as a descendant of the `BlocListenerBase`.
   final Widget? child;
@@ -85,8 +85,8 @@ class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
       } else if (state is FailureState<T> && widget.failureListener != null) {
         widget.failureListener!(
             state.message, state.exception, state.retryCallback);
-      } else if (state is SuccessState<T> && widget.succeedListener != null) {
-        widget.succeedListener!(state.success);
+      } else if (state is SuccessState<T> && widget.successListener != null) {
+        widget.successListener!(state.success);
       }
     });
     super.initState();
@@ -101,7 +101,7 @@ class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
         orElse: () => null,
         initialState: widget.initialListener,
         loadingState: widget.loadingListener,
-        successState: widget.succeedListener,
+        successState: widget.successListener,
         failureState: widget.failureListener,
       ),
       child: widget.child,

@@ -28,7 +28,7 @@ class ComplexListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ComplexListBlocEaseBuilder(
-      succeedBuilder: (items) => ItemView(items: items),
+      successBuilder: (items) => ItemView(items: items),
     );
   }
 }

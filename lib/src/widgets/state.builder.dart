@@ -10,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// Example usage:
 /// ```dart
 /// BlocEaseStateBuilder<UserBloc, User>(
-///   succeedBuilder: (user) => Text('Success: $user');
+///   successBuilder: (user) => Text('Success: $user');
 ///   initialBuilder: () => Text('Initial state');
 ///   loadingBuilder: ([message, progress]) => Text('Loading: $message, progress: $progress');
 ///   failureBuilder: (message, exception, retryCallback) => return Text('Failure: $message, exception: $exception');
@@ -19,14 +19,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class BlocEaseStateBuilder<B extends BlocBase<BlocEaseState<T>>, T> extends BlocBuilder<B, BlocEaseState<T>> {
   /// Creates a `BlocEaseStateBuilder` widget.
   ///
-  /// The [succeedBuilder] is a required callback that will be invoked when the
+  /// The [successBuilder] is a required callback that will be invoked when the
   /// state is `SuccessState`. The [initialBuilder], [loadingBuilder], and
   /// [failureBuilder] are optional callbacks. If not provided, the corresponding widgets
   /// configured in [BlocEaseStateWidgetProvider] will be used. The [bloc] parameter is optional
   /// and will use the nearest Bloc with context if not provided. The [buildWhen] parameter
   /// determines whether or not to rebuild the widget with the state.
   BlocEaseStateBuilder({
-    required SuccessBuilder<T> succeedBuilder,
+    required SuccessBuilder<T> successBuilder,
     InitialBuilder? initialBuilder,
     LoadingBuilder? loadingBuilder,
     FailureBuilder? failureBuilder,
@@ -46,6 +46,6 @@ class BlocEaseStateBuilder<B extends BlocBase<BlocEaseState<T>>, T> extends Bloc
                   failureState: failureBuilder ??
                       ([_, __, ___]) => BlocEaseStateWidgetProvider.of(context)
                           .failureStateBuilder(state as FailureState<T>),
-                  successState: succeedBuilder,
+                  successState: successBuilder,
                 ));
 }

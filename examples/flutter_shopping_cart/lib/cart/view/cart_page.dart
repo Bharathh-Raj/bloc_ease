@@ -36,7 +36,7 @@ class CartList extends StatelessWidget {
     final itemNameStyle = Theme.of(context).textTheme.titleLarge;
 
     return CartBuilder(
-      succeedBuilder: (cart) => ListView.separated(
+      successBuilder: (cart) => ListView.separated(
         itemCount: cart.items.length,
         separatorBuilder: (_, __) => const SizedBox(height: 4),
         itemBuilder: (context, index) {
@@ -75,7 +75,7 @@ class CartTotal extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CartBuilder(
-              succeedBuilder: (cart) =>
+              successBuilder: (cart) =>
                   Text('\$${cart.totalPrice}', style: hugeStyle),
             ),
             const SizedBox(width: 24),

@@ -14,7 +14,7 @@ class CatalogPage extends StatelessWidget {
           const CatalogAppBar(),
           const SliverToBoxAdapter(child: SizedBox(height: 12)),
           CatalogBlocEaseBuilder(
-            succeedBuilder: (catalog) => SliverList(
+            successBuilder: (catalog) => SliverList(
               delegate: SliverChildBuilderDelegate(
                 (context, index) => CatalogListItem(
                   catalog.getByPosition(index),
@@ -38,7 +38,7 @@ class AddButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return CartBuilder(
-      succeedBuilder: (cart) => Builder(
+      successBuilder: (cart) => Builder(
         builder: (context) {
           final isInCart = cart.items.contains(item);
           return TextButton(

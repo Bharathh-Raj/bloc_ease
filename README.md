@@ -139,7 +139,7 @@ class UserCubit extends Cubit<UserState> { //<--Cubit name
 ```
 
 ### Step 3 - Use `<CubitName>BlocEaseBuilder` instead of BlocBuilder in the UI
-`<CubitName>BlocEaseBuilder (UserBlocEaseBuilder)` is the builder used to access the Success Object configured in Step 2 with the succeedBuilder required field. 
+`<CubitName>BlocEaseBuilder (UserBlocEaseBuilder)` is the builder used to access the Success Object configured in Step 2 with the successBuilder required field. 
 All other states (`InitialState`, `LoadingState`, and `FailureState`) use the default widgets configured in Step 1.
 
 ```dart
@@ -149,7 +149,7 @@ class SomeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return UserBlocEaseBuilder( //<-- <CubitName>BlocEaseBuilder
-      succeedBuilder: (user)    //<-- This provides the Success Object we configured in the Step 2.
+      successBuilder: (user)    //<-- This provides the Success Object we configured in the Step 2.
         => SomeOtherWidget(user),
     );
   }
@@ -218,7 +218,7 @@ class SomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {  
     final currentUserCubit = context.read<CurrentUserCubit>();  
     return CurrentUserBlocEaseListener(  
-      succeedListener: (user) {  
+      successListener: (user) {  
         final exUser = currentUserCubit.exSucceedObject; //<-- Can access exSucceedObject
         if(exUser?.email == null && user.email != null) {  
           welcomeUserViaEmail(user.email);  
@@ -475,7 +475,7 @@ class BlocEaseListenerExampleWidget extends StatelessWidget {
       initialListener: () {},
       loadingListener: ([progress]) {},
       failureListener: ([message, exception, retryCallback]) {},
-      succeedListener: (user) {},
+      successListener: (user) {},
       child: //..//,
     );
   }
@@ -486,17 +486,17 @@ class BlocEaseConsumerExampleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Other than succeedBuilder, all fields are optional.
+    // Other than successBuilder, all fields are optional.
     return UserBlocEaseConsumer( //<-- <CubitName>BlocEaseConsumer
       initialListener: () {},
       loadingListener: ([progress]) {},
       failureListener: ([message, exception, retryCallback]) {},
-      succeedListener: (user) {},
+      successListener: (user) {},
 
       initialBuilder: () {},
       loadingBuilder: ([progress]) {},
       failureBuilder: ([message, exception, retryCallback]) ={},
-      succeedBuilder: (user) => SomeWidget(user),
+      successBuilder: (user) => SomeWidget(user),
     );
   }
 }

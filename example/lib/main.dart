@@ -36,7 +36,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
  * -------------------
  * The example uses BlocEaseStateBuilder which handles different states and renders appropriate UI:
  * - Automatically renders the default widget from BlocEaseStateWidgetProvider for loading/error states
- * - Only requires implementation of succeedBuilder for the success case
+ * - Only requires implementation of successBuilder for the success case
  * - Can override default widgets with custom implementations for specific cases
  */
 
@@ -296,6 +296,10 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final widget = UserBlocEaseListener(
+      successListener: ,
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Profile'),
@@ -304,9 +308,9 @@ class UserScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         // UserBlocEaseBuilder handles all state types automatically
-        // Only the succeedBuilder is required, others use defaults from BlocEaseStateWidgetProvider
+        // Only the successBuilder is required, others use defaults from BlocEaseStateWidgetProvider
         child: UserBlocEaseBuilder(
-          succeedBuilder:
+          successBuilder:
               (user) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -365,7 +369,7 @@ class ProductsScreen extends StatelessWidget {
       // ProductBlocEaseBuilder automatically handles loading/error states
       // using the default widgets provided by BlocEaseStateWidgetProvider
       body: ProductBlocEaseBuilder(
-        succeedBuilder:
+        successBuilder:
             (products) => ListView.builder(
               itemCount: products.length,
               itemBuilder: (context, index) {
@@ -430,7 +434,7 @@ class _SearchScreenState extends State<SearchScreen> {
               child: SearchBlocEaseBuilder(
                 initialBuilder:
                     () => const Center(child: Text('Enter a search term')),
-                succeedBuilder: (results) {
+                successBuilder: (results) {
                   if (results.isEmpty) {
                     return const Center(child: Text('No results found'));
                   }
