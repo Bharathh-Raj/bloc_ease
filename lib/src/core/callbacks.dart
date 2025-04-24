@@ -11,8 +11,8 @@ typedef InitialBuilder = Widget Function();
 /// when the state is in its initial state with a generic type.
 ///
 /// - [T]: The type of the state.
-/// - [state]: The initial state object.
-typedef InitialStateBuilder<T> = Widget Function(InitialState<T> state);
+/// - [initialState]: The initial state object.
+typedef InitialStateBuilder<T> = Widget Function(InitialState<T> initialState);
 
 /// Typedef for a builder function that returns a widget for the loading state.
 ///
@@ -29,8 +29,8 @@ typedef LoadingBuilder = Widget Function([String? message, double? progress]);
 /// when the state is in a loading state with a generic type.
 ///
 /// - [T]: The type of the state.
-/// - [state]: The loading state object.
-typedef LoadingStateBuilder<T> = Widget Function(LoadingState<T> state);
+/// - [loadingState]: The loading state object.
+typedef LoadingStateBuilder<T> = Widget Function(LoadingState<T> loadingState);
 
 /// Typedef for a builder function that returns a widget for the success state.
 ///
@@ -47,8 +47,8 @@ typedef SuccessBuilder<T> = Widget Function(T success);
 /// when the state is in a success state with a generic type.
 ///
 /// - [T]: The type of the state.
-/// - [state]: The success state object.
-typedef SuccessStateBuilder<T> = Widget Function(SuccessState<T> state);
+/// - [successState]: The success state object.
+typedef SuccessStateBuilder<T> = Widget Function(SuccessState<T> successState);
 
 /// Typedef for a builder function that returns a widget for the failure state.
 ///
@@ -66,8 +66,8 @@ typedef FailureBuilder = Widget Function([String? message, dynamic exception, Vo
 /// when the state is in a failure state with a generic type.
 ///
 /// - [T]: The type of the state.
-/// - [state]: The failure state object.
-typedef FailureStateBuilder<T> = Widget Function(FailureState<T> state);
+/// - [failureState]: The failure state object.
+typedef FailureStateBuilder<T> = Widget Function(FailureState<T> failureState);
 
 /// Typedef for a listener function that is called for the initial state.
 ///
