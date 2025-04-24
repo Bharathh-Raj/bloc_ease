@@ -300,7 +300,7 @@ class SomeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Remember: All of these Bloc/Cubit should exit BlocEaseState
+    // Remember: All of these Bloc/Cubit should emit BlocEaseState
     final blocEaseBlocs = [context.read<UserBloc>(), context.read<OrdersBloc>(), context.read<ReturnsBloc>(), context.read<WishlistBloc>()];
     return BlocEaseMultiStateBuilder( //<-- If you just want to handle SuccessState
       blocEaseBlocs: blocEaseBlocs,

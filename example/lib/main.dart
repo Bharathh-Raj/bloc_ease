@@ -240,12 +240,9 @@ typedef ProductBlocBuilder = BlocBuilder<ProductCubit, ProductState>;
 typedef ProductBlocListener = BlocListener<ProductCubit, ProductState>;
 typedef ProductBlocConsumer = BlocConsumer<ProductCubit, ProductState>;
 
-typedef ProductBlocEaseBuilder =
-    BlocEaseStateBuilder<ProductCubit, List<Product>>;
-typedef ProductBlocEaseListener =
-    BlocEaseStateListener<ProductCubit, List<Product>>;
-typedef ProductBlocEaseConsumer =
-    BlocEaseStateConsumer<ProductCubit, List<Product>>;
+typedef ProductBlocEaseBuilder = BlocEaseStateBuilder<ProductCubit, List<Product>>;
+typedef ProductBlocEaseListener = BlocEaseStateListener<ProductCubit, List<Product>>;
+typedef ProductBlocEaseConsumer = BlocEaseStateConsumer<ProductCubit, List<Product>>;
 
 // 3. Example using StateDebounce mixin
 // This demonstrates using the StateDebounce mixin to prevent rapid state emissions
@@ -296,10 +293,6 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final widget = UserBlocEaseListener(
-      successListener: ,
-    );
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Profile'),

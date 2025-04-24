@@ -58,8 +58,7 @@ typedef SuccessStateBuilder<T> = Widget Function(SuccessState<T> state);
 /// - [message]: Optional message describing the failure.
 /// - [exception]: Optional exception that caused the failure.
 /// - [retryCallback]: Optional callback to retry the operation.
-typedef FailureBuilder = Widget Function(
-    [String? message, dynamic exception, VoidCallback? retryCallback]);
+typedef FailureBuilder = Widget Function([String? message, dynamic exception, VoidCallback? retryCallback]);
 
 /// Typedef for a builder function that returns a widget for the failure state with a generic type.
 ///
@@ -99,8 +98,7 @@ typedef SuccessListener<T> = void Function(T success);
 /// This typedef defines a function signature for a listener function
 /// that is called when the state is in a failure state.
 ///
-/// - [failure]: Optional message describing the failure.
+/// - [message]: Optional message describing the failure.
 /// - [exception]: Optional exception that caused the failure.
 /// - [retryCallback]: Optional callback to retry the operation.
-typedef FailureListener = void Function(
-    [String? failure, dynamic exception, VoidCallback? retryCallback]);
+typedef FailureListener = void Function([String? message, dynamic exception, VoidCallback? retryCallback]);

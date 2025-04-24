@@ -19,8 +19,7 @@ import '../core/states.dart';
 ///   failureListener: (message, exception, retryCallback) => print('Failure: $message, exception: $exception'),
 /// )
 /// ```
-class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T>
-    extends StatefulWidget {
+class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T> extends StatefulWidget {
   /// Creates a `BlocEaseStateListener` widget.
   ///
   /// The [successListener], [initialListener], [loadingListener], and [failureListener]
@@ -66,12 +65,10 @@ class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T>
   final BlocListenerCondition<BlocEaseState<T>>? listenWhen;
 
   @override
-  State<BlocEaseStateListener> createState() =>
-      BlocEaseStateListenerState<B, T>();
+  State<BlocEaseStateListener> createState() => BlocEaseStateListenerState<B, T>();
 }
 
-class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
-    extends State<BlocEaseStateListener<B, T>> {
+class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T> extends State<BlocEaseStateListener<B, T>> {
   @override
   void initState() {
     if (!widget.shouldRunOnInit) return;
@@ -83,8 +80,7 @@ class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
       } else if (state is LoadingState<T> && widget.loadingListener != null) {
         widget.loadingListener!(state.message, state.progress);
       } else if (state is FailureState<T> && widget.failureListener != null) {
-        widget.failureListener!(
-            state.message, state.exception, state.retryCallback);
+        widget.failureListener!(state.message, state.exception, state.retryCallback);
       } else if (state is SuccessState<T> && widget.successListener != null) {
         widget.successListener!(state.success);
       }
