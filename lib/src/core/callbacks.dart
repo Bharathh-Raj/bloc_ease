@@ -75,6 +75,15 @@ typedef FailureStateBuilder<T> = Widget Function(FailureState<T> failureState);
 /// that is called when the state is in its initial state.
 typedef InitialListener = VoidCallback;
 
+/// Typedef for a listener function that is called for the initial state with a generic type.
+///
+/// This typedef defines a function signature for a listener function
+/// that is called when the state is in its initial state with a generic type.
+///
+/// - [T]: The type of the state.
+/// - [initialState]: The initial state object.
+typedef InitialStateListener<T> = void Function(InitialState<T> initialState);
+
 /// Typedef for a listener function that is called for the loading state.
 ///
 /// This typedef defines a function signature for a listener function
@@ -83,6 +92,15 @@ typedef InitialListener = VoidCallback;
 /// - [message]: Optional message describing the loading state.
 /// - [progress]: Optional progress value of the loading state.
 typedef LoadingListener = void Function([String? message, double? progress]);
+
+/// Typedef for a listener function that is called for the loading state with a generic type.
+///
+/// This typedef defines a function signature for a listener function
+/// that is called when the state is in a loading state with a generic type.
+///
+/// - [T]: The type of the state.
+/// - [loadingState]: The loading state object.
+typedef LoadingStateListener<T> = void Function(LoadingState<T> loadingState);
 
 /// Typedef for a listener function that is called for the success state.
 ///
@@ -93,6 +111,15 @@ typedef LoadingListener = void Function([String? message, double? progress]);
 /// - [success]: The success object of the state.
 typedef SuccessListener<T> = void Function(T success);
 
+/// Typedef for a listener function that is called for the success state with a generic type.
+///
+/// This typedef defines a function signature for a listener function
+/// that is called when the state is in a success state with a generic type.
+///
+/// - [T]: The type of the state.
+/// - [successState]: The success state object.
+typedef SuccessStateListener<T> = void Function(SuccessState<T> successState);
+
 /// Typedef for a listener function that is called for the failure state.
 ///
 /// This typedef defines a function signature for a listener function
@@ -102,3 +129,12 @@ typedef SuccessListener<T> = void Function(T success);
 /// - [exception]: Optional exception that caused the failure.
 /// - [retryCallback]: Optional callback to retry the operation.
 typedef FailureListener = void Function([String? message, dynamic exception, VoidCallback? retryCallback]);
+
+/// Typedef for a listener function that is called for the failure state with a generic type.
+///
+/// This typedef defines a function signature for a listener function
+/// that is called when the state is in a failure state with a generic type.
+///
+/// - [T]: The type of the state.
+/// - [failureState]: The failure state object.
+typedef FailureStateListener<T> = void Function(FailureState<T> failureState);
