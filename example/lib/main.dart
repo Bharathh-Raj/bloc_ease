@@ -2,43 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:bloc_ease/bloc_ease.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-/**
- * BlocEase Package Example
- * -----------------------
- * 
- * This example demonstrates how to use the bloc_ease package to simplify state management in Flutter.
- * 
- * 1. BLOC EASE STATES
- * -------------------
- * The package provides four main state types:
- * - InitialState: The default starting state
- * - LoadingState: Represents loading operations with optional message and progress
- * - SuccessState: Contains the successfully loaded data
- * - FailureState: Represents errors with optional message, exception, and retry callback
- * 
- * 2. CUBITS/BLOCS WITH BLOC EASE
- * ------------------------------
- * This example demonstrates three different types of Cubits:
- * - Basic Cubit (UserCubit): Uses basic BlocEaseState with emitLoading, emitSuccess, emitFailure methods
- * - Cubit with CacheExBlocEaseStateMixin (ProductCubit): Caches previous states for comparison and optimization
- * - Cubit with StateDebounce mixin (SearchCubit): Debounces state emissions to handle rapid changes
- * 
- * 3. BLOC EASE STATE WIDGET PROVIDER
- * ---------------------------------
- * BlocEaseStateWidgetProvider is used at the app root to define default widgets for:
- * - initialStateBuilder: Widget to show when state is InitialState
- * - loadingStateBuilder: Widget to show when state is LoadingState (with progress and message)
- * - failureStateBuilder: Widget to show when state is FailureState (with error and retry)
- * 
- * These default widgets are used automatically by BlocEaseStateBuilder when specific builders aren't provided.
- * 
- * 4. BLOC EASE WIDGETS
- * -------------------
- * The example uses BlocEaseStateBuilder which handles different states and renders appropriate UI:
- * - Automatically renders the default widget from BlocEaseStateWidgetProvider for loading/error states
- * - Only requires implementation of successBuilder for the success case
- * - Can override default widgets with custom implementations for specific cases
- */
+/// BlocEase Package Example
+/// -----------------------
+/// 
+/// This example demonstrates how to use the bloc_ease package to simplify state management in Flutter.
+/// 
+/// 1. BLOC EASE STATES
+/// -------------------
+/// The package provides four main state types:
+/// - InitialState: The default starting state
+/// - LoadingState: Represents loading operations with optional message and progress
+/// - SuccessState: Contains the successfully loaded data
+/// - FailureState: Represents errors with optional message, exception, and retry callback
+/// 
+/// 2. CUBITS/BLOCS WITH BLOC EASE
+/// ------------------------------
+/// This example demonstrates three different types of Cubits:
+/// - Basic Cubit (UserCubit): Uses basic BlocEaseState with emitLoading, emitSuccess, emitFailure methods
+/// - Cubit with CacheExBlocEaseStateMixin (ProductCubit): Caches previous states for comparison and optimization
+/// - Cubit with StateDebounce mixin (SearchCubit): Debounces state emissions to handle rapid changes
+/// 
+/// 3. BLOC EASE STATE WIDGET PROVIDER
+/// ---------------------------------
+/// BlocEaseStateWidgetProvider is used at the app root to define default widgets for:
+/// - initialStateBuilder: Widget to show when state is InitialState
+/// - loadingStateBuilder: Widget to show when state is LoadingState (with progress and message)
+/// - failureStateBuilder: Widget to show when state is FailureState (with error and retry)
+/// 
+/// These default widgets are used automatically by BlocEaseStateBuilder when specific builders aren't provided.
+/// 
+/// 4. BLOC EASE WIDGETS
+/// -------------------
+/// The example uses BlocEaseStateBuilder which handles different states and renders appropriate UI:
+/// - Automatically renders the default widget from BlocEaseStateWidgetProvider for loading/error states
+/// - Only requires implementation of successBuilder for the success case
+/// - Can override default widgets with custom implementations for specific cases
 
 // Main app
 void main() {
@@ -302,49 +300,50 @@ class UserScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         // UserBlocEaseBuilder handles all state types automatically
         // Only the successBuilder is required, others use defaults from BlocEaseStateWidgetProvider
-        child: UserBlocEaseBuilder(
-          successBuilder:
-              (user) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'User Profile',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Card(
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Name: ${user.name}',
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'Email: ${user.email}',
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            'ID: ${user.id}',
-                            style: const TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-        ),
+        child: UserBlocEaseBuilder(successBuilder: (user) => _userCard(user)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: context.read<UserCubit>().fetchUser,
         child: const Icon(Icons.refresh),
       ),
+    );
+  }
+
+  Widget _userCard(User user) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'User Profile',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 16),
+        Card(
+          elevation: 4,
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Name: ${user.name}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Email: ${user.email}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'ID: ${user.id}',
+                  style: const TextStyle(fontSize: 18),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
