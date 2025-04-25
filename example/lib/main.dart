@@ -279,9 +279,9 @@ class UserScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('User')),
         // UserBlocEaseBuilder handles all state types automatically
         // Only the successBuilder is required, others use defaults from BlocEaseStateWidgetProvider
-      appBar: AppBar(title: const Text('User')),
       body: UserBlocEaseBuilder(
         successBuilder: (user) => Center(child: Text(user.name)),
       ),
@@ -299,9 +299,9 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Products')),
       // ProductBlocEaseBuilder automatically handles loading/error states
       // using the default widgets provided by BlocEaseStateWidgetProvider
-      appBar: AppBar(title: const Text('Products')),
       body: ProductBlocEaseBuilder(
         successBuilder: (products) => ListView.builder(
           itemCount: products.length,
