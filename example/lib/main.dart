@@ -38,7 +38,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 /// - Only requires implementation of successBuilder for the success case
 /// - Can override default widgets with custom implementations for specific cases
 
-// Main app
 void main() {
   runApp(const ExampleApp());
 }
@@ -51,45 +50,34 @@ class ExampleApp extends StatelessWidget {
     // BlocEaseStateWidgetProvider is used at the app root to define default widgets
     // for InitialState, LoadingState, and FailureState
     return BlocEaseStateWidgetProvider(
-      // Define default widget for InitialState
-      initialStateBuilder: (_) => const Center(child: Text('Ready to start', style: TextStyle(fontSize: 18))),
-      // Define default widget for LoadingState with progress and message support
-      loadingStateBuilder: (loadingState) => Center(
+      initialStateBuilder: (_) => const Center(child: Text('Initial')),
+      loadingStateBuilder: (state) => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircularProgressIndicator(value: loadingState.progress),
-            const SizedBox(height: 16),
-            Text(
-              loadingState.message ?? 'Loading...',
-              style: const TextStyle(fontSize: 16),
-            ),
+            CircularProgressIndicator(value: state.progress),
+            if (state.message != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 16),
+                child: Text(state.message!),
+              ),
           ],
         ),
       ),
-      // Define default widget for FailureState with error message and retry button
-      failureStateBuilder: (failureState) => Center(
+      failureStateBuilder: (state) => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.error_outline, color: Colors.red, size: 48),
-            const SizedBox(height: 16),
-            Text(
-              failureState.message ?? 'An error occurred',
-              style: const TextStyle(color: Colors.red, fontSize: 16),
-            ),
-            const SizedBox(height: 16),
-            if (failureState.retryCallback != null)
+            Text(state.message ?? 'Error'),
+            if (state.retryCallback != null)
               ElevatedButton(
-                onPressed: failureState.retryCallback,
+                onPressed: state.retryCallback,
                 child: const Text('Retry'),
               ),
           ],
         ),
       ),
       child: MaterialApp(
-        title: 'BlocEase Example',
-        theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
         home: const HomePage(),
       ),
     );
@@ -118,7 +106,7 @@ class HomePage extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text('User Profile Example'),
+              child: const Text('User Example'),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
@@ -139,11 +127,10 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder:
-                        (context) => BlocProvider(
-                          create: (context) => SearchCubit(),
-                          child: const SearchScreen(),
-                        ),
+                    builder: (context) => BlocProvider(
+                      create: (context) => SearchCubit(),
+                      child: const SearchScreen(),
+                    ),
                   ),
                 );
               },
@@ -246,6 +233,7 @@ typedef ProductBlocEaseConsumer = BlocEaseStateConsumer<ProductCubit, List<Produ
 // This demonstrates using the StateDebounce mixin to prevent rapid state emissions
 // Useful for search inputs, form validation, etc.
 typedef SearchState = BlocEaseState<List<String>>;
+
 class SearchCubit extends Cubit<SearchState> with StateDebounce {
   SearchCubit() : super(const SearchInitialState());
 
@@ -285,65 +273,22 @@ typedef SearchBlocEaseBuilder = BlocEaseStateBuilder<SearchCubit, List<String>>;
 typedef SearchBlocEaseListener = BlocEaseStateListener<SearchCubit, List<String>>;
 typedef SearchBlocEaseConsumer = BlocEaseStateConsumer<SearchCubit, List<String>>;
 
-// Screens
 class UserScreen extends StatelessWidget {
   const UserScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Profile'),
-        backgroundColor: Colors.blue,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
         // UserBlocEaseBuilder handles all state types automatically
         // Only the successBuilder is required, others use defaults from BlocEaseStateWidgetProvider
-        child: UserBlocEaseBuilder(successBuilder: (user) => _userCard(user)),
+      appBar: AppBar(title: const Text('User')),
+      body: UserBlocEaseBuilder(
+        successBuilder: (user) => Center(child: Text(user.name)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: context.read<UserCubit>().fetchUser,
         child: const Icon(Icons.refresh),
       ),
-    );
-  }
-
-  Widget _userCard(User user) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'User Profile',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 16),
-        Card(
-          elevation: 4,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Name: ${user.name}',
-                  style: const TextStyle(fontSize: 18),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Email: ${user.email}',
-                  style: const TextStyle(fontSize: 18),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'ID: ${user.id}',
-                  style: const TextStyle(fontSize: 18),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
@@ -354,92 +299,46 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Products'),
-        backgroundColor: Colors.green,
-      ),
       // ProductBlocEaseBuilder automatically handles loading/error states
       // using the default widgets provided by BlocEaseStateWidgetProvider
+      appBar: AppBar(title: const Text('Products')),
       body: ProductBlocEaseBuilder(
-        successBuilder:
-            (products) => ListView.builder(
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return ListTile(
-                  title: Text(product.name),
-                  subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-                  leading: const Icon(Icons.shopping_cart),
-                );
-              },
-            ),
+        successBuilder: (products) => ListView.builder(
+          itemCount: products.length,
+          itemBuilder: (_, i) => ListTile(title: Text(products[i].name)),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed:
-            () => context.read<ProductCubit>().fetchProducts(refresh: true),
+        onPressed: () => context.read<ProductCubit>().fetchProducts(refresh: true),
         child: const Icon(Icons.refresh),
       ),
     );
   }
 }
 
-class SearchScreen extends StatefulWidget {
+class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
-
-  @override
-  State<SearchScreen> createState() => _SearchScreenState();
-}
-
-class _SearchScreenState extends State<SearchScreen> {
-  final _searchController = TextEditingController();
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search'),
-        backgroundColor: Colors.purple,
-      ),
+      appBar: AppBar(title: const Text('Search')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                hintText: 'Search...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
               onChanged: context.read<SearchCubit>().search,
+              decoration: const InputDecoration(hintText: 'Search...'),
             ),
-            const SizedBox(height: 16),
             Expanded(
               // Here we override the initialBuilder while still using default
               // loading and failure widgets from BlocEaseStateWidgetProvider
               child: SearchBlocEaseBuilder(
-                initialBuilder:
-                    () => const Center(child: Text('Enter a search term')),
-                successBuilder: (results) {
-                  if (results.isEmpty) {
-                    return const Center(child: Text('No results found'));
-                  }
-                  return ListView.builder(
-                    itemCount: results.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(results[index]),
-                        leading: const Icon(Icons.article),
-                      );
-                    },
-                  );
-                },
+                successBuilder: (results) => ListView.builder(
+                  itemCount: results.length,
+                  itemBuilder: (_, i) => ListTile(title: Text(results[i])),
+                ),
               ),
             ),
           ],
@@ -449,47 +348,32 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-// Example data models
 class User {
-  final String id;
   final String name;
-  final String email;
-
-  const User({required this.id, required this.name, required this.email});
-
-  @override
-  String toString() => 'User(id: $id, name: $name, email: $email)';
+  const User({required this.name});
 }
 
 class Product {
-  final String id;
   final String name;
-  final double price;
-
-  const Product({required this.id, required this.name, required this.price});
-
-  @override
-  String toString() =>
-      'Product(id: $id, name: $name, price: \$${price.toStringAsFixed(2)})';
+  const Product({required this.name});
 }
 
-// Example repositories
 class UserRepository {
   Future<User> fetchUser() async {
     // Simulate network delay
     await Future.delayed(const Duration(seconds: 2));
-    return const User(id: '1', name: 'John Doe', email: 'john@example.com');
+    return const User(name: 'John Doe');
   }
 }
 
 class ProductRepository {
   Future<List<Product>> fetchProducts() async {
     // Simulate network delay
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 2));
     return [
-      const Product(id: '1', name: 'iPhone', price: 999.99),
-      const Product(id: '2', name: 'MacBook', price: 1299.99),
-      const Product(id: '3', name: 'AirPods', price: 199.99),
+      const Product(name: 'Product 1'),
+      const Product(name: 'Product 2'),
+      const Product(name: 'Product 3'),
     ];
   }
 }
