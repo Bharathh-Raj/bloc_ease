@@ -1,0 +1,6 @@
+.dart_tool/
+.idea/
+.vscode/
+build/
+.DS_Store
+bloc_ease.iml 
