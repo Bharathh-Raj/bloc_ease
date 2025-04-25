@@ -13,11 +13,11 @@ import 'state_widget.provider.dart';
 /// Example usage:
 /// ```dart
 /// BlocEaseStateConsumer<UserBloc, User>(
-///   succeedListener: (user) => print('Success: $user'),
+///   successListener: (user) => print('Success: $user'),
 ///   initialListener: () => print('Initial state'),
 ///   loadingListener: (message, progress) => print('Loading: $message, progress: $progress'),
 ///   failureListener: (message, exception, retryCallback) => print('Failure: $message, exception: $exception'),
-///   succeedBuilder: (user) => Text('Success: $user'),
+///   successBuilder: (user) => Text('Success: $user'),
 ///   initialBuilder: () => Text('Initial state'),
 ///   loadingBuilder: ([message, progress]) => Text('Loading: $message, progress: $progress'),
 ///   failureBuilder: (message, exception, retryCallback) => Text('Failure: $message, exception: $exception'),
@@ -27,20 +27,20 @@ class BlocEaseStateConsumer<B extends BlocBase<BlocEaseState<T>>, T>
     extends BlocConsumer<B, BlocEaseState<T>> {
   /// Creates a `BlocEaseStateConsumer` widget.
   ///
-  /// The [succeedBuilder] is a required callback that will be invoked when the
+  /// The [successBuilder] is a required callback that will be invoked when the
   /// state is `SuccessState`. The [initialBuilder], [loadingBuilder], and
   /// [failureBuilder] are optional callbacks. If not provided, the corresponding widgets
-  /// configured in [BlocEaseStateWidgetProvider] will be used. The [succeedListener],
+  /// configured in [BlocEaseStateWidgetProvider] will be used. The [successListener],
   /// [initialListener], [loadingListener], and [failureListener] are optional callbacks
   /// that will be invoked when the corresponding state is emitted. The [bloc] parameter is optional
   /// and will use the nearest Bloc with context if not provided. The [listenWhen] and [buildWhen] parameters
   /// determine whether or not to invoke the listener and rebuild the widget with the state, respectively.
   BlocEaseStateConsumer({
-    required SuccessBuilder<T> succeedBuilder,
+    required SuccessBuilder<T> successBuilder,
     InitialBuilder? initialBuilder,
     LoadingBuilder? loadingBuilder,
     FailureBuilder? failureBuilder,
-    SuccessListener<T>? succeedListener,
+    SuccessListener<T>? successListener,
     InitialListener? initialListener,
     LoadingListener? loadingListener,
     FailureListener? failureListener,
@@ -55,7 +55,7 @@ class BlocEaseStateConsumer<B extends BlocBase<BlocEaseState<T>>, T>
                   orElse: () => null,
                   initialState: initialListener,
                   loadingState: loadingListener,
-                  successState: succeedListener,
+                  successState: successListener,
                   failureState: failureListener,
                 ),
             buildWhen: buildWhen,
@@ -69,6 +69,6 @@ class BlocEaseStateConsumer<B extends BlocBase<BlocEaseState<T>>, T>
                   failureState: failureBuilder ??
                       ([_, __, ___]) => BlocEaseStateWidgetProvider.of(context)
                           .failureStateBuilder(state as FailureState<T>),
-                  successState: succeedBuilder,
+                  successState: successBuilder,
                 ));
 }

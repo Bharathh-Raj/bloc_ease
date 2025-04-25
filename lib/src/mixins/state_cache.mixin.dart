@@ -7,6 +7,10 @@ import '../core/states.dart';
 /// Caches the last state of [InitialState], [LoadingState], [SuccessState] & [FailureState].
 /// Can access the ex states via [exInitialState], [exLoadingState], [exSuccessState] & [exFailureState].
 ///
+/// Note: The ex states are only updated when the state type changes. For example, if a [LoadingState] 
+/// is emitted while the current state is already a [LoadingState], the [exLoadingState] won't be updated
+/// until the state changes to a different type (like [SuccessState]) and then back to [LoadingState].
+///
 /// Automatically destroys the ex states when bloc/cubit closes. Yet we can force clear the ex states by calling [resetCache] method.
 ///
 /// Useful to do operation based on the change in same type of state.

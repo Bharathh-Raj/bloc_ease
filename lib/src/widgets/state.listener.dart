@@ -9,43 +9,78 @@ import '../core/states.dart';
 /// This widget can be used instead of `BlocListener` to handle different states
 /// of a Bloc in a type-safe manner. It provides callbacks for initial, loading,
 /// success, and failure states.
-/// Example usage:
+///
+/// You can provide either simple listeners that receive the state data directly,
+/// or state listeners that receive the full state object:
+///
 /// ```dart
+/// // Using simple listeners:
 /// BlocEaseStateListener<UserBloc, User>(
 ///   shouldRunOnInit: true,
-///   succeedListener: (user) => print('Success: $user'),
+///   successListener: (user) => print('Success: $user'),
 ///   initialListener: () => print('Initial state'),
-///   loadingListener: (message, progress) => print('Loading: $message, progress: $progress'),
-///   failureListener: (message, exception, retryCallback) => print('Failure: $message, exception: $exception'),
+///   loadingListener: (message, progress) => print('Loading: $message'),
+///   failureListener: (message, exception, retry) => print('Error: $message'),
+///   child: YourWidget(),
+/// )
+///
+/// // Using state listeners:
+/// BlocEaseStateListener<UserBloc, User>(
+///   shouldRunOnInit: true,
+///   successStateListener: (state) => print('Success: ${state.success}'),
+///   initialStateListener: (state) => print('Initial state'),
+///   loadingStateListener: (state) => print('Loading: ${state.message}'),
+///   failureStateListener: (state) => print('Error: ${state.message}'),
+///   child: YourWidget(),
 /// )
 /// ```
-class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T>
-    extends StatefulWidget {
+///
+/// Note: You can only provide one type of listener for each state (either the simple
+/// listener or the state listener, but not both).
+class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T> extends StatefulWidget {
   /// Creates a `BlocEaseStateListener` widget.
   ///
-  /// The [succeedListener], [initialListener], [loadingListener], and [failureListener]
+  /// The [successListener], [initialListener], [loadingListener], and [failureListener]
   /// are optional callbacks that will be invoked when the corresponding state is emitted.
-  /// The [bloc] parameter is optional and will use the nearest Bloc with context if not provided.
-  /// The [listenWhen] parameter is a condition to determine whether or not to invoke the listener with state.
+  /// Alternatively, you can use [successStateListener], [initialStateListener], 
+  /// [loadingStateListener], and [failureStateListener] to access the full state objects.
+  ///
+  /// The [bloc] parameter is optional and will use the nearest Bloc from the context if not provided.
+  /// The [listenWhen] parameter is a condition to determine whether to invoke the listener with state.
   /// The [shouldRunOnInit] parameter determines whether to run the listener on initialization.
+  /// The [child] is the widget that will be rendered as a descendant of this listener.
   const BlocEaseStateListener({
     super.key,
-    this.succeedListener,
+    this.successListener,
+    this.successStateListener,
     this.child,
     this.initialListener,
+    this.initialStateListener,
     this.loadingListener,
+    this.loadingStateListener,
     this.failureListener,
+    this.failureStateListener,
     this.bloc,
     this.listenWhen,
     this.shouldRunOnInit = false,
-  });
+  }) : assert(!(successListener != null && successStateListener != null), 
+           'Only one of successListener or successStateListener should be provided'),
+       assert(!(initialListener != null && initialStateListener != null), 
+           'Only one of initialListener or initialStateListener should be provided'),
+       assert(!(loadingListener != null && loadingStateListener != null), 
+           'Only one of loadingListener or loadingStateListener should be provided'),
+       assert(!(failureListener != null && failureStateListener != null), 
+           'Only one of failureListener or failureStateListener should be provided');
 
   /// Determines whether to run the listener during initialization. By default, `BlocListener` triggers the listener only on subsequent state changes.
   /// Setting this to true will trigger the listener immediately upon initialization.
   final bool shouldRunOnInit;
 
   /// Callback to be called when the state is `SuccessState`.
-  final SuccessListener<T>? succeedListener;
+  final SuccessListener<T>? successListener;
+
+  /// Callback to be called when the state is `SuccessState` with the full state object.
+  final SuccessStateListener<T>? successStateListener;
 
   /// The widget which will be rendered as a descendant of the `BlocListenerBase`.
   final Widget? child;
@@ -53,40 +88,62 @@ class BlocEaseStateListener<B extends BlocBase<BlocEaseState<T>>, T>
   /// Callback to be called when the state is `InitialState`.
   final InitialListener? initialListener;
 
+  /// Callback to be called when the state is `InitialState` with the full state object.
+  final InitialStateListener<T>? initialStateListener;
+
   /// Callback to be called when the state is `LoadingState`.
   final LoadingListener? loadingListener;
+
+  /// Callback to be called when the state is `LoadingState` with the full state object.
+  final LoadingStateListener<T>? loadingStateListener;
 
   /// Callback to be called when the state is `FailureState`.
   final FailureListener? failureListener;
 
-  /// Bloc to listen to. If not provided, it will use the nearest Bloc with context.
+  /// Callback to be called when the state is `FailureState` with the full state object.
+  final FailureStateListener<T>? failureStateListener;
+
+  /// Bloc to listen to. If not provided, it will use the nearest Bloc from the context.
   final B? bloc;
 
   /// Condition to determine whether or not to invoke listener with state.
   final BlocListenerCondition<BlocEaseState<T>>? listenWhen;
 
   @override
-  State<BlocEaseStateListener> createState() =>
-      BlocEaseStateListenerState<B, T>();
+  State<BlocEaseStateListener> createState() => BlocEaseStateListenerState<B, T>();
 }
 
-class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
-    extends State<BlocEaseStateListener<B, T>> {
+class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T> extends State<BlocEaseStateListener<B, T>> {
   @override
   void initState() {
     if (!widget.shouldRunOnInit) return;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final bloc = widget.bloc ?? context.read<B>();
       final state = bloc.state;
-      if (state is InitialState<T> && widget.initialListener != null) {
-        widget.initialListener!();
-      } else if (state is LoadingState<T> && widget.loadingListener != null) {
-        widget.loadingListener!(state.message, state.progress);
-      } else if (state is FailureState<T> && widget.failureListener != null) {
-        widget.failureListener!(
-            state.message, state.exception, state.retryCallback);
-      } else if (state is SuccessState<T> && widget.succeedListener != null) {
-        widget.succeedListener!(state.success);
+      if (state is InitialState<T>) {
+        if (widget.initialListener != null) {
+          widget.initialListener!();
+        } else if (widget.initialStateListener != null) {
+          widget.initialStateListener!(state);
+        }
+      } else if (state is LoadingState<T>) {
+        if (widget.loadingListener != null) {
+          widget.loadingListener!(state.message, state.progress);
+        } else if (widget.loadingStateListener != null) {
+          widget.loadingStateListener!(state);
+        }
+      } else if (state is FailureState<T>) {
+        if (widget.failureListener != null) {
+          widget.failureListener!(state.message, state.exception, state.retryCallback);
+        } else if (widget.failureStateListener != null) {
+          widget.failureStateListener!(state);
+        }
+      } else if (state is SuccessState<T>) {
+        if (widget.successListener != null) {
+          widget.successListener!(state.success);
+        } else if (widget.successStateListener != null) {
+          widget.successStateListener!(state);
+        }
       }
     });
     super.initState();
@@ -97,13 +154,33 @@ class BlocEaseStateListenerState<B extends BlocBase<BlocEaseState<T>>, T>
     return BlocListener<B, BlocEaseState<T>>(
       bloc: widget.bloc,
       listenWhen: widget.listenWhen,
-      listener: (context, state) => state.maybeWhen(
-        orElse: () => null,
-        initialState: widget.initialListener,
-        loadingState: widget.loadingListener,
-        successState: widget.succeedListener,
-        failureState: widget.failureListener,
-      ),
+      listener: (context, state) {
+        if (state is InitialState<T>) {
+          if (widget.initialListener != null) {
+            widget.initialListener!();
+          } else if (widget.initialStateListener != null) {
+            widget.initialStateListener!(state);
+          }
+        } else if (state is LoadingState<T>) {
+          if (widget.loadingListener != null) {
+            widget.loadingListener!(state.message, state.progress);
+          } else if (widget.loadingStateListener != null) {
+            widget.loadingStateListener!(state);
+          }
+        } else if (state is FailureState<T>) {
+          if (widget.failureListener != null) {
+            widget.failureListener!(state.message, state.exception, state.retryCallback);
+          } else if (widget.failureStateListener != null) {
+            widget.failureStateListener!(state);
+          }
+        } else if (state is SuccessState<T>) {
+          if (widget.successListener != null) {
+            widget.successListener!(state.success);
+          } else if (widget.successStateListener != null) {
+            widget.successStateListener!(state);
+          }
+        }
+      },
       child: widget.child,
     );
   }

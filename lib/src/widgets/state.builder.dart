@@ -5,47 +5,78 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 ///
 /// This widget can be used instead of `BlocBuilder` to handle different states
 /// of a Bloc in a type-safe manner. It provides builders for initial, loading,
-/// success, and failure states, with the success state being mandatory.
+/// success, and failure states.
 ///
-/// Example usage:
+/// You can provide either simple builders that receive the state data directly,
+/// or state builders that receive the full state object:
+///
 /// ```dart
+/// // Using simple builders:
 /// BlocEaseStateBuilder<UserBloc, User>(
-///   succeedBuilder: (user) => Text('Success: $user');
-///   initialBuilder: () => Text('Initial state');
-///   loadingBuilder: ([message, progress]) => Text('Loading: $message, progress: $progress');
-///   failureBuilder: (message, exception, retryCallback) => return Text('Failure: $message, exception: $exception');
+///   successBuilder: (user) => Text('Success: $user'),
+///   initialBuilder: () => Text('Initial state'),
+///   loadingBuilder: (message, progress) => Text('Loading: $message'),
+///   failureBuilder: (message, exception, retry) => Text('Error: $message'),
+/// )
+///
+/// // Using state builders:
+/// BlocEaseStateBuilder<UserBloc, User>(
+///   successStateBuilder: (state) => Text('Success: ${state.success}'),
+///   initialStateBuilder: (state) => Text('Initial state'),
+///   loadingStateBuilder: (state) => Text('Loading: ${state.message}'),
+///   failureStateBuilder: (state) => Text('Error: ${state.message}'),
 /// )
 /// ```
+///
+/// If builders are not provided, it will fall back to the default widgets
+/// configured in [BlocEaseStateWidgetProvider].
+///
+/// Note: Either [successBuilder] or [successStateBuilder] must be provided,
+/// but not both. The same applies to other builder pairs.
 class BlocEaseStateBuilder<B extends BlocBase<BlocEaseState<T>>, T> extends BlocBuilder<B, BlocEaseState<T>> {
   /// Creates a `BlocEaseStateBuilder` widget.
   ///
-  /// The [succeedBuilder] is a required callback that will be invoked when the
-  /// state is `SuccessState`. The [initialBuilder], [loadingBuilder], and
-  /// [failureBuilder] are optional callbacks. If not provided, the corresponding widgets
-  /// configured in [BlocEaseStateWidgetProvider] will be used. The [bloc] parameter is optional
-  /// and will use the nearest Bloc with context if not provided. The [buildWhen] parameter
-  /// determines whether or not to rebuild the widget with the state.
+  /// The [successBuilder] or [successStateBuilder] is required to handle success states.
+  /// Other builders are optional and will use [BlocEaseStateWidgetProvider] defaults if not provided.
+  ///
+  /// The [bloc] parameter is optional and will use the nearest Bloc from the context if not provided.
+  /// The [buildWhen] parameter determines whether to rebuild the widget with state changes.
   BlocEaseStateBuilder({
-    required SuccessBuilder<T> succeedBuilder,
-    InitialBuilder? initialBuilder,
-    LoadingBuilder? loadingBuilder,
-    FailureBuilder? failureBuilder,
     B? bloc,
+    SuccessBuilder<T>? successBuilder,
+    SuccessStateBuilder<T>? successStateBuilder,
+    InitialBuilder? initialBuilder,
+    InitialStateBuilder? initialStateBuilder,
+    LoadingBuilder? loadingBuilder,
+    LoadingStateBuilder<T>? loadingStateBuilder,
+    FailureBuilder? failureBuilder,
+    FailureStateBuilder<T>? failureStateBuilder,
     BlocBuilderCondition<BlocEaseState<T>>? buildWhen,
     super.key,
-  }) : super(
+  }) : assert(successBuilder != null || successStateBuilder != null, 'Either successBuilder or successStateBuilder must be provided'),
+       assert(!(successBuilder != null && successStateBuilder != null), 'Only one of successBuilder or successStateBuilder should be provided'),
+       assert(!(initialBuilder != null && initialStateBuilder != null), 'Only one of initialBuilder or initialStateBuilder should be provided'),
+       assert(!(loadingBuilder != null && loadingStateBuilder != null), 'Only one of loadingBuilder or loadingStateBuilder should be provided'),
+       assert(!(failureBuilder != null && failureStateBuilder != null), 'Only one of failureBuilder or failureStateBuilder should be provided'),
+       super(
             bloc: bloc,
             buildWhen: buildWhen,
             builder: (context, state) => state.when(
                   initialState: initialBuilder ??
-                      () => BlocEaseStateWidgetProvider.of(context)
-                          .initialStateBuilder(state as InitialState<T>),
+                      () => initialStateBuilder?.call(state as InitialState<T>) ??
+                          BlocEaseStateWidgetProvider.of(context)
+                              .initialStateBuilder(state as InitialState<T>),
                   loadingState: loadingBuilder ??
-                      ([_, __]) => BlocEaseStateWidgetProvider.of(context)
-                          .loadingStateBuilder(state as LoadingState<T>),
+                      ([_, __]) =>
+                          loadingStateBuilder?.call(state as LoadingState<T>) ??
+                          BlocEaseStateWidgetProvider.of(context)
+                              .loadingStateBuilder(state as LoadingState<T>),
                   failureState: failureBuilder ??
-                      ([_, __, ___]) => BlocEaseStateWidgetProvider.of(context)
-                          .failureStateBuilder(state as FailureState<T>),
-                  successState: succeedBuilder,
+                      ([_, __, ___]) =>
+                          failureStateBuilder?.call(state as FailureState<T>) ??
+                          BlocEaseStateWidgetProvider.of(context)
+                              .failureStateBuilder(state as FailureState<T>),
+                  successState: successBuilder ??
+                      (success) => successStateBuilder!(state as SuccessState<T>),
                 ));
 }
