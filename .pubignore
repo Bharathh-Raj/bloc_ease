@@ -1,6 +1,21 @@
-.dart_tool/
+# Files and directories that should be excluded from publishing to pub.dev
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
 .idea/
-.vscode/
+
+# Dart/Flutter tool related
+.dart_tool/
+
+# Build directories
 build/
-.DS_Store
-bloc_ease.iml 
+
+# Example project build files
+example/build/
+
+# Other development files
+.vscode/
+.flutter-plugins
+.flutter-plugins-dependencies
