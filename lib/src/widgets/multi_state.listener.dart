@@ -22,7 +22,16 @@ class BlocEaseMultiStateListener<S extends BlocEaseState>
     required this.blocEaseBlocs,
     required this.onStateChange,
     required this.child,
+    this.shouldRunOnInit = false,
+    this.canRunOnlyOnce = false,
   });
+
+  /// Determines whether to run the listener during initialization. By default, `BlocListener` triggers the listener only on subsequent state changes.
+  /// Setting this to true will trigger the listener immediately upon initialization.
+  final bool shouldRunOnInit;
+
+  /// Determines whether the listener can run only once. When set to true, the listener will trigger only on the first state change and then stop listening.
+  final bool canRunOnlyOnce;
 
   /// List of cubits that emit [BlocEaseState].
   final List<StateStreamable<BlocEaseState>> blocEaseBlocs;
@@ -38,22 +47,27 @@ class BlocEaseMultiStateListener<S extends BlocEaseState>
       _BlocEaseMultiStateListenerState<S>();
 }
 
-class _BlocEaseMultiStateListenerState<S extends BlocEaseState>
-    extends State<BlocEaseMultiStateListener<S>> {
+class _BlocEaseMultiStateListenerState<S extends BlocEaseState> extends State<BlocEaseMultiStateListener<S>> {
   late final StreamSubscription<BlocEaseState> _stream;
+  bool hasRun = false;
 
   @override
   void initState() {
-    _stream = MergeStream(widget.blocEaseBlocs.map((e) => e.stream)).listen(
-      (event) {
-        final states = widget.blocEaseBlocs.map((e) => e.state).toList();
-        final areAllStateAligningWithType = states.every((e) => e is S);
-        if (areAllStateAligningWithType) {
-          widget.onStateChange(states.map((e) => e as S).toList());
-        }
-      },
-    );
+    if (widget.shouldRunOnInit) {
+      _onStateChange();
+    }
+    _stream = MergeStream(widget.blocEaseBlocs.map((e) => e.stream)).listen((event) => _onStateChange());
     super.initState();
+  }
+
+  void _onStateChange() {
+    if (widget.canRunOnlyOnce && hasRun) return;
+    final states = widget.blocEaseBlocs.map((e) => e.state).toList();
+    final areAllStateAligningWithType = states.every((e) => e is S);
+    if (areAllStateAligningWithType) {
+      widget.onStateChange(states.map((e) => e as S).toList());
+      hasRun = true;
+    }
   }
 
   @override
