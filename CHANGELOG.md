@@ -1,3 +1,6 @@
+## 1.3.2
+- fix: BlocEaseMultiStateListener - Fixed initState issue
+
 ## 1.3.1
 - feat: BlocEaseMultiStateListener - Run on init support
 

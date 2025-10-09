@@ -54,7 +54,7 @@ class _BlocEaseMultiStateListenerState<S extends BlocEaseState> extends State<Bl
   @override
   void initState() {
     if (widget.shouldRunOnInit) {
-      _onStateChange();
+      WidgetsBinding.instance.addPostFrameCallback((_) => _onStateChange());
     }
     _stream = MergeStream(widget.blocEaseBlocs.map((e) => e.stream)).listen((event) => _onStateChange());
     super.initState();
